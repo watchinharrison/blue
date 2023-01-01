@@ -54,29 +54,26 @@ export const actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 
-		if (platform?.env) {
-			const hashedPassword = await hash(password);
-			const newUser = await userRepo.create({ email, password: hashedPassword });
-			let user;
-			if (newUser) {
-				user = await userRepo.findByEmail(email);
-				if (user) {
-					const token = await jwt.sign({ id: user.id }, AUTH_SECRET);
+		const hashedPassword = await hash(password);
+		const newUser = await userRepo.create({ email, password: hashedPassword });
+		let user;
+		if (newUser) {
+			user = await userRepo.findById(newUser.lastRowId);
+			if (user) {
+				const token = await jwt.sign({ id: user.id }, AUTH_SECRET);
 
-					cookies.set('Blue_Authorization', token);
-					locals.user = user;
-					throw redirect(303, '/profile');
-				}
-				return false;
+				cookies.set('Blue_Authorization', token);
+				locals.user = user;
+				throw redirect(303, '/profile');
 			}
 			return {
 				success: !!user,
 				user
 			};
 		}
-
 		return {
-			success: false
+			success: !!user,
+			user
 		};
 	}
 };

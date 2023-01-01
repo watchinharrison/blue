@@ -19,6 +19,16 @@
 >
 	<div class="lg:w-2/5">
 		<form method="POST" action="?/login">
+			{#if data.error}
+				<div class="p-2 bg-red-300 rounded-md">
+					<p class="text-white">{data.error}</p>
+				</div>
+			{/if}
+			{#if form?.success}
+				<div class="p-2 bg-green-300 rounded-md">
+					<p class="text-white">Successfully logged in! Welcome back, {data.user?.email}</p>
+				</div>
+			{/if}
 			{#if form?.missing || form?.incorrect}
 				<div class="p-2 bg-red-300 rounded-md">
 					{#if form?.missing}<p class="text-white">The email field is required</p>{/if}

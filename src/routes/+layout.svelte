@@ -63,7 +63,7 @@
 	<meta name="description" content="A social media site that doesn't suck" />
 </svelte:head>
 
-<div class="lg:grid lg:grid-flow-col lg:grid-cols-12 gap-4">
+<div class="lg:grid lg:grid-flow-col lg:grid-cols-12 gap-4 relative">
 	<div class="bg-sky-100 col-span-2 shadow-lg shadow-sky-100 flex flex-row">
 		<div class="flex-grow p-4 text-xs font-mono">
 			<div class="min-h-[50px]">
@@ -115,7 +115,7 @@
 				</nav>
 			{/if}
 		</div>
-		<div>
+		<div class="mr-2">
 			<button on:click={hideMenu} class="p-2 text-xs text-slate-400"
 				>{hide ? 'Show' : 'Hide'}</button
 			>
@@ -128,12 +128,14 @@
 		</div>
 		<div class="" />
 	</div>
-	<div class="hidden md:block col-span-4">
+	<div class="md:block col-span-4 w-full">
 		{#if post}
-			<PostDetail {post} />
+			<div class="transition">
+				<PostDetail {post} />
+			</div>
 		{/if}
 		{#if !data.user?.email}
-			<div class="p-2 lg:fixed top-0 dark:text-white">Why Login here</div>
+			<div class="p-2 dark:text-white">Why Login here</div>
 		{/if}
 	</div>
 </div>

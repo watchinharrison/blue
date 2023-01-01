@@ -32,6 +32,18 @@ class UserRepository {
 			});
 	}
 
+	async findById(id) {
+		const user = await this.db
+			.prepare('SELECT * FROM users WHERE id = ?')
+			.bind(id)
+			.first()
+			.catch((error) => {
+				console.log('Error fetching user', error);
+				return null;
+			});
+		return user;
+	}
+
 	async findByEmail(email) {
 		const user = await this.db
 			.prepare('SELECT * FROM users WHERE email = ?')
