@@ -29,10 +29,11 @@
 					<p class="text-white">Successfully logged in! Welcome back, {data.user?.email}</p>
 				</div>
 			{/if}
-			{#if form?.missing || form?.incorrect}
+			{#if form?.missing || form?.incorrect || form?.error}
 				<div class="p-2 bg-red-300 rounded-md">
 					{#if form?.missing}<p class="text-white">The email field is required</p>{/if}
 					{#if form?.incorrect}<p class="text-white">Invalid credentials!</p>{/if}
+					{#if form?.error}<p class="text-white">An error occurred! {form?.error}</p>{/if}
 				</div>
 			{/if}
 			<div class="flex flex-col gap-4">
