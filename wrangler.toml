@@ -1,0 +1,15 @@
+name = "blue"
+compatibility_date = "2022-12-31"
+
+account_id = "a749f4459c0e24f9b878279b7a63edbf" # ← Replace with your Account ID.
+workers_dev = true
+
+[[ d1_databases ]]
+binding = "DB"
+database_name = "blue"
+database_id = "fcee2e9d-581b-4c54-919c-69f8b63b8783"
+
+[[r2_buckets]]
+binding = 'FILE_BUCKET' # <~ valid JavaScript variable name
+bucket_name = 'blue'
+preview_bucket_name = 'development'
