@@ -45,10 +45,10 @@ export const actions = {
 		return { success: true };
 	},
 	register: async ({ platform, request, cookies, locals }) => {
-		if (!platform?.env.DB) {
+		if (!platform?.env.__D1_BETA__DB) {
 			return fail(500, { error: 'No database connection' });
 		}
-		const userRepo = new UserRepository({ db: platform.env.DB });
+		const userRepo = new UserRepository({ db: platform.env.__D1_BETA__DB });
 		// TODO register the user
 		const data = await request.formData();
 		const email = data.get('email');
