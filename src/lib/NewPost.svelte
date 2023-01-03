@@ -60,6 +60,7 @@
 	action="/?/post"
 	on:submit|preventDefault={handleSubmit}
 	enctype="multipart/form-data"
+	aria-label="New Post"
 >
 	<div class="relative">
 		<div

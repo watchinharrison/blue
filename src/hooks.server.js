@@ -7,7 +7,7 @@ export async function handle({ event, resolve }) {
 	const BlueAuthorization = event.cookies.get('Blue_Authorization');
 
 	async function fetchUserDetails(payload) {
-		const ps = event.platform.env.__D1_BETA__DB.prepare(
+		const ps = event.platform.env.DB.prepare(
 			'SELECT id, first_name, last_name, username FROM users WHERE id = ?'
 		);
 		return ps

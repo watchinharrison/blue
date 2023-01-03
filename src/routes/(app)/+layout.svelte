@@ -27,13 +27,23 @@
 			css: (t) => `opacity: ${t * o}`
 		};
 	}
+
+	let inert;
+	activePost.subscribe((value) => {
+		inert = value !== null && window.innerWidth < 720 ? true : undefined;
+	});
 </script>
 
-<div class="lg:container lg:mx-auto flex flex-col lg:flex-row gap-4">
-	<slot />
-	<div class="lg:col-span-4 lg:w-1/3 pr-4">
+<main class="lg:container lg:mx-auto flex flex-col lg:flex-row gap-4">
+	<article {inert} class="lg:w-2/3" aria-hidden={$activePost !== null}>
+		<slot />
+	</article>
+	<aside class="lg:col-span-4 lg:w-1/3 pr-4">
 		{#if $activePost}
-			<div class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70" />
+			<div
+				aria-modal="true"
+				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
+			/>
 			<div
 				in:whoosh
 				out:fadein
@@ -55,15 +65,15 @@
 						</svg>
 					</button>
 				</div>
-				<div in:fadein={{ delay: 400 }}>
+				<div aria-label="Post Detail" in:fadein={{ delay: 400 }}>
 					<PostDetail post={$activePost} />
 				</div>
 				{#if $activePost.reply}
-					<div in:fadein class="m-4 mt-2">
+					<div aria-label="Reply Post" in:fadein class="m-4 mt-2">
 						<NewPost post={$activePost} />
 					</div>
 				{/if}
 			</div>
 		{/if}
-	</div>
-</div>
+	</aside>
+</main>

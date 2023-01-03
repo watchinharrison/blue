@@ -40,7 +40,7 @@
 		<div class="ml-2">Reply</div>
 	</button>
 	<div>
-		<form action="?/like" method="POST" use:enhance>
+		<form action="?/like" method="POST" use:enhance aria-label="Like Post">
 			<input type="hidden" name="post_id" value={post.id} />
 			<button type="submit" class="flex flex-row justify-center items-center">
 				{#if post.liked}

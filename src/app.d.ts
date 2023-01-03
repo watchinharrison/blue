@@ -17,7 +17,6 @@ declare namespace App {
 	interface Platform {
 		env: {
 			DB: D1Database,
-			__D1_BETA__DB: D1Database,
 			FILE_BUCKET: R2Bucket
 		}
 	}

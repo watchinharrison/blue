@@ -9,7 +9,7 @@ export default [
 		},
 		text: 'Just had a great run in the park!',
 		created_at: '2022-01-01T12:00:00Z',
-		likes: 10,
+		likes_count: 10,
 		comments: [
 			{
 				id: 1,
@@ -45,7 +45,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -70,7 +70,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -95,7 +95,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -120,7 +120,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -145,7 +145,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -170,7 +170,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -195,7 +195,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -220,7 +220,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -245,7 +245,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -270,7 +270,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -295,7 +295,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -320,7 +320,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -345,7 +345,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -370,7 +370,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -395,7 +395,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -420,7 +420,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -445,7 +445,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -470,7 +470,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -495,7 +495,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -520,7 +520,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -545,7 +545,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -570,7 +570,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -595,7 +595,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -620,7 +620,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -645,7 +645,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -670,7 +670,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -695,7 +695,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -720,7 +720,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -745,7 +745,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -770,7 +770,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -795,7 +795,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -820,7 +820,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -845,7 +845,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -870,7 +870,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -895,7 +895,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -920,7 +920,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -945,7 +945,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -970,7 +970,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -995,7 +995,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -1020,7 +1020,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -1045,7 +1045,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,
@@ -1070,7 +1070,7 @@ export default [
 		},
 		text: "I can't believe it's already December. Time flies!",
 		created_at: '2022-12-01T09:00:00Z',
-		likes: 5,
+		likes_count: 5,
 		comments: [
 			{
 				id: 3,

@@ -59,7 +59,7 @@
 			<div class="flex flex-row gap-4">
 				<div class="min-w-[3rem]" />
 				<div class="flex-grow">
-					<div class="text-slate-800 mb-2">{post.text}</div>
+					<p class="text-slate-800 mb-2">{post.text}</p>
 					{#if post?.entities?.length}
 						<div class="flex flex-row flex-wrap border rounded-md overflow-hidden bg-slate-800">
 							{#each post.entities as entity, i}

@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<div class="w-2/3">
+<div>
 	<Post post={data.post} />
 </div>

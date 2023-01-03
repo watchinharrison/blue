@@ -21,14 +21,16 @@
 </svelte:head>
 
 <div class="lg:grid lg:grid-flow-col lg:grid-cols-12 gap-4 relative">
-	<div class="bg-sky-100 col-span-2 shadow-lg shadow-sky-100 flex flex-row lg:h-screen">
+	<header class="bg-sky-100 col-span-2 shadow-lg shadow-sky-100 flex flex-row lg:h-screen">
 		<Nav user={data.user} />
-	</div>
+	</header>
 	<div class="lg:col-span-10">
 		<div class="" />
 		<div class="p-2 pt-4 md:px-0 h-full">
 			<slot />
 		</div>
-		<div class="" />
+		<div class="">
+			<footer>Footer here</footer>
+		</div>
 	</div>
 </div>

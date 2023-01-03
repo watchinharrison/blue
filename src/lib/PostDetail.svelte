@@ -18,7 +18,7 @@
 </script>
 
 <div class="flex flex-row">
-	<div class="w-full p-4">
+	<div class="w-full p-4" aria-live>
 		<Post {post} />
 	</div>
 	<div class="" />

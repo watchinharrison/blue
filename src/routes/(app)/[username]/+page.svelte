@@ -7,11 +7,11 @@
 	export let data;
 
 	function setActivePost(post) {
-		activePost.update((value) => post);
+		activePost.update((...value) => ({ ...value, ...post }));
 	}
 </script>
 
-<div class="lg:w-2/3">
+<div class="">
 	<div class="p-4">
 		<div class="flex flex-row justify-between">
 			<div class="">
@@ -60,7 +60,12 @@
 			{#each data?.posts || [] as post, i}
 				<div
 					on:click={() => setActivePost(post)}
-					on:keydown={() => setActivePost(post)}
+					on:keyup={(event) => {
+						console.log(event.key);
+						if (event.key === 'Space') {
+							setActivePost(post);
+						}
+					}}
 					class="cursor-pointer {i === data?.posts.length - 1 ? 'pb-4' : ''}"
 				>
 					<Post {post} />

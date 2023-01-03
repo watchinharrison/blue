@@ -28,7 +28,7 @@
 	}
 </script>
 
-<div class="w-2/3">
+<div>
 	<div class="w-2/5 max-w-[300px] m-auto">
 		<div class="font-mono my-4 text-sm min-h-[25px]">
 			{#if form?.success}
