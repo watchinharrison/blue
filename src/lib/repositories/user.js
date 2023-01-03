@@ -4,10 +4,10 @@ class UserRepository {
 	}
 
 	async create(user) {
-		const { email, password } = user;
+		const { email, password, username } = user;
 		return this.db
-			.prepare('INSERT INTO users (email, password) VALUES (?, ?)')
-			.bind(email, password)
+			.prepare('INSERT INTO users (email, password, username) VALUES (?, ?, ?)')
+			.bind(email, password, username)
 			.run()
 			.catch((error) => {
 				console.log('Error creating user', error);
@@ -56,10 +56,22 @@ class UserRepository {
 		return user;
 	}
 
+	async findByUsername(username) {
+		const user = await this.db
+			.prepare('SELECT * FROM users WHERE username = ?')
+			.bind(username)
+			.first()
+			.catch((error) => {
+				console.log('Error fetching user', error);
+				return null;
+			});
+		return user;
+	}
+
 	async setupTable() {
 		return this.db
 			.prepare(
-				`CREATE TABLE users (
+				`CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY,
       first_name TEXT NULL,
       last_name TEXT NULL,

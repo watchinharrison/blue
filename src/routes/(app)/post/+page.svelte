@@ -2,7 +2,7 @@
 	import NewPost from '$lib/NewPost.svelte';
 </script>
 
-<div class="h-screen">
+<div class="lg:w-2/3">
 	<NewPost />
 	<div class="">
 		<h3>What to post?</h3>

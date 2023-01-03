@@ -25,12 +25,12 @@ class PostEntityRepository {
 
 	async findByPostId(post_id) {
 		const post = await this.db
-			.prepare('SELECT * FROM post_entities WHERE id = ?')
+			.prepare('SELECT * FROM post_entities WHERE post_id = ?')
 			.bind(post_id)
 			.all()
 			.catch((error) => {
 				console.log('Error fetching post entities', error);
-				return null;
+				return [];
 			});
 		return post.results;
 	}
@@ -38,7 +38,7 @@ class PostEntityRepository {
 	async setupTable() {
 		return this.db
 			.prepare(
-				`CREATE TABLE post_entities (
+				`CREATE TABLE IF NOT EXISTS post_entities (
       id INTEGER PRIMARY KEY,
       type TEXT NULL,
       post_id INTEGER,

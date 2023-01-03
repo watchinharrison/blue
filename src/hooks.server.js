@@ -7,7 +7,9 @@ export async function handle({ event, resolve }) {
 	const BlueAuthorization = event.cookies.get('Blue_Authorization');
 
 	async function fetchUserDetails(payload) {
-		const ps = event.platform.env.DB.prepare('SELECT * FROM users WHERE id = ?');
+		const ps = event.platform.env.DB.prepare(
+			'SELECT id, first_name, last_name, username FROM users WHERE id = ?'
+		);
 		return ps
 			.bind(payload.id)
 			.first()

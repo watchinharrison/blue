@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -8,17 +9,9 @@
 	export let form;
 </script>
 
-{#if form?.success}
-	<!-- this message is ephemeral; it exists because the page was rendered in
-       response to a form submission. it will vanish if the user reloads -->
-	<p>Successfully logged in! Welcome back, {data.user?.email}</p>
-{/if}
-
-<div
-	class="lg:container lg:m-auto flex flex-row items-center justify-center lg:h-screen mt-32 lg:mt-0"
->
-	<div class="lg:w-2/5">
-		<form method="POST" action="?/login">
+<div class="lg:container lg:m-auto flex flex-row items-center justify-center mt-32 lg:mt-0 h-full">
+	<div class="lg:w-2/5 lg:max-w-[300px]">
+		<form method="POST" action="?/login" use:enhance>
 			{#if data.error}
 				<div class="p-2 bg-red-300 rounded-md">
 					<p class="text-white">{data.error}</p>
@@ -26,7 +19,7 @@
 			{/if}
 			{#if form?.success}
 				<div class="p-2 bg-green-300 rounded-md">
-					<p class="text-white">Successfully logged in! Welcome back, {data.user?.email}</p>
+					<p class="text-white">Successfully logged in! Welcome back, {data.user?.username}</p>
 				</div>
 			{/if}
 			{#if form?.missing || form?.incorrect || form?.error}

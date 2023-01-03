@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import UserRepository from '$lib/repositories/user';
 
-/** @type {import('./$types').Actions} */
+/** @type {import('../../../$types').Actions} */
 export const actions = {
 	default: async ({ request, platform, locals }) => {
 		if (!platform?.env.DB) {
@@ -27,9 +27,9 @@ export const actions = {
 	}
 };
 
-/** @type {import('./$types').PageServerLoad} */
+/** @type {import('../../../$types').PageServerLoad} */
 export async function load({ locals }) {
-	if (!locals.user?.email) {
+	if (!locals.user?.id) {
 		throw redirect(303, '/login');
 	}
 	return {

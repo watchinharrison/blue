@@ -54,8 +54,10 @@ export const actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 
+		const username = email.split('@')[0];
+
 		const hashedPassword = await hash(password);
-		const newUser = await userRepo.create({ email, password: hashedPassword });
+		const newUser = await userRepo.create({ email, password: hashedPassword, username });
 		let user;
 		if (newUser) {
 			user = await userRepo.findById(newUser.lastRowId);
@@ -64,7 +66,7 @@ export const actions = {
 
 				cookies.set('Blue_Authorization', token);
 				locals.user = user;
-				throw redirect(303, '/profile');
+				throw redirect(303, '/profile/settings');
 			}
 			return {
 				success: !!user,
@@ -81,7 +83,7 @@ export const actions = {
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
 	if (locals.user) {
-		throw redirect(303, '/profile');
+		throw redirect(303, '/');
 	}
 	return {
 		user: locals.user

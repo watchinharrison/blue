@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<div class="lg:container lg:m-auto">
+<div class="w-2/3">
 	<Post post={data.post} />
 </div>

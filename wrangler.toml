@@ -9,6 +9,11 @@ binding = "DB"
 database_name = "blue"
 database_id = "fcee2e9d-581b-4c54-919c-69f8b63b8783"
 
+[[ d1_databases ]]
+binding = "DB"
+database_name = "blue_development"
+database_id = "48c85814-7206-4786-bae7-9490d274ba72"
+
 [[r2_buckets]]
 binding = 'FILE_BUCKET' # <~ valid JavaScript variable name
 bucket_name = 'blue'

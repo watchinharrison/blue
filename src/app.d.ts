@@ -3,8 +3,13 @@
 // and what to do when importing types
 declare namespace App {
 	interface Locals {
-		email: string;
-		password: string;
+		user: {
+			id: string;
+			first_name: string;
+			last_name: string;
+			username: string;
+			email: string;
+		}
 	}
 	// interface Error {}
 	// interface Locals {}
@@ -12,6 +17,7 @@ declare namespace App {
 	interface Platform {
 		env: {
 			DB: D1Database,
+			__D1_BETA__DB: D1Database,
 			FILE_BUCKET: R2Bucket
 		}
 	}
