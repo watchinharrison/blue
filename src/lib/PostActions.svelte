@@ -4,7 +4,7 @@
 	export let post;
 </script>
 
-<div class="w-full flex flex-row justify-between text-sm text-slate-600">
+<div class="w-full flex flex-row justify-between text-sm text-sky-600">
 	<button
 		type="submit"
 		class="flex flex-row justify-center items-center"
@@ -39,7 +39,7 @@
 		{/if}
 		<div class="ml-2">Reply</div>
 	</button>
-	<div>
+	<div class="text-blue-400">
 		<form action="?/like" method="POST" use:enhance aria-label="Like Post">
 			<input type="hidden" name="post_id" value={post.id} />
 			<button type="submit" class="flex flex-row justify-center items-center">
@@ -71,7 +71,7 @@
 						/>
 					</svg>
 				{/if}
-				<div class="ml-2">
+				<div class="ml-2 ">
 					{post.likes_count} Likes
 				</div>
 			</button>

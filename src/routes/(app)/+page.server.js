@@ -27,8 +27,14 @@ export const actions = {
 		const data = await request.formData();
 		const text = data.get('text');
 		const postId = data.get('post_id');
+		const threadId = data.get('thread_id');
 		const images = data.getAll('image');
-		const newPost = await postRepo.create({ text, user_id: locals.user.id });
+		const newPost = await postRepo.create({
+			text,
+			user_id: locals.user.id,
+			post_id: postId,
+			thread_id: threadId
+		});
 		if (newPost) {
 			const newPostId = newPost.lastRowId;
 			await Promise.all(
@@ -72,6 +78,7 @@ export async function load({ locals, platform }) {
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		new UserRepository({ db: platform.env.DB }).setupTable();
 		new FollowersRepository({ db: platform.env.DB }).setupTable();
+		new LikesRepository({ db: platform.env.DB }).setupTable();
 		postRepo.setupTable();
 		postEntityRepo.setupTable();
 		let posts = [];

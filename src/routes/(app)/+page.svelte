@@ -15,8 +15,8 @@
 
 <div class="">
 	<NewPost />
-	<div class="lg:h-[79vh] scroll-smooth overflow-scroll bg-slate-200 p-4 rounded-md">
-		<div class="flex flex-col gap-4 scroll-smooth inner-shadow lg:h-[400px] ">
+	<div class="lg:h-[69vh] scroll-smooth overflow-scroll bg-sky-100 p-4 rounded-md">
+		<div class="flex flex-col gap-4 scroll-smooth inner-shadow">
 			{#each data?.posts || [] as post, i}
 				<div
 					aria-label="Post"

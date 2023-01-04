@@ -1,5 +1,6 @@
 <script>
 	import PostActions from './PostActions.svelte';
+	import { activeImage } from '$lib/stores';
 
 	export let post;
 
@@ -38,10 +39,17 @@
 			return 'just now';
 		}
 	}
+
+	function openImage(event) {
+		event.stopPropagation();
+		event.preventDefault();
+		const { src, alt } = event.target;
+		activeImage.update((...value) => ({ src, alt }));
+	}
 </script>
 
-<div class="relative overflow-visible bg-sky-100 shadow-md shadow-sky-200/50 rounded-md">
-	<div class="relative p-4 bg-slate-100 shadow-sm rounded-md">
+<div class="relative overflow-visible bg-slate-100 shadow-md shadow-sky-200/50 rounded-md">
+	<div class="relative p-4  shadow-sm rounded-md">
 		<div class="flex flex-col gap-2">
 			<div class="flex flex-row items-center gap-4">
 				<div class="basis-12">
@@ -64,20 +72,24 @@
 						<div class="flex flex-row flex-wrap border rounded-md overflow-hidden bg-slate-800">
 							{#each post.entities as entity, i}
 								{#if entity.entity_type === 'image'}
-									<div
-										class="flex flex-row items-center {post.entities.length % 2 === 0
+									<a
+										on:click={openImage}
+										href="/posts/{post.id}/images/{entity.id}"
+										class=" {post.entities.length === 3 || post.entities.length % 2 === 0
 											? 'w-2/4'
 											: 'w-full'} {(post.entities.length > 1 && i === 0) || i === 2
 											? 'pr-1'
 											: ''} {post.entities.length > 1 && (i === 0 || i === 1) ? 'pb-1' : ''}"
 									>
-										<img
-											loading="lazy"
-											class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
-											src={`/media/${entity.url}`}
-											alt={entity.name}
-										/>
-									</div>
+										<div class="flex flex-row items-center">
+											<img
+												loading="lazy"
+												class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
+												src={`/media/${entity.url}`}
+												alt={entity.name}
+											/>
+										</div>
+									</a>
 								{/if}
 							{/each}
 						</div>

@@ -4,10 +4,10 @@ class PostRepository {
 	}
 
 	async create(post) {
-		const { text, user_id } = post;
+		const { text, user_id, post_id, thread_id } = post;
 		return this.db
-			.prepare('INSERT INTO posts (text, user_id) VALUES (?, ?)')
-			.bind(text, user_id)
+			.prepare('INSERT INTO posts (text, user_id, reply_id, thread_id) VALUES (?, ?, ?, ?)')
+			.bind(text, user_id, post_id, thread_id)
 			.run()
 			.catch((error) => {
 				console.log('Error creating post', error);
@@ -58,6 +58,64 @@ class PostRepository {
 				if (error.message.includes('no such table')) {
 					return this.setupTable().then(() => {
 						return this.findByFollowers(user_id);
+					});
+				}
+			});
+
+		return data.results.map(({ first_name, last_name, username, ...post }) => {
+			return {
+				...post,
+				user: {
+					profile_image_url: 'https://loremflickr.com/50/50',
+					first_name: first_name,
+					last_name: last_name,
+					username: username
+				}
+			};
+		});
+	}
+
+	async getReplies(post_id) {
+		const data = await this.db
+			.prepare(
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC'
+			)
+			.bind(post_id)
+			.all()
+			.catch((error) => {
+				console.log('Error fetching posts', error);
+				if (error.message.includes('no such table')) {
+					return this.setupTable().then(() => {
+						return this.getReplies(post_id);
+					});
+				}
+			});
+
+		return data.results.map(({ first_name, last_name, username, ...post }) => {
+			return {
+				...post,
+				user: {
+					profile_image_url: 'https://loremflickr.com/50/50',
+					first_name: first_name,
+					last_name: last_name,
+					username: username
+				}
+			};
+		});
+	}
+
+	async getThread(post_id) {
+		const data = await this.db
+			.prepare(
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC'
+			)
+			.bind(post_id, post_id)
+			.all()
+			.catch((error) => {
+				console.log('Error fetching posts', error);
+				if (error.message.includes('no such table')) {
+					return this.setupTable().then(() => {
+						return this.getThread(post_id);
 					});
 				}
 			});

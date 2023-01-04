@@ -9,6 +9,6 @@ export async function GET({ request, platform }) {
 	const postRepo = new PostRepository({ db: platform.env.DB });
 	const url = new URL(request.url);
 	const body = Object.fromEntries(url.searchParams);
-	const { likes_count: likesCount } = await postRepo.findById(body.postId);
-	return new Response(JSON.stringify({ likes: likesCount }), { status: 200 });
+	const replies = await postRepo.getReplies(body.postId);
+	return new Response(JSON.stringify({ replies }), { status: 200 });
 }

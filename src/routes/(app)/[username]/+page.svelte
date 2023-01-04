@@ -29,14 +29,14 @@
 					{#if data.isFollowing}
 						<button
 							type="submit"
-							class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+							class="text-sm text-bold uppercase bg-clip-text text-transparent bg-gradient-to-t from-slate-700 to-blue-900"
 						>
 							Unfollow {data?.profile.username}
 						</button>
 					{:else}
 						<button
 							type="submit"
-							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+							class="text-sm text-bold uppercase bg-clip-text text-transparent bg-gradient-to-t from-sky-700 to-blue-900"
 						>
 							Follow {data?.profile.username}
 						</button>

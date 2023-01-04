@@ -17,3 +17,18 @@ export function typewriter(node, { speed = 1, delay = 0 }) {
 		}
 	};
 }
+
+export function whoosh(node, params) {
+	const existingTransform = getComputedStyle(node).transform.replace('none', '');
+
+	return {
+		delay: params.delay || 0,
+		duration: params.duration || 400,
+		css: (t, u) => {
+			const x = params.reverse ? t * 300 - 300 : 300 - t * 300;
+			return window.innerWidth < 1024
+				? `transform: ${existingTransform} translateY(${x}px); opacity: ${t}`
+				: `transform: ${existingTransform} translateX(${x}px); opacity: ${t}`;
+		}
+	};
+}

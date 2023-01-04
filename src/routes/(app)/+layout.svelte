@@ -41,15 +41,16 @@
 	<aside class="lg:col-span-4 lg:w-1/3 pr-4">
 		{#if $activePost}
 			<div
+				transition:fadein
 				aria-modal="true"
 				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
 			/>
 			<div
 				in:whoosh
-				out:fadein
-				class="fixed lg:static h-[70vh] bg-slate-200 lg:h-auto bottom-0 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+				out:whoosh
+				class="fixed lg:static h-[70vh] bg-sky-100 lg:h-auto bottom-0 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
-				<div class="flex flex-row justify-end">
+				<div class="sticky top-0 z-10 flex flex-row justify-end">
 					<button on:click={() => ($activePost = null)} class="p-4 pb-0 text-slate-400">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -65,11 +66,15 @@
 						</svg>
 					</button>
 				</div>
-				<div aria-label="Post Detail" in:fadein={{ delay: 400 }}>
+				<div aria-label="Post Detail" in:whoosh={{ delay: 400 }}>
 					<PostDetail post={$activePost} />
 				</div>
 				{#if $activePost.reply}
-					<div aria-label="Reply Post" in:fadein class="m-4 mt-2">
+					<div
+						aria-label="Reply Post"
+						in:fadein
+						class="fixed bottom-3 p-6 w-full lg:static lg:w-auto lg:bottom-0 lg:py-0 lg:pb-2 drop-shadow-md"
+					>
 						<NewPost post={$activePost} />
 					</div>
 				{/if}
