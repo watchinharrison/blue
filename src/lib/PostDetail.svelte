@@ -1,7 +1,6 @@
 <script>
 	import Post from './Post.svelte';
 	import { onMount, onDestroy } from 'svelte';
-	import { activePost } from '$lib/stores';
 
 	export let post;
 

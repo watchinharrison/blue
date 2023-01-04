@@ -2,17 +2,11 @@
 	import { fade } from 'svelte/transition';
 
 	import '../app.css';
-	import { activePost, activeImage } from '$lib/stores';
+	import { activeImage } from '$lib/stores';
 	import Nav from '$lib/Nav.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-
-	let post;
-
-	activePost.subscribe((value) => {
-		post = value;
-	});
 </script>
 
 <svelte:head>
@@ -21,9 +15,9 @@
 </svelte:head>
 
 <div>
-	<div class="lg:grid lg:grid-flow-col lg:grid-cols-12 gap-4 relative">
+	<div class="lg:grid lg:grid-flow-col lg:grid-cols-12 gap-4 relative bg-slate-100">
 		<Nav user={data.user} />
-		<div class="lg:col-span-10 pb-12">
+		<div class="lg:col-span-10 pb-12 min-h-screen">
 			<div class="" />
 			<div class="p-2 pt-4 md:px-0 h-full">
 				<slot />

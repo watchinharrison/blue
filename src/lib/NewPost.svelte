@@ -2,11 +2,13 @@
 	// @ts-nocheck
 	import { enhance, deserialize, applyAction } from '$app/forms';
 	import { goto, invalidate, invalidateAll } from '$app/navigation';
+	import { activePost } from '$lib/stores';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;
 
 	export let post = null;
+	export let repostId = null;
 
 	let images = [];
 
@@ -64,6 +66,10 @@
 			reader.readAsDataURL(event.target.files.item(i));
 		}
 	}
+
+	function close() {
+		activePost.update((value) => ({ ...value, reply: false }));
+	}
 </script>
 
 <form
@@ -87,6 +93,9 @@
 					placeholder="What's on your mind?"
 					value={form?.text ? form.text : ''}
 				/>
+				{#if repostId}
+					<div>{repostId}</div>
+				{/if}
 				{#if images.length}
 					<div class="flex flex-row flex-wrap rounded-md overflow-hidden">
 						{#each images as image, i}
@@ -134,11 +143,21 @@
 							/>
 						</div>
 					</div>
+					{#if post?.reply_id}
+						<input type="hidden" name="thread_id" value={post.reply_id} />
+					{/if}
 					{#if post}
 						<input type="hidden" name="post_id" value={post.id} />
 					{/if}
 				</div>
 				<div class="">
+					{#if post}
+						<button
+							on:click|preventDefault={close}
+							class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-blue-300 to-sky-500 hover:opacity-85 p-2"
+							>Close</button
+						>
+					{/if}
 					<button
 						class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-sky-700 to-blue-900 hover:opacity-85 p-2"
 						>{post ? 'Reply' : 'Post'}</button

@@ -29,9 +29,7 @@
 	}
 </script>
 
-<div
-	class="lg:col-span-2 {hide ? 'w-fit' : 'w-full'} lg:h-full bg-sky-100 shadow-lg shadow-sky-100 "
->
+<div class="lg:col-span-2 {hide ? 'w-fit' : 'w-full'} lg:h-full bg-sky-100">
 	<header class="w-screen lg:w-auto">
 		<div class="w-full flex flex-row justify-end">
 			<button on:click={hideMenu} class="p-4 text-xs text-slate-400"

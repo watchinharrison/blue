@@ -73,7 +73,7 @@
 					<div
 						aria-label="Reply Post"
 						in:fadein
-						class="fixed bottom-3 p-6 w-full lg:static lg:w-auto lg:bottom-0 lg:py-0 lg:pb-2 drop-shadow-md"
+						class="fixed bottom-3 p-6 w-full lg:static lg:w-auto lg:bottom-0 lg:py-0 lg:pb-2"
 					>
 						<NewPost post={$activePost} />
 					</div>

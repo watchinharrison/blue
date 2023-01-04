@@ -77,5 +77,14 @@
 			</button>
 		</form>
 	</div>
-	<div class="">Repost</div>
+	<div class="">
+		<form action="?/repost" method="POST" use:enhance aria-label="Like Post">
+			<input type="hidden" name="post_id" value={post.id} />
+			<button type="submit" class="flex flex-row justify-center items-center">
+				<div class="ml-2 ">
+					{post.repost_count ?? 0} Reposts
+				</div>
+			</button>
+		</form>
+	</div>
 </div>

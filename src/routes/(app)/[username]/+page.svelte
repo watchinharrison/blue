@@ -14,7 +14,7 @@
 <div class="">
 	<div class="p-4">
 		<div class="flex flex-row justify-between">
-			<div class="">
+			<div class="flex flex-row gap-4">
 				<h2>{data?.profile?.username}</h2>
 				<div>
 					<p>Following: {data?.following?.length}</p>
@@ -44,10 +44,10 @@
 				</form>
 			{/if}
 			{#if data?.user?.id === data?.profile?.id}
-				<div>
+				<div class="p-1 px-2 h-fit">
 					<a
 						href="/profile/settings"
-						class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						class="text-sm bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
 						Edit Profile
 					</a>
@@ -55,7 +55,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="lg:h-[79vh] scroll-smooth overflow-scroll bg-slate-200 p-4 rounded-md">
+	<div class="lg:h-[87vh] scroll-smooth overflow-scroll bg-slate-200 p-4 rounded-md">
 		<div class="flex flex-col gap-4 scroll-smooth inner-shadow lg:h-[400px] ">
 			{#each data?.posts || [] as post, i}
 				<div

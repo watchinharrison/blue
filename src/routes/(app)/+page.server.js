@@ -15,6 +15,47 @@ export const actions = {
 		event.locals.user = null;
 		return { success: true };
 	},
+	repost: async ({ request, url, platform, cookies, locals }) => {
+		if (!platform?.env.DB) {
+			return fail(500, { error: 'No database connection' });
+		}
+		const referer = request.headers.get('referer');
+		const refererUrl = new URL(referer);
+		const postRepo = new PostRepository({ db: platform.env.DB });
+		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
+		const data = await request.formData();
+		const text = data.get('text');
+		const postId = data.get('post_id');
+		const images = data.getAll('image');
+		const newPost = await postRepo.create({
+			text,
+			user_id: locals.user.id,
+			thread_id: postId
+		});
+		if (newPost) {
+			const newPostId = newPost.lastRowId;
+			await Promise.all(
+				images
+					.filter((image) => image.size)
+					.map(async (image) => {
+						const newPostEntity = await postEntityRepo.create({
+							post_id: newPostId,
+							type: 'image',
+							data: image
+						});
+						if (newPostEntity) {
+							const newPostEntityId = newPostEntity.lastRowId;
+							const newPostEntityUrl = new URL(`/api/post_entities/${newPostEntityId}`, refererUrl);
+							return newPostEntityUrl.href;
+						}
+						return null;
+					})
+			);
+			const newPostUrl = new URL(`/api/posts/${newPostId}`, refererUrl);
+			return redirect(newPostUrl.href);
+		}
+		return fail(500, { error: 'Post not created' });
+	},
 	like,
 	post: async ({ request, url, platform, cookies, locals }) => {
 		if (!platform?.env.DB) {
