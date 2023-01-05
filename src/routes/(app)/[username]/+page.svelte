@@ -61,7 +61,6 @@
 				<div
 					on:click={() => setActivePost(post)}
 					on:keyup={(event) => {
-						console.log(event.key);
 						if (event.key === 'Space') {
 							setActivePost(post);
 						}

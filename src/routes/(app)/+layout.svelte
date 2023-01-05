@@ -69,7 +69,7 @@
 				<div aria-label="Post Detail" in:whoosh={{ delay: 400 }}>
 					<PostDetail post={$activePost} />
 				</div>
-				{#if $activePost.reply}
+				{#if $activePost.is_replying}
 					<div
 						aria-label="Reply Post"
 						in:fadein

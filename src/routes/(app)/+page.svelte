@@ -27,7 +27,10 @@
 							setActivePost(post);
 						}
 					}}
-					class="cursor-pointer {i === data?.posts.length - 1 ? 'pb-4' : ''}"
+					class="cursor-pointer {$activePost?.id === post.id ? 'brightness-95' : ''} {i ===
+					data?.posts.length - 1
+						? 'pb-4'
+						: ''}"
 				>
 					<Post {post} />
 				</div>

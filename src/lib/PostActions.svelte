@@ -1,6 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { activePost } from '$lib/stores';
+	import { activePost, replyPost } from '$lib/stores';
 	export let post;
 </script>
 
@@ -8,9 +8,9 @@
 	<button
 		type="submit"
 		class="flex flex-row justify-center items-center"
-		on:click|stopPropagation={() => activePost.set({ ...post, reply: true })}
+		on:click|stopPropagation={() => activePost.set({ ...post, is_replying: true })}
 	>
-		{#if $activePost?.reply && $activePost?.id === post.id}
+		{#if $activePost?.is_replying && $activePost?.id === post.id}
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="16"
@@ -78,13 +78,19 @@
 		</form>
 	</div>
 	<div class="">
-		<form action="?/repost" method="POST" use:enhance aria-label="Like Post">
-			<input type="hidden" name="post_id" value={post.id} />
-			<button type="submit" class="flex flex-row justify-center items-center">
-				<div class="ml-2 ">
-					{post.repost_count ?? 0} Reposts
-				</div>
-			</button>
-		</form>
+		<!-- <form action="?/repost" method="POST" use:enhance aria-label="Like Post">
+			<input type="hidden" name="post_id" value={post.id} /> -->
+		<button
+			type="submit"
+			class="flex flex-row justify-center items-center"
+			on:click={() => {
+				replyPost.set(post);
+			}}
+		>
+			<div class="ml-2 ">
+				{post.repost_count ?? 0} Reposts
+			</div>
+		</button>
+		<!-- </form> -->
 	</div>
 </div>

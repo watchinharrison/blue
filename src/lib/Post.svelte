@@ -1,6 +1,7 @@
 <script>
 	import PostActions from './PostActions.svelte';
-	import { activeImage } from '$lib/stores';
+	import Post from './Post.svelte';
+	import { activeImage, activePost } from '$lib/stores';
 
 	export let post;
 
@@ -67,6 +68,19 @@
 			<div class="flex flex-row gap-4">
 				<div class="min-w-[3rem]" />
 				<div class="flex-grow">
+					{#if post.reply}
+						<div class="">
+							<a
+								href={`/posts/${post.reply.id}`}
+								on:click|preventDefault|stopPropagation={() => activePost.update(() => post.reply)}
+								class="hover:underline {$activePost && post.reply.id === $activePost.id
+									? 'text-blue-800'
+									: 'text-slate-700'} text-xs"
+							>
+								In reply to @{post.reply.user?.username || ''}
+							</a>
+						</div>
+					{/if}
 					<p class="text-slate-800 mb-2">{post.text}</p>
 					{#if post?.entities?.length}
 						<div class="flex flex-row flex-wrap border rounded-md overflow-hidden bg-slate-800">
@@ -94,7 +108,22 @@
 							{/each}
 						</div>
 					{/if}
-					<a class="text-xs text-slate-900 mt-2" href="posts/{post.id}"
+				</div>
+			</div>
+			{#if post.thread}
+				<div class="flex flex-row gap-4">
+					<div class="min-w-[3rem]" />
+					<div class="flex-grow overflow-hidden">
+						<div class="border rounded-md border-sky-600 bg-sky-200">
+							<Post post={post.thread} />
+						</div>
+					</div>
+				</div>
+			{/if}
+			<div class="flex flex-row gap-4">
+				<div class="min-w-[3rem]" />
+				<div>
+					<a class="text-xs text-slate-900 mt-2" href="/posts/{post.id}"
 						>{relativeDateTime(post.created_at)}</a
 					>
 				</div>

@@ -89,6 +89,7 @@ class PostRepository {
 						return this.getReplies(post_id);
 					});
 				}
+				return [];
 			});
 
 		return data.results.map(({ first_name, last_name, username, ...post }) => {

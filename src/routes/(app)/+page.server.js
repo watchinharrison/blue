@@ -24,7 +24,7 @@ export const actions = {
 		const postRepo = new PostRepository({ db: platform.env.DB });
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		const data = await request.formData();
-		const text = data.get('text');
+		const text = data.get('text') ?? '';
 		const postId = data.get('post_id');
 		const images = data.getAll('image');
 		const newPost = await postRepo.create({
@@ -38,23 +38,33 @@ export const actions = {
 				images
 					.filter((image) => image.size)
 					.map(async (image) => {
-						const newPostEntity = await postEntityRepo.create({
-							post_id: newPostId,
-							type: 'image',
-							data: image
-						});
-						if (newPostEntity) {
-							const newPostEntityId = newPostEntity.lastRowId;
-							const newPostEntityUrl = new URL(`/api/post_entities/${newPostEntityId}`, refererUrl);
-							return newPostEntityUrl.href;
+						const imageText = await image.arrayBuffer();
+
+						const randomFileName =
+							Math.random().toString(36).substring(2, 15) +
+							Math.random().toString(36).substring(2, 15);
+
+						if (platform?.env.FILE_BUCKET) {
+							const fileBucket = platform.env.FILE_BUCKET;
+							const object = await fileBucket.put(randomFileName, imageText, {
+								httpMetadata: { contentType: image.type }
+							});
+							if (object) {
+								await postEntityRepo.create({
+									post_id: newPostId,
+									type: 'media',
+									url: randomFileName,
+									entity_type: 'image'
+								});
+							}
 						}
-						return null;
 					})
 			);
-			const newPostUrl = new URL(`/api/posts/${newPostId}`, refererUrl);
-			return redirect(newPostUrl.href);
+			if (refererUrl.pathname !== '/') {
+				throw redirect(303, '/');
+			}
 		}
-		return fail(500, { error: 'Post not created' });
+		return { success: true };
 	},
 	like,
 	post: async ({ request, url, platform, cookies, locals }) => {
@@ -130,6 +140,18 @@ export async function load({ locals, platform }) {
 		}
 		posts = await Promise.all(
 			posts.map(async (post) => {
+				if (post.thread_id && !post.reply_id) {
+					const parentPost = await postRepo.findById(post.thread_id);
+					if (parentPost) {
+						post.thread = parentPost;
+					}
+				}
+				if (post.reply_id) {
+					const parentPost = await postRepo.findById(post.reply_id);
+					if (parentPost) {
+						post.reply = parentPost;
+					}
+				}
 				post.entities = await postEntityRepo.findByPostId(post.id);
 				return post;
 			})

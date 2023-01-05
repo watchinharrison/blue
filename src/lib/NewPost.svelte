@@ -2,13 +2,13 @@
 	// @ts-nocheck
 	import { enhance, deserialize, applyAction } from '$app/forms';
 	import { goto, invalidate, invalidateAll } from '$app/navigation';
-	import { activePost } from '$lib/stores';
+	import { activePost, replyPost } from '$lib/stores';
+	import Post from '$lib/Post.svelte';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;
 
 	export let post = null;
-	export let repostId = null;
 
 	let images = [];
 
@@ -50,6 +50,9 @@
 			images = [];
 			document.querySelector('[name="text"]').value = '';
 			document.querySelector('[name="image"]').value = '';
+			replyPost.set(false);
+			activePost.set(false);
+			window.scrollTo(0, 0);
 			await invalidateAll();
 		}
 
@@ -68,13 +71,13 @@
 	}
 
 	function close() {
-		activePost.update((value) => ({ ...value, reply: false }));
+		activePost.update((value) => ({ ...value, is_replying: false }));
 	}
 </script>
 
 <form
 	method="POST"
-	action="/?/post"
+	action={$replyPost ? '/?/repost' : '/?/post'}
 	on:submit|preventDefault={handleSubmit}
 	enctype="multipart/form-data"
 	aria-label="New Post"
@@ -93,9 +96,6 @@
 					placeholder="What's on your mind?"
 					value={form?.text ? form.text : ''}
 				/>
-				{#if repostId}
-					<div>{repostId}</div>
-				{/if}
 				{#if images.length}
 					<div class="flex flex-row flex-wrap rounded-md overflow-hidden">
 						{#each images as image, i}
@@ -109,6 +109,10 @@
 							</div>
 						{/each}
 					</div>
+				{/if}
+				{#if $replyPost}
+					<Post post={$replyPost} />
+					<input type="hidden" name="post_id" value={$replyPost.id} />
 				{/if}
 			</div>
 			<div class="flex flex-row justify-between items-end">

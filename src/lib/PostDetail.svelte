@@ -28,10 +28,6 @@
 		fetchLikes();
 		fetchReplies();
 	});
-
-	$: {
-		console.log('post', post);
-	}
 </script>
 
 <div class="flex flex-col">
@@ -41,7 +37,7 @@
 	{#if showReplies && post?.replies}
 		<div class="lg:max-h-[30vh] overflow-y-scroll">
 			{#each post.replies as reply, i}
-				<div class="w-full p-4 py-2">
+				<div class="w-full p-4 py-2 pl-12">
 					<Post post={reply} />
 				</div>
 			{/each}
