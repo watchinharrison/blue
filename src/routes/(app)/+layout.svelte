@@ -67,7 +67,7 @@
 					</button>
 				</div>
 				<div aria-label="Post Detail" in:whoosh={{ delay: 400 }}>
-					<PostDetail post={$activePost} />
+					<PostDetail />
 				</div>
 				{#if $activePost.is_replying}
 					<div
