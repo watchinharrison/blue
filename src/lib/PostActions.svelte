@@ -5,10 +5,10 @@
 </script>
 
 <div class="w-full flex flex-row justify-between text-sm text-sky-600">
-	<button
-		type="submit"
-		class="flex flex-row justify-center items-center"
-		on:click|stopPropagation={() => activePost.set({ ...post, is_replying: true })}
+	<a
+		href="/?post_id={post.id}"
+		class="flex flex-row justify-center items-center hover:text-sky-900  p-2"
+		on:click|preventDefault|stopPropagation={() => activePost.set({ ...post, is_replying: true })}
 	>
 		{#if $activePost?.is_replying && $activePost?.id === post.id}
 			<svg
@@ -38,11 +38,27 @@
 			</svg>
 		{/if}
 		<div class="ml-2">Reply</div>
-	</button>
+	</a>
 	<div class="text-blue-400">
-		<form action="?/like" method="POST" use:enhance aria-label="Like Post">
+		<form
+			action="?/like"
+			method="POST"
+			use:enhance={() => {
+				return async ({ update }) => {
+					await update();
+					if ($activePost?.id) {
+						activePost.update(({ likes_count, ...post }) => ({
+							...post,
+							likes_count: post.liked ? likes_count - 1 : likes_count + 1,
+							liked: post.liked ? null : new Date()
+						}));
+					}
+				};
+			}}
+			aria-label="Like Post"
+		>
 			<input type="hidden" name="post_id" value={post.id} />
-			<button type="submit" class="flex flex-row justify-center items-center">
+			<button type="submit" class="flex flex-row justify-center items-center p-2">
 				{#if post.liked}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +98,7 @@
 			<input type="hidden" name="post_id" value={post.id} /> -->
 		<button
 			type="submit"
-			class="flex flex-row justify-center items-center"
+			class="flex flex-row justify-center items-center p-2"
 			on:click={() => {
 				replyPost.set(post);
 			}}

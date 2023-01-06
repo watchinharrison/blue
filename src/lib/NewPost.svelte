@@ -1,9 +1,11 @@
 <script>
 	// @ts-nocheck
+	import { page } from '$app/stores';
 	import { enhance, deserialize, applyAction } from '$app/forms';
 	import { goto, invalidate, invalidateAll } from '$app/navigation';
 	import { activePost, replyPost } from '$lib/stores';
 	import Post from '$lib/Post.svelte';
+	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;

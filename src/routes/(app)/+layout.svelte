@@ -48,7 +48,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:static h-[70vh] bg-sky-100 lg:h-auto bottom-0 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+				class="fixed lg:sticky h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-5 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
 				<div class="sticky top-0 z-10 flex flex-row justify-end">
 					<button on:click={() => ($activePost = null)} class="p-4 pb-0 text-slate-400">

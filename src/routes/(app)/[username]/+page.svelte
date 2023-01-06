@@ -7,7 +7,7 @@
 	export let data;
 
 	function setActivePost(post) {
-		activePost.update((...value) => ({ ...value, ...post }));
+		activePost.update(() => post);
 	}
 </script>
 
@@ -55,8 +55,8 @@
 			{/if}
 		</div>
 	</div>
-	<div class="lg:h-[87vh] scroll-smooth overflow-scroll bg-slate-200 p-4 rounded-md">
-		<div class="flex flex-col gap-4 scroll-smooth inner-shadow lg:h-[400px] ">
+	<div class="bg-slate-200 p-4 rounded-md">
+		<div class="flex flex-col gap-4 inner-shadow">
 			{#each data?.posts || [] as post, i}
 				<div
 					on:click={() => setActivePost(post)}

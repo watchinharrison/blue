@@ -9,19 +9,21 @@
 	export let data;
 
 	function setActivePost(post) {
-		activePost.update((...value) => ({ ...value, ...post }));
+		activePost.update(() => post);
 	}
 </script>
 
 <div class="">
 	<NewPost />
-	<div class="lg:h-[69vh] scroll-smooth overflow-scroll bg-sky-100 p-4 rounded-md">
-		<div class="flex flex-col gap-4 scroll-smooth inner-shadow">
+	<div class="bg-sky-100 p-4 rounded-md">
+		<div class="flex flex-col gap-4 inner-shadow">
 			{#each data?.posts || [] as post, i}
 				<div
 					aria-label="Post"
 					in:fade={{ duration: 500 }}
-					on:click={() => setActivePost(post)}
+					on:click={() => {
+						setActivePost(post);
+					}}
 					on:keyup={(event) => {
 						if (event.key === 'Enter') {
 							setActivePost(post);

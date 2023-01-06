@@ -23,7 +23,7 @@ class PostRepository {
 	async findAll() {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC'
+				'SELECT p.*, u.first_name, u.last_name, u.username FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.all()
 			.catch((error) => {
@@ -49,7 +49,7 @@ class PostRepository {
 	async findByFollowers(user_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC'
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(user_id, user_id)
 			.all()
@@ -78,7 +78,7 @@ class PostRepository {
 	async getReplies(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC'
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(post_id)
 			.all()
@@ -108,7 +108,7 @@ class PostRepository {
 	async getThread(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC'
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(post_id, post_id)
 			.all()
@@ -159,7 +159,7 @@ class PostRepository {
 	async findByUsername(username) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE u.username = ? ORDER BY p.created_at DESC'
+				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users u ON u.id = p.user_id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE u.username = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(username)
 			.all()

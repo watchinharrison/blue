@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import PostActions from './PostActions.svelte';
 	import Post from './Post.svelte';
 	import { activeImage, activePost } from '$lib/stores';
@@ -45,7 +46,11 @@
 		event.stopPropagation();
 		event.preventDefault();
 		const { src, alt } = event.target;
-		activeImage.update((...value) => ({ src, alt }));
+		activeImage.update(() => ({ src, alt }));
+	}
+
+	function setActivePost(post) {
+		activePost.update(() => post);
 	}
 </script>
 
@@ -100,7 +105,7 @@
 												loading="lazy"
 												class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
 												src={`/media/${entity.url}`}
-												alt={entity.name}
+												alt={entity.alt_text}
 											/>
 										</div>
 									</a>
@@ -115,7 +120,19 @@
 					<div class="min-w-[3rem]" />
 					<div class="flex-grow overflow-hidden">
 						<div class="border rounded-md border-sky-600 bg-sky-200">
-							<Post post={post.thread} />
+							<div
+								aria-label="Post"
+								in:fade={{ duration: 500 }}
+								on:click|stopPropagation={() => setActivePost(post.thread)}
+								on:keyup|stopPropagation={(event) => {
+									if (event.key === 'Enter') {
+										setActivePost(post.thread);
+									}
+								}}
+								class="cursor-pointer hover:brightness-90"
+							>
+								<Post post={post.thread} />
+							</div>
 						</div>
 					</div>
 				</div>
