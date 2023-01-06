@@ -88,19 +88,22 @@
 					{/if}
 					<p class="text-slate-800 mb-2">{post.text}</p>
 					{#if post?.entities?.length}
-						<div class="flex flex-row flex-wrap border rounded-md overflow-hidden bg-slate-800">
+						<div
+							class="grid grid-rows-{post.entities.length > 2 ? '2' : '1'} grid-cols-{post?.entities
+								?.length > 1
+								? '2'
+								: '1'} rounded-md overflow-hidden gap-1 bg-slate-800"
+						>
 							{#each post.entities as entity, i}
 								{#if entity.entity_type === 'image'}
 									<a
 										on:click={openImage}
 										href="/posts/{post.id}/images/{entity.id}"
-										class=" {post.entities.length === 3 || post.entities.length % 2 === 0
-											? 'w-2/4'
-											: 'w-full'} {(post.entities.length > 1 && i === 0) || i === 2
-											? 'pr-1'
-											: ''} {post.entities.length > 1 && (i === 0 || i === 1) ? 'pb-1' : ''}"
+										class="col-start-{i + 1} {post.entities.length === 3 && i + 1 === 3
+											? 'col-span-2'
+											: ''} col-end-{i + 1}"
 									>
-										<div class="flex flex-row items-center">
+										<div class="">
 											<img
 												loading="lazy"
 												class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
@@ -129,7 +132,9 @@
 										setActivePost(post.thread);
 									}
 								}}
-								class="cursor-pointer hover:brightness-90"
+								class="cursor-pointer {$activePost?.id === post.thread.id
+									? 'brightness-95'
+									: ''} hover:brightness-90"
 							>
 								<Post post={post.thread} />
 							</div>

@@ -99,15 +99,18 @@
 					value={form?.text ? form.text : ''}
 				/>
 				{#if images.length}
-					<div class="flex flex-row flex-wrap rounded-md overflow-hidden">
+					<div
+						class="grid grid-rows-{images.length > 2 ? '2' : '1'} grid-cols-{images.length > 1
+							? '2'
+							: '1'} rounded-md overflow-hidden gap-1"
+					>
 						{#each images as image, i}
-							<div class="flex flex-row items-center w-1/3">
-								<img
-									loading="lazy"
-									class="h-full {images.length === 1 ? 'w-full' : ''} object-cover"
-									src={image}
-									alt="post attachment"
-								/>
+							<div
+								class="col-start-{i + 1} {images.length === 3 && i + 1 === 3
+									? 'col-span-2'
+									: ''} col-end-{i + 1}"
+							>
+								<img loading="lazy" class="h-full object-cover" src={image} alt="post attachment" />
 							</div>
 						{/each}
 					</div>
