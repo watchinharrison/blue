@@ -14,7 +14,7 @@
 	<div
 		class="p-4 w-full absolute bottom-0 bg-opacity-90 bg-slate-200 flex flex-row justify-between"
 	>
-		<div class="flex flex-col gap-1">
+		<div class="flex flex-col gap-2">
 			<div class="w-20 lg:w-40 flex-row justify-center items-center">
 				<img
 					class="aspect-square w-fit rounded-md"
@@ -22,8 +22,8 @@
 					alt={data?.profile.username}
 				/>
 			</div>
-			<div class="flex flex-col gap-0.5">
-				<p class="text-slate-900">{data?.profile.name}</p>
+			<div class="flex flex-col text-sm">
+				<p class="text-slate-800 font-semibold">{data?.profile.name}</p>
 				<p class="text-slate-600">@{data?.profile?.username}</p>
 			</div>
 			<div class="flex flex-row gap-4 text-sm text-slate-600">

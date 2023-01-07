@@ -35,7 +35,7 @@
 			<p
 				class="text-xs p-2 pr-4 bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800 cursor-pointer"
 			>
-				Blue
+				<a href="/">Blue</a>
 			</p>
 		</footer>
 	</div>

@@ -92,8 +92,11 @@
 						/>
 					</div>
 					<div class="flex-grow">
-						<h3 class="text-slate-800">{post.user.first_name} {post.user.last_name}</h3>
-						<h4 class="text-sm text-slate-500">
+						<p class="text-slate-800 text-sm font-semibold">
+							{post.user.first_name}
+							{post.user.last_name}
+						</p>
+						<p class="text-sm text-slate-500">
 							<a
 								href={`/${post.user.username}`}
 								on:click|preventDefault|stopPropagation={() => {
@@ -103,7 +106,7 @@
 							>
 								@{post.user.username}
 							</a>
-						</h4>
+						</p>
 					</div>
 				</div>
 				<div class="flex flex-row gap-4">
