@@ -50,7 +50,7 @@
 </script>
 
 <div class="relative overflow-visible bg-slate-100 shadow-md shadow-sky-200/50 rounded-md">
-	<div class="relative p-4  shadow-sm rounded-md">
+	<div class="relative p-4 shadow-sm rounded-md">
 		{#if reposter}
 			<div class="flex flex-row gap-4">
 				<div class="min-w-[3rem]" />
@@ -123,12 +123,12 @@
 								</a>
 							</div>
 						{/if}
-						<p class="text-slate-800 mb-2">{post.text}</p>
+						<p class="text-slate-800">{post.text}</p>
 						{#if post?.entities?.length}
 							<div
 								class="grid {post?.entities?.length > 1
 									? 'grid-cols-2'
-									: 'grid-cols-1'} rounded-md overflow-hidden gap-0.5 bg-slate-800"
+									: 'grid-cols-1'} rounded-md overflow-hidden gap-0.5 bg-slate-800 mt-2"
 							>
 								{#each post.entities as entity, i}
 									{#if entity.entity_type === 'image'}
@@ -153,7 +153,7 @@
 					</div>
 				</div>
 				{#if post.thread}
-					<div class="flex flex-row gap-4">
+					<div class="flex flex-row gap-4 mt-2">
 						<div class="min-w-[3rem]" />
 						<div class="flex-grow overflow-hidden">
 							<div class="border rounded-md border-sky-600 bg-sky-200">
@@ -170,10 +170,10 @@
 						</div>
 					</div>
 				{/if}
-				<div class="flex flex-row gap-4">
+				<div class="flex flex-row gap-4 mt-2">
 					<div class="min-w-[3rem]" />
 					<div>
-						<a class="text-xs text-slate-900 mt-2" href="/posts/{post.id}"
+						<a class="text-xs text-slate-900" href="/posts/{post.id}"
 							>{relativeDateTime(post.created_at)}</a
 						>
 					</div>

@@ -94,7 +94,7 @@ export const actions = {
 				await postRepo.addReply(postId);
 			}
 			if (threadId) {
-				await postRepo.addReply(threadId);
+				await postRepo.addRepost(threadId);
 			}
 			const newPostId = newPost.lastRowId;
 			await Promise.all(
