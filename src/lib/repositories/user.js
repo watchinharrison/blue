@@ -21,10 +21,12 @@ class UserRepository {
 	}
 
 	async update(user) {
-		const { id, first_name, last_name, username } = user;
+		const { id, first_name, last_name, username, profile_image_url } = user;
 		return this.db
-			.prepare('UPDATE users SET first_name = ?, last_name = ?, username = ? WHERE id = ?')
-			.bind(first_name, last_name, username, id)
+			.prepare(
+				'UPDATE users SET first_name = ?, last_name = ?, username = ?, profile_image_url = ? WHERE id = ?'
+			)
+			.bind(first_name, last_name, username, profile_image_url, id)
 			.run()
 			.catch((error) => {
 				console.log('Error updating user', error);
@@ -78,6 +80,7 @@ class UserRepository {
       email TEXT UNIQUE,
       username TEXT UNIQUE NULL,
       password TEXT,
+			profile_image_url TEXT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NULL
     )`

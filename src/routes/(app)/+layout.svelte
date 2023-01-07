@@ -3,6 +3,9 @@
 	import NewPost from '$lib/NewPost.svelte';
 	import { activePost } from '$lib/stores';
 
+	/** @type {import('./$types').PageData} */
+	export let data;
+
 	function whoosh(node, params) {
 		const existingTransform = getComputedStyle(node).transform.replace('none', '');
 
@@ -48,7 +51,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-5 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
 				<div class="sticky top-0 z-10 flex flex-row justify-end">
 					<button on:click={() => ($activePost = null)} class="p-4 pb-0 text-slate-400">
@@ -75,7 +78,7 @@
 						in:fadein
 						class="fixed bottom-3 p-6 w-full lg:static lg:w-auto lg:bottom-0 lg:py-0 lg:pb-2"
 					>
-						<NewPost post={$activePost} />
+						<NewPost user={data.user} post={$activePost} />
 					</div>
 				{/if}
 			</div>

@@ -1,7 +1,12 @@
 <script>
+	import { onMount } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { activePost, replyPost } from '$lib/stores';
 	export let post;
+
+	onMount(async () => {
+		await import('tw-elements/dist/src/js/index.js');
+	});
 </script>
 
 <div class="w-full flex flex-row justify-between text-sm text-sky-600">
@@ -37,7 +42,9 @@
 				/>
 			</svg>
 		{/if}
-		<div class="ml-2">Reply</div>
+		<div class="ml-2">
+			{post.reply_count ?? 0}
+		</div>
 	</a>
 	<div class="text-blue-400">
 		<form
@@ -88,25 +95,120 @@
 					</svg>
 				{/if}
 				<div class="ml-2 ">
-					{post.likes_count} Likes
+					{post.likes_count}
 				</div>
 			</button>
 		</form>
 	</div>
-	<div class="">
-		<!-- <form action="?/repost" method="POST" use:enhance aria-label="Like Post">
-			<input type="hidden" name="post_id" value={post.id} /> -->
-		<button
-			type="submit"
-			class="flex flex-row justify-center items-center p-2"
-			on:click={() => {
-				replyPost.set(post);
-			}}
-		>
-			<div class="ml-2 ">
-				{post.repost_count ?? 0} Reposts
-			</div>
-		</button>
-		<!-- </form> -->
+	<div class="flex justify-center">
+		<div class="dropup relative">
+			<button
+				class="
+					dropdown-toggle
+					px-6
+					py-2.5
+					font-medium
+					text-xs
+					leading-tight
+					uppercase
+					transition
+					duration-150
+					ease-in-out
+					flex
+					justify-end
+					items-center
+					whitespace-nowrap
+				"
+				type="button"
+				id="dropdownMenuButton1"
+				data-bs-toggle="dropdown"
+				aria-expanded="false"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					fill="currentColor"
+					class="bi bi-repeat mr-2"
+					viewBox="0 0 16 16"
+				>
+					<path
+						d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"
+					/>
+				</svg>
+				{post.reposts_count ?? 0}
+			</button>
+			<ul
+				class="
+					dropdown-menu
+					min-w-max
+					absolute
+					hidden
+					bg-white
+					text-base
+					z-50
+					float-left
+					py-2
+					list-none
+					text-left
+					rounded-lg
+					shadow-lg
+					mt-1
+					hidden
+					m-0
+					bg-clip-padding
+					border-none
+				"
+				aria-labelledby="dropdownMenuButton1"
+			>
+				<li>
+					<form action="?/repost" method="POST" use:enhance aria-label="Repost">
+						<input type="hidden" name="post_id" value={post.id} />
+						<button
+							class="
+								dropdown-item
+								text-sm
+								py-2
+								px-4
+								font-normal
+								block
+								w-full
+								text-left
+								whitespace-nowrap
+								bg-transparent
+								text-gray-700
+								hover:bg-gray-100
+							"
+						>
+							Repost
+						</button>
+					</form>
+				</li>
+				<li>
+					<a
+						class="
+							dropdown-item
+							text-sm
+							py-2
+							px-4
+							font-normal
+							block
+							w-full
+							text-left
+							whitespace-nowrap
+							bg-transparent
+							text-gray-700
+							hover:bg-gray-100
+						"
+						href="/?post_id={post.id}&action=repost"
+						on:click|stopPropagation|preventDefault={() => {
+							activePost.set(null);
+							replyPost.set(post);
+							window.scrollTo(0, 0);
+						}}>Quote</a
+					>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>

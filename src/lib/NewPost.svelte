@@ -1,15 +1,14 @@
 <script>
 	// @ts-nocheck
-	import { page } from '$app/stores';
-	import { enhance, deserialize, applyAction } from '$app/forms';
-	import { goto, invalidate, invalidateAll } from '$app/navigation';
+	import { deserialize, applyAction } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import { activePost, replyPost } from '$lib/stores';
 	import Post from '$lib/Post.svelte';
-	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;
 
+	export let user = null;
 	export let post = null;
 
 	let images = [];
@@ -75,6 +74,21 @@
 	function close() {
 		activePost.update((value) => ({ ...value, is_replying: false }));
 	}
+
+	function removeImage(image) {
+		const fileIndex = images.findIndex((i) => i === image);
+		images = images.filter((i) => i !== image);
+		const input = document.getElementById('fileInput');
+		const files = input.files;
+		const dt = new DataTransfer();
+
+		for (let i = 0; i < files.length; i++) {
+			const file = files[i];
+			if (fileIndex !== i) dt.items.add(file); // here you exclude the file. thus removing it.
+		}
+
+		input.files = dt.files;
+	}
 </script>
 
 <form
@@ -90,35 +104,91 @@
 			on:dragover={allowDrop}
 			on:drop={drop}
 		>
-			<div class="bg-slate-100 w-full outline-none p-4 bg-opacity-70 shadow-sm rounded-md">
-				<textarea
-					maxlength="280"
-					name="text"
-					class="bg-transparent w-full h-24 outline-none resize-none"
-					placeholder="What's on your mind?"
-					value={form?.text ? form.text : ''}
-				/>
-				{#if images.length}
-					<div
-						class="grid grid-rows-{images.length > 2 ? '2' : '1'} grid-cols-{images.length > 1
-							? '2'
-							: '1'} rounded-md overflow-hidden gap-1"
-					>
-						{#each images as image, i}
-							<div
-								class="col-start-{i + 1} {images.length === 3 && i + 1 === 3
-									? 'col-span-2'
-									: ''} col-end-{i + 1}"
-							>
-								<img loading="lazy" class="h-full object-cover" src={image} alt="post attachment" />
+			<div
+				class="flex flex-row items-start gap-4 bg-slate-100 w-full outline-none p-4 bg-opacity-70 shadow-sm rounded-md"
+			>
+				<div class="basis-12">
+					<img
+						class="aspect-square rounded-md"
+						src={`/media/${user.profile_image_url}`}
+						alt={user.username}
+					/>
+				</div>
+				<div class="flex-1 overflow-hidden">
+					<textarea
+						maxlength="280"
+						cols="3"
+						name="text"
+						class="bg-transparent w-full h-24 outline-none resize-none"
+						placeholder="What's on your mind?"
+						value={form?.text ? form.text : ''}
+					/>
+					{#if images.length}
+						<div
+							class="grid {images.length > 1
+								? 'grid-cols-2'
+								: 'grid-cols-1'} rounded-md overflow-hidden gap-1"
+						>
+							{#each images as image, i}
+								<div
+									class="relative col-start-{i + 1} {images.length === 3 && i + 1 === 3
+										? 'col-span-2'
+										: ''} col-end-{i + 1}"
+								>
+									<img
+										loading="lazy"
+										class="h-full object-cover"
+										src={image}
+										alt="post attachment"
+									/>
+									<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
+										<button
+											on:click|preventDefault|stopPropagation={() => {
+												removeImage(image);
+											}}
+											class="p-4 pb-0 text-slate-400"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="24"
+												height="24"
+												fill="currentColor"
+												class="bi bi-x"
+												viewBox="0 0 16 16"
+											>
+												<path
+													d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+												/>
+											</svg>
+										</button>
+									</div>
+								</div>
+							{/each}
+						</div>
+					{/if}
+					{#if $replyPost && !post}
+						<div class="relative">
+							<Post post={$replyPost} hideActions />
+							<input type="hidden" name="post_id" value={$replyPost.id} />
+							<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
+								<button on:click={() => ($replyPost = null)} class="p-4 pb-0 text-slate-400">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										fill="currentColor"
+										class="bi bi-x"
+										viewBox="0 0 16 16"
+									>
+										<path
+											d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+										/>
+									</svg>
+								</button>
 							</div>
-						{/each}
-					</div>
-				{/if}
-				{#if $replyPost}
-					<Post post={$replyPost} />
-					<input type="hidden" name="post_id" value={$replyPost.id} />
-				{/if}
+						</div>
+					{/if}
+				</div>
 			</div>
 			<div class="flex flex-row justify-between items-end">
 				<div class="flex-1">

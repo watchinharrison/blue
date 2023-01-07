@@ -11,17 +11,32 @@ export const actions = {
 		const firstName = formData.get('firstName');
 		const lastName = formData.get('lastName');
 		const username = formData.get('username');
+		const profile_image = formData.get('profileImage');
+		let profile_image_url = null;
+		if (profile_image) {
+			const imageText = await profile_image.arrayBuffer();
+
+			const randomFileName =
+				Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+			if (platform?.env.FILE_BUCKET) {
+				const fileBucket = platform.env.FILE_BUCKET;
+				const object = await fileBucket.put(randomFileName, imageText, {
+					httpMetadata: { contentType: profile_image.type }
+				});
+				if (object) {
+					profile_image_url = randomFileName;
+				}
+			}
+		}
 		const userRepo = new UserRepository({ db: platform.env.DB });
 		await userRepo.update({
 			id: locals.user.id,
 			first_name: firstName,
 			last_name: lastName,
-			username
+			username,
+			profile_image_url
 		});
-
-		locals.user.first_name = firstName;
-		locals.user.last_name = lastName;
-		locals.user.username = username;
 
 		return { success: true };
 	}

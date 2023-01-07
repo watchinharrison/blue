@@ -10,6 +10,8 @@
 	/** @type {import('./$types').ActionData} */
 	export let form;
 
+	let image;
+
 	async function handleSubmit(event) {
 		const data = new FormData(this);
 
@@ -25,6 +27,15 @@
 		}
 
 		applyAction(result);
+	}
+
+	function updateImages(event) {
+		image = null;
+		const reader = new FileReader();
+		reader.onload = () => {
+			image = reader.result;
+		};
+		reader.readAsDataURL(event.target.files.item(0));
 	}
 </script>
 
@@ -42,7 +53,87 @@
 					{#if form?.incorrect}<p class="text-white">Invalid credentials!</p>{/if}
 				</div>
 			{/if}
-			<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-2">
+				<p class="text-slate-400" for="email">Profile Image</p>
+				<div class="text-slate-400 transition-colors relative">
+					<label for="fileInput" class="cursor-pointer hover:text-slate-700">
+						{#if image}
+							<div class="relative">
+								<img
+									loading="lazy"
+									class="h-full aspect-square rounded-md brightness-90"
+									src={image}
+									alt="post attachment"
+								/>
+								<div
+									class="absolute w-full h-full top-0 left-0 flex flex-row justify-center items-center"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="64"
+										height="64"
+										fill="currentColor"
+										class="bi bi-images"
+										viewBox="0 0 16 16"
+									>
+										<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+										<path
+											d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"
+										/>
+									</svg>
+								</div>
+							</div>
+						{:else if data.user?.profile_image_url}
+							<div class="relative">
+								<img
+									loading="lazy"
+									class="h-full aspect-square rounded-md brightness-90"
+									src={`/media/${data.user?.profile_image_url}`}
+									alt="post attachment"
+								/>
+								<div
+									class="absolute w-full h-full top-0 left-0 flex flex-row justify-center items-center"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="64"
+										height="64"
+										fill="currentColor"
+										class="bi bi-images"
+										viewBox="0 0 16 16"
+									>
+										<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+										<path
+											d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"
+										/>
+									</svg>
+								</div>
+							</div>
+						{:else}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="32"
+								height="32"
+								fill="currentColor"
+								class="bi bi-images"
+								viewBox="0 0 16 16"
+							>
+								<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+								<path
+									d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"
+								/>
+							</svg>
+						{/if}
+					</label>
+					<input
+						class="h-full w-full block absolute top-0 left-0 text-sm -z-[1]"
+						value={form?.image ? form.image : ''}
+						type="file"
+						name="profileImage"
+						id="fileInput"
+						on:change={updateImages}
+					/>
+				</div>
 				<div class="flex flex-col gap-2">
 					<label class="text-slate-400" for="email">First Name</label>
 					<input

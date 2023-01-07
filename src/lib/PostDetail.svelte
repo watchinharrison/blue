@@ -2,9 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import { onDestroy, onMount } from 'svelte';
 	import Post from './Post.svelte';
-	import { activePost } from '$lib/stores';
+	import { activePost, activeImage } from '$lib/stores';
 
-	let showReplies = true;
 	let post = null;
 
 	function fetchPost(id) {
@@ -16,14 +15,14 @@
 	}
 
 	activePost.subscribe((value) => {
-		if (value?.id && post?.id && post.id !== value.id) {
+		if (value?.id && post?.id !== value.id) {
 			fetchPost(value.id);
 		}
 		post = value;
 	});
 
 	function closeDetail(event) {
-		if (event.key === 'Escape') {
+		if (event.key === 'Escape' && !$activeImage) {
 			activePost.set(null);
 		}
 	}
@@ -44,10 +43,13 @@
 {#if post}
 	<div class="flex flex-col">
 		<div class="w-full p-4">
-			<Post {post} />
+			<Post
+				reposter={post.thread && post.text === '' ? post.user : null}
+				post={post.thread && post.text === '' ? post.thread : post}
+			/>
 		</div>
-		{#if showReplies && post?.replies}
-			<div class="">
+		{#if $activePost.is_replying !== true && post?.replies}
+			<div class="pb-4">
 				{#each post.replies as reply, i}
 					<div class="w-full p-4 py-2 pl-12">
 						<div

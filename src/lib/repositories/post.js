@@ -4,10 +4,10 @@ class PostRepository {
 	}
 
 	async create(post) {
-		const { text, user_id, post_id, thread_id } = post;
+		const { text, user_id, reply_id, thread_id } = post;
 		return this.db
 			.prepare('INSERT INTO posts (text, user_id, reply_id, thread_id) VALUES (?, ?, ?, ?)')
-			.bind(text, user_id, post_id, thread_id)
+			.bind(text, user_id, reply_id, thread_id)
 			.run()
 			.catch((error) => {
 				console.log('Error creating post', error);
@@ -23,7 +23,7 @@ class PostRepository {
 	async findAll() {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.all()
 			.catch((error) => {
@@ -33,11 +33,11 @@ class PostRepository {
 				};
 			});
 
-		return data.results.map(({ first_name, last_name, username, ...post }) => {
+		return data.results.map(({ first_name, last_name, username, profile_image_url, ...post }) => {
 			return {
 				...post,
 				user: {
-					profile_image_url: 'https://loremflickr.com/50/50',
+					profile_image_url: profile_image_url,
 					first_name: first_name,
 					last_name: last_name,
 					username: username
@@ -49,7 +49,7 @@ class PostRepository {
 	async findByFollowers(user_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(user_id, user_id)
 			.all()
@@ -62,11 +62,11 @@ class PostRepository {
 				}
 			});
 
-		return data.results.map(({ first_name, last_name, username, ...post }) => {
+		return data.results.map(({ first_name, last_name, username, profile_image_url, ...post }) => {
 			return {
 				...post,
 				user: {
-					profile_image_url: 'https://loremflickr.com/50/50',
+					profile_image_url: profile_image_url,
 					first_name: first_name,
 					last_name: last_name,
 					username: username
@@ -78,7 +78,7 @@ class PostRepository {
 	async getReplies(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(post_id)
 			.all()
@@ -92,11 +92,11 @@ class PostRepository {
 				return [];
 			});
 
-		return data.results.map(({ first_name, last_name, username, ...post }) => {
+		return data.results.map(({ first_name, last_name, username, profile_image_url, ...post }) => {
 			return {
 				...post,
 				user: {
-					profile_image_url: 'https://loremflickr.com/50/50',
+					profile_image_url: profile_image_url,
 					first_name: first_name,
 					last_name: last_name,
 					username: username
@@ -108,7 +108,7 @@ class PostRepository {
 	async getThread(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url, l.created_at as liked FROM posts p INNER JOIN users as u ON p.user_id = u.id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(post_id, post_id)
 			.all()
@@ -121,11 +121,11 @@ class PostRepository {
 				}
 			});
 
-		return data.results.map(({ first_name, last_name, username, ...post }) => {
+		return data.results.map(({ first_name, last_name, username, profile_image_url, ...post }) => {
 			return {
 				...post,
 				user: {
-					profile_image_url: 'https://loremflickr.com/50/50',
+					profile_image_url: profile_image_url,
 					first_name: first_name,
 					last_name: last_name,
 					username: username
@@ -135,9 +135,9 @@ class PostRepository {
 	}
 
 	async findById(id) {
-		const { first_name, last_name, username, ...post } = await this.db
+		const { first_name, last_name, username, profile_image_url, ...post } = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users u ON u.id = p.user_id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ?'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url, l.created_at as liked FROM posts p INNER JOIN users u ON u.id = p.user_id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE p.id = ?'
 			)
 			.bind(id)
 			.first()
@@ -148,7 +148,7 @@ class PostRepository {
 		return {
 			...post,
 			user: {
-				profile_image_url: 'https://loremflickr.com/50/50',
+				profile_image_url: profile_image_url,
 				first_name: first_name,
 				last_name: last_name,
 				username: username
@@ -159,7 +159,7 @@ class PostRepository {
 	async findByUsername(username) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.first_name, u.last_name, u.username, l.created_at as liked FROM posts p INNER JOIN users u ON u.id = p.user_id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE u.username = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.first_name, u.last_name, u.username, u.profile_image_url, l.created_at as liked FROM posts p INNER JOIN users u ON u.id = p.user_id LEFT JOIN likes l ON l.post_id = p.id AND l.user_id = u.id WHERE u.username = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(username)
 			.all()
@@ -170,11 +170,11 @@ class PostRepository {
 				};
 			});
 
-		return data.results.map(({ first_name, last_name, username, ...post }) => {
+		return data.results.map(({ first_name, last_name, username, profile_image_url, ...post }) => {
 			return {
 				...post,
 				user: {
-					profile_image_url: 'https://loremflickr.com/50/50',
+					profile_image_url: profile_image_url,
 					first_name: first_name,
 					last_name: last_name,
 					username: username
@@ -205,6 +205,28 @@ class PostRepository {
 			});
 	}
 
+	async addReply(post_id) {
+		return this.db
+			.prepare('UPDATE posts SET reply_count = reply_count + 1 WHERE id = ?')
+			.bind(post_id)
+			.run()
+			.catch((error) => {
+				console.log('Error adding like', error);
+				return null;
+			});
+	}
+
+	async addRepost(post_id) {
+		return this.db
+			.prepare('UPDATE posts SET reposts_count = reposts_count + 1 WHERE id = ?')
+			.bind(post_id)
+			.run()
+			.catch((error) => {
+				console.log('Error adding like', error);
+				return null;
+			});
+	}
+
 	async setupTable() {
 		return this.db
 			.prepare(
@@ -212,7 +234,9 @@ class PostRepository {
       id INTEGER PRIMARY KEY,
       text TEXT NULL,
       user_id INTEGER,
+			reply_count INTEGER DEFAULT 0,
 			likes_count INTEGER DEFAULT 0,
+			reposts_count INTEGER DEFAULT 0,
 			reply_id INTEGER NULL,
 			thread_id INTEGER NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

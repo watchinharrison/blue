@@ -14,29 +14,33 @@
 </script>
 
 <div class="">
-	<NewPost />
-	<div class="bg-sky-100 p-4 rounded-md">
-		<div class="flex flex-col gap-4 inner-shadow">
-			{#each data?.posts || [] as post, i}
-				<div
-					aria-label="Post"
-					in:fade={{ duration: 500 }}
-					on:click={() => {
-						setActivePost(post);
-					}}
-					on:keyup={(event) => {
-						if (event.key === 'Enter') {
+	{#if data.user}
+		<NewPost user={data.user} />
+	{/if}
+	{#if data?.posts?.length > 0}
+		<div class="bg-sky-100 p-4 rounded-md">
+			<div class="flex flex-col gap-4 inner-shadow">
+				{#each data?.posts || [] as post, i}
+					<div
+						aria-label="Post"
+						in:fade={{ duration: 500 }}
+						on:click={() => {
 							setActivePost(post);
-						}
-					}}
-					class="cursor-pointer {$activePost?.id === post.id ? 'brightness-95' : ''} {i ===
-					data?.posts.length - 1
-						? 'pb-4'
-						: ''}"
-				>
-					<Post {post} />
-				</div>
-			{/each}
+						}}
+						on:keyup={(event) => {
+							if (event.key === 'Enter') {
+								setActivePost(post);
+							}
+						}}
+						class="cursor-pointer {$activePost?.id === post.id ? 'brightness-95' : ''}"
+					>
+						<Post
+							reposter={post.thread && post.text === '' ? post.user : null}
+							post={post.thread && post.text === '' ? post.thread : post}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>

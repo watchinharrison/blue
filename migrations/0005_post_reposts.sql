@@ -1,0 +1,4 @@
+-- Migration number: 0005 	 2023-01-07T11:12:24.984Z
+ALTER TABLE posts
+ADD COLUMN reply_count INTEGER DEFAULT 0
+ADD COLUMN reposts_count INTEGER DEFAULT 0;

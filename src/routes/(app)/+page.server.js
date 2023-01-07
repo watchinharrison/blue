@@ -83,10 +83,16 @@ export const actions = {
 		const newPost = await postRepo.create({
 			text,
 			user_id: locals.user.id,
-			post_id: postId,
+			reply_id: postId,
 			thread_id: threadId
 		});
 		if (newPost) {
+			if (postId) {
+				await postRepo.addReply(postId);
+			}
+			if (threadId) {
+				await postRepo.addReply(threadId);
+			}
 			const newPostId = newPost.lastRowId;
 			await Promise.all(
 				images
