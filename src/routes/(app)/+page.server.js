@@ -117,7 +117,7 @@ export const actions = {
 									post_id: newPostId,
 									type: 'media',
 									url: randomFileName,
-									entity_type: 'image'
+									entity_type: image.type.split('/')[0]
 								});
 							}
 						}

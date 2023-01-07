@@ -43,6 +43,8 @@
 		activeImage.update(() => ({ src, alt }));
 	}
 
+	function openVideo() {}
+
 	function setActivePost(post) {
 		activePost.update(() => post);
 		activeUser.set(null);
@@ -143,10 +145,29 @@
 											>
 												<img
 													loading="lazy"
-													class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
+													class="h-full {post.entities.length === 1
+														? 'w-full max-h-[300px]'
+														: ''} object-cover"
 													src={`/media/${entity.url}`}
 													alt={entity.alt_text}
 												/>
+											</a>
+										</div>
+									{:else if entity.entity_type === 'video'}
+										<div class={post.entities.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}>
+											<a
+												class="block h-full"
+												on:click={openVideo}
+												href="/posts/{post.id}/videos/{entity.id}"
+											>
+												<video
+													controls
+													playsinline
+													poster={`/media/${entity.thumbnail_url}`}
+													class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
+												>
+													<source src={`/media/${entity.url}`} type="video/mp4" />
+												</video>
 											</a>
 										</div>
 									{/if}

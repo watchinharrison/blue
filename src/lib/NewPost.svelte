@@ -12,6 +12,7 @@
 	export let post = null;
 
 	let images = [];
+	let videos = [];
 
 	function allowDrop(event) {
 		event.preventDefault();
@@ -24,10 +25,16 @@
 			// If dropped items aren't files, reject them
 			if (item.kind === 'file') {
 				const reader = new FileReader();
-				reader.onload = () => {
-					images = [...images, reader.result];
-				};
 				const file = item.getAsFile();
+				if (file.type.match('video')) {
+					reader.onload = () => {
+						videos = [...videos, reader.result];
+					};
+				} else {
+					reader.onload = () => {
+						images = [...images, reader.result];
+					};
+				}
 				reader.readAsDataURL(file);
 				dataTransfer.items.add(file);
 			}
@@ -49,6 +56,7 @@
 
 		if (result.type === 'success') {
 			images = [];
+			videos = [];
 			document.querySelector('[name="text"]').value = '';
 			document.querySelector('[name="image"]').value = '';
 			replyPost.set(false);
@@ -64,10 +72,17 @@
 		images = [];
 		for (let i = 0; i < event.target.files.length; i++) {
 			const reader = new FileReader();
-			reader.onload = () => {
-				images = [...images, reader.result];
-			};
-			reader.readAsDataURL(event.target.files.item(i));
+			const file = event.target.files.item(i);
+			if (file.type.match('video')) {
+				reader.onload = () => {
+					videos = [...videos, reader.result];
+				};
+			} else {
+				reader.onload = () => {
+					images = [...images, reader.result];
+				};
+			}
+			reader.readAsDataURL(file);
 		}
 	}
 
@@ -75,9 +90,13 @@
 		activePost.update((value) => ({ ...value, is_replying: false }));
 	}
 
-	function removeImage(image) {
-		const fileIndex = images.findIndex((i) => i === image);
-		images = images.filter((i) => i !== image);
+	function removeFile(file) {
+		let fileIndex = images.findIndex((i) => i === file);
+		if (fileIndex === -1) {
+			fileIndex = videos.findIndex((i) => i === file);
+		}
+		images = images.filter((i) => i !== file);
+		videos = videos.filter((i) => i !== file);
 		const input = document.getElementById('fileInput');
 		const files = input.files;
 		const dt = new DataTransfer();
@@ -123,6 +142,40 @@
 						placeholder="What's on your mind?"
 						value={form?.text ? form.text : ''}
 					/>
+					{#if videos.length}
+						<div
+							class="grid {videos.length > 1
+								? 'grid-cols-2'
+								: ''} rounded-md overflow-hidden gap-0.5"
+						>
+							{#each videos as video, i}
+								<div class="relative col-start-{i + 1} col-end-{i + 1}">
+									<video controls loading="lazy" class="w-full h-full object-cover" src={video} />
+									<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
+										<button
+											on:click|preventDefault|stopPropagation={() => {
+												removeFile(video);
+											}}
+											class="p-4 text-slate-400"
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="24"
+												height="24"
+												fill="currentColor"
+												class="bi bi-x"
+												viewBox="0 0 16 16"
+											>
+												<path
+													d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+												/>
+											</svg>
+										</button>
+									</div>
+								</div>
+							{/each}
+						</div>
+					{/if}
 					{#if images.length}
 						<div
 							class="grid {images.length > 1
@@ -137,14 +190,14 @@
 								>
 									<img
 										loading="lazy"
-										class="h-full object-cover"
+										class="h-full {images.length === 1 ? 'max-h-[300px]' : ''} object-cover"
 										src={image}
 										alt="post attachment"
 									/>
 									<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
 										<button
 											on:click|preventDefault|stopPropagation={() => {
-												removeImage(image);
+												removeFile(image);
 											}}
 											class="p-4 text-slate-400"
 										>

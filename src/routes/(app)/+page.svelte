@@ -9,7 +9,7 @@
 	export let data;
 </script>
 
-<div class="max-w-[600px] m-auto">
+<div class="max-w-[800px] m-auto">
 	{#if data.user}
 		<NewPost user={data.user} />
 	{/if}

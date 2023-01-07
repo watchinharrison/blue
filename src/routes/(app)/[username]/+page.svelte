@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<div class="">
+<div class="max-w-[800px] m-auto">
 	<Profile {data} user={data.user} />
 </div>
