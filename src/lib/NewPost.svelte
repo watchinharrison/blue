@@ -127,7 +127,7 @@
 						<div
 							class="grid {images.length > 1
 								? 'grid-cols-2'
-								: 'grid-cols-1'} rounded-md overflow-hidden gap-1"
+								: 'grid-cols-1'} rounded-md overflow-hidden gap-0.5"
 						>
 							{#each images as image, i}
 								<div
@@ -146,7 +146,7 @@
 											on:click|preventDefault|stopPropagation={() => {
 												removeImage(image);
 											}}
-											class="p-4 pb-0 text-slate-400"
+											class="p-4 text-slate-400"
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
 							<Post post={$replyPost} hideActions />
 							<input type="hidden" name="post_id" value={$replyPost.id} />
 							<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
-								<button on:click={() => ($replyPost = null)} class="p-4 pb-0 text-slate-400">
+								<button on:click={() => ($replyPost = null)} class="p-4 text-slate-400">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										width="24"

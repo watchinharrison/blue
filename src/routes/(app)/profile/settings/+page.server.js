@@ -12,8 +12,10 @@ export const actions = {
 		const lastName = formData.get('lastName');
 		const username = formData.get('username');
 		const profile_image = formData.get('profileImage');
+		const header_image = formData.get('headerImage');
 		let profile_image_url = null;
-		if (profile_image) {
+		let header_image_url = null;
+		if (profile_image && profile_image.size > 0) {
 			const imageText = await profile_image.arrayBuffer();
 
 			const randomFileName =
@@ -29,13 +31,30 @@ export const actions = {
 				}
 			}
 		}
+		if (header_image && header_image.size > 0) {
+			const imageText = await header_image.arrayBuffer();
+
+			const randomFileName =
+				Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+			if (platform?.env.FILE_BUCKET) {
+				const fileBucket = platform.env.FILE_BUCKET;
+				const object = await fileBucket.put(randomFileName, imageText, {
+					httpMetadata: { contentType: header_image.type }
+				});
+				if (object) {
+					header_image_url = randomFileName;
+				}
+			}
+		}
 		const userRepo = new UserRepository({ db: platform.env.DB });
 		await userRepo.update({
 			id: locals.user.id,
 			first_name: firstName,
 			last_name: lastName,
 			username,
-			profile_image_url
+			profile_image_url,
+			header_image_url
 		});
 
 		return { success: true };
@@ -43,11 +62,21 @@ export const actions = {
 };
 
 /** @type {import('../../../$types').PageServerLoad} */
-export async function load({ locals }) {
+export async function load({ platform, locals }) {
 	if (!locals.user?.id) {
 		throw redirect(303, '/login');
 	}
+	const userRepo = new UserRepository({ db: platform.env.DB });
+	const user = await userRepo.findById(locals.user.id);
+	const profile = {
+		first_name: user.first_name,
+		last_name: user.last_name,
+		username: user.username,
+		profile_image_url: user.profile_image_url,
+		header_image_url: user.header_image_url
+	};
 	return {
-		user: locals.user
+		user: locals.user,
+		profile
 	};
 }

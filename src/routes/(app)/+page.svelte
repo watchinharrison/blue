@@ -7,10 +7,6 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-
-	function setActivePost(post) {
-		activePost.update(() => post);
-	}
 </script>
 
 <div class="">
@@ -24,15 +20,7 @@
 					<div
 						aria-label="Post"
 						in:fade={{ duration: 500 }}
-						on:click={() => {
-							setActivePost(post);
-						}}
-						on:keyup={(event) => {
-							if (event.key === 'Enter') {
-								setActivePost(post);
-							}
-						}}
-						class="cursor-pointer {$activePost?.id === post.id ? 'brightness-95' : ''}"
+						class={$activePost?.id === post.id ? 'brightness-95' : ''}
 					>
 						<Post
 							reposter={post.thread && post.text === '' ? post.user : null}

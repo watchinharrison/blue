@@ -19,14 +19,17 @@
 	});
 </script>
 
-<div class="fixed top-0 h-full w-full">
+<div
+	class="fixed top-0 h-full w-full"
+	on:click={(event) => event.target?.localName !== 'img' && activeImage.set(null)}
+	on:keyup={() => activeImage.set(null)}
+>
 	<div class="bg-black bg-opacity-50 h-full w-full" />
 	<div class="fixed top-10 right-10 flex flex-row justify-end z-10">
 		<button
 			class="text-xs p-2 pr-4 text-sky-300 cursor-pointer"
 			on:click={() => activeImage.set(null)}
-			on:click={() => activeImage.update(() => null)}
-			on:keyup={() => activeImage.update(() => null)}
+			on:keyup={() => activeImage.set(null)}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

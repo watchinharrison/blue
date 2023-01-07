@@ -23,6 +23,18 @@ class PostEntityRepository {
 			});
 	}
 
+	async findById(id) {
+		const post = await this.db
+			.prepare('SELECT * FROM post_entities WHERE id = ?')
+			.bind(id)
+			.first()
+			.catch((error) => {
+				console.log('Error fetching post entity', error);
+				return {};
+			});
+		return post;
+	}
+
 	async findByPostId(post_id) {
 		const post = await this.db
 			.prepare('SELECT * FROM post_entities WHERE post_id = ?')

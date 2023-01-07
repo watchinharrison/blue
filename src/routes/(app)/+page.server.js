@@ -33,6 +33,9 @@ export const actions = {
 			thread_id: postId
 		});
 		if (newPost) {
+			if (postId) {
+				await postRepo.addRepost(postId);
+			}
 			const newPostId = newPost.lastRowId;
 			await Promise.all(
 				images
@@ -135,7 +138,8 @@ export async function load({ locals, platform }) {
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		new UserRepository({ db: platform.env.DB }).setupTable();
 		new FollowersRepository({ db: platform.env.DB }).setupTable();
-		new LikesRepository({ db: platform.env.DB }).setupTable();
+		const likesRepo = new LikesRepository({ db: platform.env.DB });
+		likesRepo.setupTable();
 		postRepo.setupTable();
 		postEntityRepo.setupTable();
 		let posts = [];
@@ -148,8 +152,13 @@ export async function load({ locals, platform }) {
 			posts.map(async (post) => {
 				if (post.thread_id && !post.reply_id) {
 					const parentPost = await postRepo.findById(post.thread_id);
+					parentPost.entities = await postEntityRepo.findByPostId(post.thread_id);
 					if (parentPost) {
 						post.thread = parentPost;
+						post.thread.liked = await likesRepo.getIsPostLiked({
+							postId: post.thread_id,
+							userId: locals.user?.id
+						});
 					}
 				}
 				if (post.reply_id) {
@@ -159,6 +168,7 @@ export async function load({ locals, platform }) {
 					}
 				}
 				post.entities = await postEntityRepo.findByPostId(post.id);
+				post.liked = await likesRepo.getIsPostLiked({ postId: post.id, userId: locals.user?.id });
 				return post;
 			})
 		);

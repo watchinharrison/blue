@@ -1,7 +1,8 @@
 <script>
+	import { goto, invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { enhance } from '$app/forms';
-	import { activePost, replyPost } from '$lib/stores';
+	import { enhance, applyAction, deserialize } from '$app/forms';
+	import { activePost, replyPost, activeUser } from '$lib/stores';
 	export let post;
 
 	onMount(async () => {
@@ -13,7 +14,10 @@
 	<a
 		href="/?post_id={post.id}"
 		class="flex flex-row justify-center items-center hover:text-sky-900  p-2"
-		on:click|preventDefault|stopPropagation={() => activePost.set({ ...post, is_replying: true })}
+		on:click|preventDefault|stopPropagation={() => {
+			activeUser.set(null);
+			activePost.set({ ...post, is_replying: true });
+		}}
 	>
 		{#if $activePost?.is_replying && $activePost?.id === post.id}
 			<svg
@@ -50,16 +54,11 @@
 		<form
 			action="?/like"
 			method="POST"
-			use:enhance={() => {
-				return async ({ update }) => {
-					await update();
-					if ($activePost?.id) {
-						activePost.update(({ likes_count, ...post }) => ({
-							...post,
-							likes_count: post.liked ? likes_count - 1 : likes_count + 1,
-							liked: post.liked ? null : new Date()
-						}));
-					}
+			use:enhance={(input) => {
+				post.likes_count = post.liked ? post.likes_count - 1 : post.likes_count + 1;
+				post.liked = !post.liked;
+				return ({ update }) => {
+					update();
 				};
 			}}
 			aria-label="Like Post"
@@ -202,6 +201,7 @@
 						"
 						href="/?post_id={post.id}&action=repost"
 						on:click|stopPropagation|preventDefault={() => {
+							goto('/');
 							activePost.set(null);
 							replyPost.set(post);
 							window.scrollTo(0, 0);

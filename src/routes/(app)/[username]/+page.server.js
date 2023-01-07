@@ -3,6 +3,7 @@ import PostRepository from '$lib/repositories/post';
 import PostEntityRepository from '$lib/repositories/post_entity';
 import UserRepository from '$lib/repositories/user';
 import FollowersRepository from '$lib/repositories/followers';
+import LikesRepository from '$lib/repositories/likes';
 import posts from '$lib/posts';
 import { like } from '$lib/actions';
 
@@ -36,8 +37,10 @@ export async function load({ locals, params, platform }) {
 		const postRepo = new PostRepository({ db: platform.env.DB });
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		const followersRepo = new FollowersRepository({ db: platform.env.DB });
+		const likesRepo = new LikesRepository({ db: platform.env.DB });
 		let posts = await postRepo.findByUsername(params.username);
 		const profile = await userRepo.findByUsername(params.username);
+		profile.name = `${profile.first_name} ${profile.last_name}`;
 		let isFollowing = false;
 		if (locals?.user?.id) {
 			isFollowing = await followersRepo.isFollowing({
@@ -54,6 +57,10 @@ export async function load({ locals, params, platform }) {
 					const parentPost = await postRepo.findById(post.thread_id);
 					if (parentPost) {
 						post.thread = parentPost;
+						post.thread.liked = await likesRepo.getIsPostLiked({
+							postId: post.thread_id,
+							userId: locals.user?.id
+						});
 					}
 				}
 				if (post.reply_id) {
@@ -62,6 +69,7 @@ export async function load({ locals, params, platform }) {
 						post.reply = parentPost;
 					}
 				}
+				post.liked = await likesRepo.getIsPostLiked({ postId: post.id, userId: locals.user?.id });
 				return post;
 			})
 		);

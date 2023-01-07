@@ -21,12 +21,37 @@ class UserRepository {
 	}
 
 	async update(user) {
-		const { id, first_name, last_name, username, profile_image_url } = user;
+		const { id, first_name, last_name, username, profile_image_url, header_image_url } = user;
+		const updateQuery = 'UPDATE users SET ';
+		const updateSet = [];
+		const updateValues = [];
+		if (first_name) {
+			updateSet.push(`first_name = ?`);
+			updateValues.push(first_name);
+		}
+		if (last_name) {
+			updateSet.push(`last_name = ?`);
+			updateValues.push(last_name);
+		}
+		if (username) {
+			updateSet.push(`username = ?`);
+			updateValues.push(username);
+		}
+		if (profile_image_url) {
+			updateSet.push(`profile_image_url = ?`);
+			updateValues.push(profile_image_url);
+		}
+		if (header_image_url) {
+			updateSet.push(`header_image_url = ?`);
+			updateValues.push(header_image_url);
+		}
+		updateSet.push(`updated_at = ?`);
+		updateValues.push(new Date().toISOString());
+		const updateQueryWithValues = updateQuery + updateSet.join(', ') + ' WHERE id = ?';
+		updateValues.push(id);
 		return this.db
-			.prepare(
-				'UPDATE users SET first_name = ?, last_name = ?, username = ?, profile_image_url = ? WHERE id = ?'
-			)
-			.bind(first_name, last_name, username, profile_image_url, id)
+			.prepare(updateQueryWithValues)
+			.bind(...updateValues)
 			.run()
 			.catch((error) => {
 				console.log('Error updating user', error);
@@ -81,6 +106,7 @@ class UserRepository {
       username TEXT UNIQUE NULL,
       password TEXT,
 			profile_image_url TEXT NULL,
+			header_image_url TEXT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NULL
     )`

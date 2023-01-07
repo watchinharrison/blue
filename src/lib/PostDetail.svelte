@@ -27,10 +27,6 @@
 		}
 	}
 
-	function setActivePost(post) {
-		activePost.update(() => post);
-	}
-
 	onMount(() => {
 		document.addEventListener('keyup', closeDetail);
 	});
@@ -49,20 +45,10 @@
 			/>
 		</div>
 		{#if $activePost.is_replying !== true && post?.replies}
-			<div class="pb-4">
+			<div class="pb-10">
 				{#each post.replies as reply, i}
 					<div class="w-full p-4 py-2 pl-12">
-						<div
-							aria-label="Post"
-							in:fade={{ duration: 500 }}
-							on:click|stopPropagation={() => setActivePost(reply)}
-							on:keyup|stopPropagation={(event) => {
-								if (event.key === 'Enter') {
-									setActivePost(reply);
-								}
-							}}
-							class="cursor-pointer hover:brightness-90"
-						>
+						<div aria-label="Post" in:fade={{ duration: 500 }} class="hover:brightness-90">
 							<Post post={reply} />
 						</div>
 					</div>

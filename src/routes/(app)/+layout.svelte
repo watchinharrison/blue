@@ -1,10 +1,31 @@
 <script>
 	import PostDetail from '$lib/PostDetail.svelte';
 	import NewPost from '$lib/NewPost.svelte';
-	import { activePost } from '$lib/stores';
+	import Profile from '$lib/Profile.svelte';
+	import { activePost, activeUser } from '$lib/stores';
+	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
+
+	let profile = null;
+
+	function fetchProfile(id) {
+		fetch(`/api/user?id=${id}`)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log('data', data);
+				profile = data;
+			});
+	}
+
+	onMount(() => {
+		activeUser.subscribe((value) => {
+			if (value) {
+				fetchProfile(value.id);
+			}
+		});
+	});
 
 	function whoosh(node, params) {
 		const existingTransform = getComputedStyle(node).transform.replace('none', '');
@@ -51,10 +72,15 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
 			>
-				<div class="sticky top-0 z-10 flex flex-row justify-end">
-					<button on:click={() => ($activePost = null)} class="p-4 pb-0 text-slate-400">
+				<div class="sticky bg-sky-100 top-0 z-10 flex flex-row justify-between min-h-[65px]">
+					<div
+						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
+					>
+						Post Detail
+					</div>
+					<button on:click={() => ($activePost = null)} class="p-4 text-slate-400">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -69,18 +95,65 @@
 						</svg>
 					</button>
 				</div>
-				<div aria-label="Post Detail" in:whoosh={{ delay: 400 }}>
+				<div
+					class="lg:h-[85vh] lg:overflow-scroll {$activeUser ? 'collapse' : ''}"
+					aria-label="Post Detail"
+					in:whoosh={{ delay: 400 }}
+				>
 					<PostDetail />
 				</div>
 				{#if $activePost.is_replying}
 					<div
 						aria-label="Reply Post"
 						in:fadein
-						class="fixed bottom-3 p-6 w-full lg:static lg:w-auto lg:bottom-0 lg:py-0 lg:pb-2"
+						class="fixed bottom-3 p-6 w-full lg:w-auto lg:bottom-10 lg:py-0 lg:pb-2 lg:pl-2"
 					>
 						<NewPost user={data.user} post={$activePost} />
 					</div>
 				{/if}
+			</div>
+		{/if}
+		{#if $activeUser}
+			<div
+				transition:fadein
+				aria-modal="true"
+				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
+			/>
+			<div
+				in:whoosh
+				out:whoosh
+				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 {$activePost
+					? 'lg:top-[100px]'
+					: 'lg:top-4'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+			>
+				<div class="sticky bg-sky-100 top-0 z-10 flex flex-row justify-between min-h-[50px]">
+					<div
+						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
+					>
+						Profile Detail
+					</div>
+					<button on:click={() => ($activeUser = null)} class="p-4 text-slate-400">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="24"
+							height="24"
+							fill="currentColor"
+							class="bi bi-x"
+							viewBox="0 0 16 16"
+						>
+							<path
+								d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+							/>
+						</svg>
+					</button>
+				</div>
+				<div
+					class="{$activePost ? 'lg:h-[78vh]' : 'lg:h-[85vh]'} lg:overflow-scroll"
+					aria-label="Post Detail"
+					in:whoosh={{ delay: 400 }}
+				>
+					<Profile data={profile} user={data.user} />
+				</div>
 			</div>
 		{/if}
 	</aside>
