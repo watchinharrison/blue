@@ -5,12 +5,12 @@ class PostEntityRepository {
 
 	// hashtags, media, urls, mentions
 	async create(postEntity) {
-		const { type, post_id, indices, url, entity_type } = postEntity;
+		const { type, post_id, indices, url, entity_type, height, width } = postEntity;
 		return this.db
 			.prepare(
-				'INSERT INTO post_entities (type, post_id, indices, url, entity_type) VALUES (?, ?, ?, ?, ?)'
+				'INSERT INTO post_entities (type, post_id, indices, url, entity_type, height, width) VALUES (?, ?, ?, ?, ?, ?, ?)'
 			)
-			.bind(type, post_id, indices, url, entity_type)
+			.bind(type, post_id, indices, url, entity_type, height, width)
 			.run()
 			.catch((error) => {
 				console.log('Error creating post entity', error);
@@ -57,6 +57,8 @@ class PostEntityRepository {
       indices TEXT NULL,
       url TEXT NULL,
       entity_type TEXT NULL,
+			width INTEGER,
+			height INTEGER,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NULL
     )`

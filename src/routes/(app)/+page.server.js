@@ -57,7 +57,7 @@ export const actions = {
 									post_id: newPostId,
 									type: 'media',
 									url: randomFileName,
-									entity_type: 'image'
+									entity_type: image.type.split('/')[0]
 								});
 							}
 						}
@@ -83,6 +83,8 @@ export const actions = {
 		const postId = data.get('post_id');
 		const threadId = data.get('thread_id');
 		const images = data.getAll('image');
+		const dimensions = data.getAll('dimensions');
+		console.log(dimensions);
 		const newPost = await postRepo.create({
 			text,
 			user_id: locals.user.id,
@@ -100,7 +102,9 @@ export const actions = {
 			await Promise.all(
 				images
 					.filter((image) => image.size)
-					.map(async (image) => {
+					.map(async (image, index) => {
+						const { height, width } = JSON.parse(dimensions[index]);
+						const type = image.type.split('/')[0];
 						const imageText = await image.arrayBuffer();
 
 						const randomFileName =
@@ -117,7 +121,9 @@ export const actions = {
 									post_id: newPostId,
 									type: 'media',
 									url: randomFileName,
-									entity_type: image.type.split('/')[0]
+									entity_type: type,
+									height,
+									width
 								});
 							}
 						}
