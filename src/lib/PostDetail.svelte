@@ -4,12 +4,9 @@
 	import Post from './Post.svelte';
 	import { activePost, activeImage } from '$lib/stores';
 
-	onMount(async () => {
-		await import('tw-elements/dist/src/js/index.js');
-	});
-
 	let post = null;
 	let thread = [];
+	let tab = 'replies';
 
 	function fetchPost(id) {
 		fetch(`/api/post?id=${id}`)
@@ -20,7 +17,7 @@
 	}
 
 	activePost.subscribe((value) => {
-		if (value?.id && post?.id !== value.id) {
+		if (value?.id) {
 			fetchPost(value.id);
 		}
 		post = value;
@@ -58,14 +55,13 @@
 				post={post.thread && post.text === '' ? post.thread : post}
 			/>
 		</div>
-		<ul
-			class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4"
-			id="tabs-tab"
-			role="tablist"
-		>
+		<ul class="flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4" role="tablist">
 			<li class="nav-item flex-auto text-center" role="presentation">
 				<a
-					href="#tabs-home"
+					href="#tabs-replies"
+					on:click={() => {
+						tab = 'replies';
+					}}
 					class="
       nav-link
       block
@@ -73,25 +69,29 @@
       text-xs
       leading-tight
       uppercase
-      border-x-0 border-t-0 border-b-2 border-transparent
+      border-x-0 border-t-0 border-b-2
       px-6
       py-3
       my-2
-      hover:border-transparent hover:text-slate-800
-      focus:border-transparent
-      active
+       hover:text-blue-600
+      {tab === 'replies'
+						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
+						: 'border-b-transparent'}
     "
-					id="tabs-home-tab"
+					id="tabs-replies-tab"
 					data-bs-toggle="pill"
-					data-bs-target="#tabs-home"
+					data-bs-target="#tabs-replies"
 					role="tab"
-					aria-controls="tabs-home"
+					aria-controls="tabs-replies"
 					aria-selected="true">Replies</a
 				>
 			</li>
 			<li class="nav-item flex-auto text-center" role="presentation">
 				<a
-					href="#tabs-profile"
+					href="#tabs-likes"
+					on:click={() => {
+						tab = 'likes';
+					}}
 					class="
       nav-link
       block
@@ -99,24 +99,29 @@
       text-xs
       leading-tight
       uppercase
-      border-x-0 border-t-0 border-b-2 border-transparent
+      border-x-0 border-t-0 border-b-2
       px-6
       py-3
       my-2
-      hover:border-transparent hover:text-slate-800
-      focus:border-transparent
+       hover:text-blue-600
+			{tab === 'likes'
+						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
+						: 'border-b-transparent'}
     "
-					id="tabs-profile-tab"
+					id="tabs-likes-tab"
 					data-bs-toggle="pill"
-					data-bs-target="#tabs-profile"
+					data-bs-target="#tabs-likes"
 					role="tab"
-					aria-controls="tabs-profile"
+					aria-controls="tabs-likes"
 					aria-selected="false">Likes</a
 				>
 			</li>
 			<li class="nav-item flex-auto text-center" role="presentation">
 				<a
-					href="#tabs-messages"
+					href="#tabs-reposts"
+					on:click={() => {
+						tab = 'reposts';
+					}}
 					class="
       nav-link
       block
@@ -124,28 +129,31 @@
       text-xs
       leading-tight
       uppercase
-      border-x-0 border-t-0 border-b-2 border-transparent
+      border-x-0 border-t-0 border-b-2
       px-6
       py-3
       my-2
-      hover:border-transparent hover:text-slate-800
-      focus:border-transparent
+       hover:text-blue-600
+			{tab === 'reposts'
+						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
+						: 'border-b-transparent'}
     "
-					id="tabs-messages-tab"
+					id="tabs-reposts-tab"
 					data-bs-toggle="pill"
-					data-bs-target="#tabs-messages"
+					data-bs-target="#tabs-reposts"
 					role="tab"
-					aria-controls="tabs-messages"
+					aria-controls="tabs-reposts"
 					aria-selected="false">Reposts</a
 				>
 			</li>
 		</ul>
 		<div class="tab-content" id="tabs-tabContent">
 			<div
-				class="tab-pane fade show active"
-				id="tabs-home"
+				class="tab-pane show  {tab === 'replies' ? 'active' : ''}"
+				in:fade={{ duration: 500 }}
+				id="tabs-replies"
 				role="tabpanel"
-				aria-labelledby="tabs-home-tab"
+				aria-labelledby="tabs-replies-tab"
 			>
 				{#if $activePost.is_replying !== true && post?.replies}
 					<div class="block pb-10">
@@ -181,10 +189,11 @@
 				{/if}
 			</div>
 			<div
-				class="tab-pane fade"
-				id="tabs-profile"
+				class="tab-pane {tab === 'likes' ? 'active' : ''}"
+				in:fade={{ duration: 500 }}
+				id="tabs-likes"
 				role="tabpanel"
-				aria-labelledby="tabs-profile-tab"
+				aria-labelledby="tabs-likes-tab"
 			>
 				<p class="p-4">
 					{#if post?.likes?.length}
@@ -213,10 +222,11 @@
 				</p>
 			</div>
 			<div
-				class="tab-pane fade"
-				id="tabs-messages"
+				class="tab-pane {tab === 'reposts' ? 'active' : ''}"
+				in:fade={{ duration: 500 }}
+				id="tabs-reposts"
 				role="tabpanel"
-				aria-labelledby="tabs-profile-tab"
+				aria-labelledby="tabs-likes-tab"
 			>
 				<p class="p-4">
 					{#if post?.reposts?.length}

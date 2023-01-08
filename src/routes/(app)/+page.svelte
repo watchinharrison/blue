@@ -14,7 +14,7 @@
 		<NewPost user={data.user} />
 	{/if}
 	{#if data?.posts?.length > 0}
-		<div class="bg-sky-100 p-4 rounded-md">
+		<div class="p-4 rounded-md">
 			<div class="flex flex-col gap-4 inner-shadow">
 				{#each data?.posts || [] as post, i}
 					<div

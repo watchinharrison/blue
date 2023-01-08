@@ -72,9 +72,9 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
+				class="fixed lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
 			>
-				<div class="sticky bg-sky-100 top-0 z-10 flex flex-row justify-between min-h-[65px]">
+				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
 					<div
 						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
@@ -122,11 +122,11 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky z-0 h-[70vh] bg-sky-100 lg:h-auto bottom-0 {$activePost
+				class="fixed lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
 					? 'lg:top-[100px]'
 					: 'lg:top-4'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
-				<div class="sticky bg-sky-100 top-0 z-10 flex flex-row justify-between min-h-[50px]">
+				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[50px]">
 					<div
 						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>

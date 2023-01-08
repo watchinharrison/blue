@@ -24,7 +24,8 @@ export async function GET({ request, locals, platform }) {
 		display_name: user.display_name,
 		username: user.username,
 		profile_image_url: user.profile_image_url,
-		header_image_url: user.header_image_url
+		header_image_url: user.header_image_url,
+		bio: user.bio
 	};
 	let isFollowing = false;
 	if (locals?.user?.id) {

@@ -10,7 +10,7 @@
 
 <div class="">
 	<ProfileBanner {showEdit} {data} {user} />
-	<div class="bg-sky-100 p-4 rounded-b-md">
+	<div class="p-4 rounded-b-md">
 		<div class="flex flex-col gap-4 inner-shadow">
 			{#each data?.posts || [] as post, i}
 				<div class={i === data?.posts.length - 1 ? 'pb-4' : ''}>

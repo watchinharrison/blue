@@ -5,7 +5,7 @@
 	export let data;
 </script>
 
-<div class="flex flex-col p-2 rounded-md">
+<div class="max-w-[800px] m-auto flex flex-col p-2 rounded-md">
 	<div class="p-4 bg-sky-100">
 		<Post post={data.post} />
 	</div>
