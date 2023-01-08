@@ -17,6 +17,7 @@
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/kit": "^1.0.0",
+		"@tailwindcss/line-clamp": "^0.4.2",
 		"better-sqlite3": "^8.0.1",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -35,6 +36,8 @@
 		"@sveltejs/adapter-cloudflare": "^1.0.0",
 		"@tsndr/cloudflare-worker-jwt": "^2.1.4",
 		"autoprefixer": "^10.4.13",
+		"he": "^1.2.0",
+		"link-meta-preview": "^0.0.4",
 		"postcss": "^8.4.20",
 		"tailwindcss": "^3.2.4",
 		"tw-elements": "^1.0.0-alpha13"

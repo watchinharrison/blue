@@ -45,10 +45,84 @@
 
 	function openVideo() {}
 
+	function openLink(href) {
+		window.open(href, '_blank');
+	}
+
 	function setActivePost(post) {
 		activePost.update(() => post);
 		activeUser.set(null);
 	}
+
+	function parseText(text) {
+		const usernameRegex = /@([a-zA-Z0-9_]+)/g;
+		const hashtagRegex = /#([a-zA-Z0-9_]+)/g;
+		const linkRegex = /((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/g;
+		const regexParts = [
+			{
+				key: 'username',
+				regex: usernameRegex
+			},
+			{
+				key: 'hashtag',
+				regex: hashtagRegex
+			},
+			{
+				key: 'link',
+				regex: linkRegex
+			}
+		];
+		regexParts.forEach((regexPart) => {
+			const matches = text.matchAll(regexPart.regex);
+			for (const match of matches) {
+				if (regexPart.key === 'username') {
+					const [username, usernameValue] = match;
+					text = text.replace(
+						username,
+						`
+						<a
+							href="/${usernameValue}"
+							class="text-sky-500 hover:underline"
+						>
+							${username}
+						</a>
+					`
+					);
+				} else if (regexPart.key === 'hashtag') {
+					const [hashtag, hashtagValue] = match;
+					text = text.replace(
+						hashtag,
+						`
+						<a
+							href="/hashtag/${hashtagValue}"
+							class="text-sky-500 hover:underline"
+						>
+							${hashtag}
+						</a>
+					`
+					);
+				} else if (regexPart.key === 'link') {
+					const [link, href] = match;
+					text = text.replace(
+						link,
+						`
+						<a
+							href=${href.startsWith('http') ? href : `https://${href}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-sky-500 hover:underline"
+							title=${href.startsWith('http') ? href : `https://${href}`}
+						>
+							${link.replace(/https?:\/\//, '').slice(0, 30)}${link.length > 30 ? '...' : ''}
+						</a>
+					`
+					);
+				}
+			}
+		});
+		return text;
+	}
+	const text = parseText(post.text);
 </script>
 
 <div class="relative overflow-visible bg-slate-100 shadow-md shadow-sky-200/50 rounded-md">
@@ -76,15 +150,7 @@
 			</div>
 		{/if}
 		<div class="flex flex-col gap-2">
-			<div
-				class="cursor-pointer"
-				on:click|preventDefault|stopPropagation={() => setActivePost(post)}
-				on:keyup|preventDefault|stopPropagation={(event) => {
-					if (event.key === 'Enter') {
-						setActivePost(post);
-					}
-				}}
-			>
+			<div class="">
 				<div class="flex flex-row items-center gap-4">
 					<div class="basis-12">
 						<img
@@ -128,17 +194,17 @@
 								</a>
 							</div>
 						{/if}
-						<p class="text-slate-800">{post.text}</p>
+						<div class="text-slate-800">{@html parseText(post.text)}</div>
 						{#if post?.entities?.length}
 							<div
 								class="grid {post?.entities?.length > 1
 									? 'grid-cols-2'
 									: 'grid-cols-1'} rounded-md overflow-hidden gap-0.5 bg-slate-800 mt-2"
 							>
-								{#each post.entities as entity, i}
+								{#each post.entities.filter(({ type }) => type?.match(/media/)) as entity, i}
 									{@const aspectRatio = entity.width / entity.height}
 									<div class={post.entities.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}>
-										{#if entity.entity_type === 'image'}
+										{#if entity.entity_type?.match(/image/)}
 											<a
 												class="block h-full"
 												on:click={openImage}
@@ -151,25 +217,69 @@
 														: ''}
 													class="{post.entities.length === 1 ? 'w-full' : 'h-full'} object-cover"
 													src={`/media/${entity.url}`}
-													alt={entity.alt_text}
+													alt={entity.title}
 												/>
 											</a>
-										{:else if entity.entity_type === 'video'}
-											<a
-												class="block h-full"
-												on:click={openVideo}
-												href="/posts/{post.id}/videos/{entity.id}"
-											>
+										{:else if entity.entity_type?.match(/video/)}
+											<div class="block h-full">
 												<video
 													controls
 													playsinline
+													loop
+													preload="none"
 													poster={`/media/${entity.thumbnail_url}`}
 													class="h-full {post.entities.length === 1 ? 'w-full' : ''} object-cover"
 												>
-													<source src={`/media/${entity.url}`} type="video/mp4" />
+													<source src={`/media/${entity.url}`} type={entity.entity_type} />
 												</video>
-											</a>
+											</div>
 										{/if}
+									</div>
+								{/each}
+								{#each post.entities.filter(({ type }) => type?.match(/rich_preview/)) as entity, i}
+									<div>
+										<a
+											href={entity.url}
+											target="_blank"
+											rel="noreferrer"
+											class="h-full flex flex-col"
+											on:click={() => openLink(entity.url)}
+										>
+											<div class="flex-grow">
+												{#if entity.thumbnail_url}
+													<img
+														loading="lazy"
+														class="h-full object-cover"
+														alt={entity.title}
+														src="/media/{entity.thumbnail_url}"
+													/>
+												{:else}
+													<div
+														class="h-full bg-slate-700 text-slate-200 flex items-center justify-center"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															width="64"
+															height="64"
+															fill="currentColor"
+															class="bi bi-link-45deg"
+															viewBox="0 0 16 16"
+														>
+															<path
+																d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"
+															/>
+															<path
+																d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"
+															/>
+														</svg>
+													</div>
+												{/if}
+											</div>
+											<div class="p-4 bg-black text-slate-200">
+												<p class="text-lg line-clamp-3">{entity.title}</p>
+												<p class="text-sm line-clamp-2 text-slate-300">{entity.description}</p>
+											</div>
+										</a>
 									</div>
 								{/each}
 							</div>
@@ -194,7 +304,15 @@
 						</div>
 					</div>
 				{/if}
-				<div class="flex flex-row gap-4 mt-2">
+				<div
+					on:click|preventDefault|stopPropagation={(event) => setActivePost(post)}
+					on:keyup|preventDefault|stopPropagation={(event) => {
+						if (event.key === 'Enter') {
+							setActivePost(post);
+						}
+					}}
+					class="flex flex-row gap-4 mt-2"
+				>
 					<div class="min-w-[3rem]" />
 					<div>
 						<a class="text-xs text-slate-900" href="/posts/{post.id}"

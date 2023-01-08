@@ -4,7 +4,7 @@ import { AUTH_SECRET } from '$env/static/private';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
-	const BlueAuthorization = event.cookies.get('Blue_Authorization');
+	const BluAuthorization = event.cookies.get('Blu_Authorization');
 
 	async function fetchUserDetails(payload) {
 		const ps = event.platform.env.DB.prepare(
@@ -19,10 +19,10 @@ export async function handle({ event, resolve }) {
 			});
 	}
 
-	if (BlueAuthorization) {
-		const verified = await jwt.verify(BlueAuthorization, AUTH_SECRET);
+	if (BluAuthorization) {
+		const verified = await jwt.verify(BluAuthorization, AUTH_SECRET);
 		if (verified) {
-			const { payload } = jwt.decode(BlueAuthorization);
+			const { payload } = jwt.decode(BluAuthorization);
 			if (payload) {
 				const userData = await fetchUserDetails(payload);
 				if (userData) {

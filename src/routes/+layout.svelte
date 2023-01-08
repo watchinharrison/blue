@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>Blue</title>
+	<title>Blu</title>
 	<meta name="description" content="A social media site that doesn't suck" />
 </svelte:head>
 
@@ -35,7 +35,7 @@
 			<p
 				class="text-xs p-2 pr-4 bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800 cursor-pointer"
 			>
-				<a href="/">Blue</a>
+				<a href="/">Blu</a>
 			</p>
 		</footer>
 	</div>

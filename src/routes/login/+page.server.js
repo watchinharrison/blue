@@ -38,7 +38,7 @@ export const actions = {
 
 		const token = await jwt.sign({ id: user.id }, AUTH_SECRET);
 
-		cookies.set('Blue_Authorization', token);
+		cookies.set('Blu_Authorization', token);
 
 		locals.user = user;
 
@@ -64,7 +64,7 @@ export const actions = {
 			if (user) {
 				const token = await jwt.sign({ id: user.id }, AUTH_SECRET);
 
-				cookies.set('Blue_Authorization', token);
+				cookies.set('Blu_Authorization', token);
 				locals.user = user;
 				throw redirect(303, '/profile/settings');
 			}

@@ -18,6 +18,26 @@
 		event.preventDefault();
 	}
 
+	function getVideoThumbnail(file) {
+		return new Promise((resolve, reject) => {
+			const video = document.createElement('video');
+			video.src = URL.createObjectURL(file);
+			video.currentTime = 1 / 1000;
+			video.onseeked = function () {
+				var canvas = document.createElement('canvas');
+				canvas.width = video.videoWidth;
+				canvas.height = video.videoHeight;
+				canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+				var dataURL = canvas.toDataURL();
+				resolve(dataURL);
+			};
+		});
+	}
+
+	function getVideoThumbnailBinary(uri) {
+		return fetch(uri).then((res) => res.blob());
+	}
+
 	function getVideoDimensions(file) {
 		const video = document.createElement('video');
 		video.src = URL.createObjectURL(file);
@@ -60,12 +80,14 @@
 				const file = item.getAsFile();
 				reader.onload = async () => {
 					let dimensions;
+					let thumbnail;
 					if (file.type.match(/image/)) {
 						dimensions = await getImageDimensions(file);
 					} else if (file.type.match(/video/)) {
 						dimensions = await getVideoDimensions(file);
+						thumbnail = await getVideoThumbnail(file);
 					}
-					files = [...files, { result: reader.result, type: file.type, dimensions }];
+					files = [...files, { result: reader.result, type: file.type, dimensions, thumbnail }];
 				};
 				reader.readAsDataURL(file);
 				dataTransfer.items.add(file);
@@ -109,12 +131,16 @@
 			const file = event.target.files.item(i);
 			reader.onload = async () => {
 				let dimensions;
+				let thumbnail;
+				// let thumbnailBinary;
 				if (file.type.match(/image/)) {
 					dimensions = await getImageDimensions(file);
 				} else if (file.type.match(/video/)) {
 					dimensions = await getVideoDimensions(file);
+					thumbnail = await getVideoThumbnail(file);
+					// thumbnailBinary = await getVideoThumbnailBinary(thumbnail);
 				}
-				files = [...files, { result: reader.result, type: file.type, dimensions }];
+				files = [...files, { result: reader.result, type: file.type, dimensions, thumbnail }];
 			};
 			reader.readAsDataURL(file);
 		}
@@ -183,10 +209,14 @@
 									{#if file.type.match(/video/)}
 										<video
 											controls
-											loading="lazy"
+											playsinline
+											loop
+											preload="none"
 											class="w-full h-full object-cover"
-											src={file.result}
-										/>
+											poster={file.thumbnail}
+										>
+											<source src={file.result} type={file.type} />
+										</video>
 									{:else if file.type.match(/image/)}
 										<img
 											loading="lazy"
@@ -199,6 +229,7 @@
 										/>
 									{/if}
 									<input type="hidden" name="dimensions" value={JSON.stringify(file.dimensions)} />
+									<input type="hidden" name="thumbnails" value={file.thumbnail} />
 									<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">
 										<button
 											on:click|preventDefault|stopPropagation={() => {
