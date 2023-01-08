@@ -84,7 +84,6 @@ export const actions = {
 		const threadId = data.get('thread_id');
 		const images = data.getAll('image');
 		const dimensions = data.getAll('dimensions');
-		console.log(dimensions);
 		const newPost = await postRepo.create({
 			text,
 			user_id: locals.user.id,

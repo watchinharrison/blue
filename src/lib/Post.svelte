@@ -136,8 +136,9 @@
 									: 'grid-cols-1'} rounded-md overflow-hidden gap-0.5 bg-slate-800 mt-2"
 							>
 								{#each post.entities as entity, i}
-									{#if entity.entity_type === 'image'}
-										<div class={post.entities.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}>
+									{@const aspectRatio = entity.width / entity.height}
+									<div class={post.entities.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}>
+										{#if entity.entity_type === 'image'}
 											<a
 												class="block h-full"
 												on:click={openImage}
@@ -145,16 +146,15 @@
 											>
 												<img
 													loading="lazy"
-													class="h-full {post.entities.length === 1
-														? 'w-full max-h-[300px]'
-														: ''} object-cover"
+													style={post.entities.length === 1
+														? `max-height: ${Math.round(Math.max(600, 600 * aspectRatio))}px`
+														: ''}
+													class="{post.entities.length === 1 ? 'w-full' : 'h-full'} object-cover"
 													src={`/media/${entity.url}`}
 													alt={entity.alt_text}
 												/>
 											</a>
-										</div>
-									{:else if entity.entity_type === 'video'}
-										<div class={post.entities.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}>
+										{:else if entity.entity_type === 'video'}
 											<a
 												class="block h-full"
 												on:click={openVideo}
@@ -169,8 +169,8 @@
 													<source src={`/media/${entity.url}`} type="video/mp4" />
 												</video>
 											</a>
-										</div>
-									{/if}
+										{/if}
+									</div>
 								{/each}
 							</div>
 						{/if}

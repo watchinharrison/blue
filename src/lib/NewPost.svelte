@@ -49,14 +49,23 @@
 
 	function drop(event) {
 		event.preventDefault();
+		if (event.dataTransfer.items.length > 4) {
+			console.log('too many files');
+		}
 		const dataTransfer = new DataTransfer();
 		[...event.dataTransfer.items].forEach((item, i) => {
 			// If dropped items aren't files, reject them
 			if (item.kind === 'file') {
 				const reader = new FileReader();
 				const file = item.getAsFile();
-				reader.onload = () => {
-					files = [...files, { result: reader.result, type: file.type }];
+				reader.onload = async () => {
+					let dimensions;
+					if (file.type.match(/image/)) {
+						dimensions = await getImageDimensions(file);
+					} else if (file.type.match(/video/)) {
+						dimensions = await getVideoDimensions(file);
+					}
+					files = [...files, { result: reader.result, type: file.type, dimensions }];
 				};
 				reader.readAsDataURL(file);
 				dataTransfer.items.add(file);
@@ -91,6 +100,9 @@
 	}
 
 	function updateFiles(event) {
+		if (event.target.files.length > 4) {
+			console.log('too many files');
+		}
 		files = [];
 		for (let i = 0; i < event.target.files.length; i++) {
 			const reader = new FileReader();
@@ -165,7 +177,9 @@
 					>
 						{#if files.length}
 							{#each files as file, i}
-								<div class="relative col-start-{i + 1} col-end-{i + 1}">
+								{@const { width, height } = file.dimensions}
+								{@const aspectRatio = width / height}
+								<div class="relative {files.length === 3 && i + 1 === 3 ? 'col-span-2' : ''}">
 									{#if file.type.match(/video/)}
 										<video
 											controls
@@ -176,7 +190,10 @@
 									{:else if file.type.match(/image/)}
 										<img
 											loading="lazy"
-											class="h-full {files.length === 1 ? 'max-h-[300px]' : ''} object-cover"
+											style={files.length === 1
+												? `max-height: ${Math.round(Math.max(600, 600 * aspectRatio))}px`
+												: ''}
+											class="{files.length === 1 ? 'w-full' : 'h-full'} object-cover"
 											src={file.result}
 											alt="post attachment"
 										/>
