@@ -8,11 +8,11 @@ export const actions = {
 			return fail(500, { error: 'No database connection' });
 		}
 		const formData = await request.formData();
-		const firstName = formData.get('firstName');
-		const lastName = formData.get('lastName');
+		const display_name = formData.get('displayName');
 		const username = formData.get('username');
 		const profile_image = formData.get('profileImage');
 		const header_image = formData.get('headerImage');
+		const bio = formData.get('bio');
 		let profile_image_url = null;
 		let header_image_url = null;
 		if (profile_image && profile_image.size > 0) {
@@ -50,14 +50,14 @@ export const actions = {
 		const userRepo = new UserRepository({ db: platform.env.DB });
 		await userRepo.update({
 			id: locals.user.id,
-			first_name: firstName,
-			last_name: lastName,
+			display_name,
 			username,
 			profile_image_url,
-			header_image_url
+			header_image_url,
+			bio
 		});
 
-		return { success: true };
+		throw redirect(303, `/${username}`);
 	}
 };
 
@@ -69,11 +69,11 @@ export async function load({ platform, locals }) {
 	const userRepo = new UserRepository({ db: platform.env.DB });
 	const user = await userRepo.findById(locals.user.id);
 	const profile = {
-		first_name: user.first_name,
-		last_name: user.last_name,
+		display_name: user.display_name,
 		username: user.username,
 		profile_image_url: user.profile_image_url,
-		header_image_url: user.header_image_url
+		header_image_url: user.header_image_url,
+		bio: user.bio
 	};
 	return {
 		user: locals.user,

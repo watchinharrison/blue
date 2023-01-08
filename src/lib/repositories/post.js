@@ -23,7 +23,7 @@ class PostRepository {
 	async findAll() {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.all()
 			.catch((error) => {
@@ -34,23 +34,14 @@ class PostRepository {
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};
@@ -61,7 +52,7 @@ class PostRepository {
 	async findByFollowers(user_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.user_id = ? OR p.user_id IN (SELECT follower_id FROM followers WHERE user_id = ?) ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(user_id, user_id)
 			.all()
@@ -75,23 +66,14 @@ class PostRepository {
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};
@@ -102,7 +84,7 @@ class PostRepository {
 	async getReplies(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.reply_id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(post_id)
 			.all()
@@ -117,23 +99,14 @@ class PostRepository {
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};
@@ -141,40 +114,44 @@ class PostRepository {
 		);
 	}
 
-	async getThread(post_id) {
+	async getThreadCount(post_id) {
+		const data = await this.db
+			.prepare('SELECT COUNT(*) as count FROM posts WHERE thread_id = ? AND reply_id IS NOT NULL')
+			.bind(post_id)
+			.all()
+			.catch((error) => {
+				console.log('Error fetching posts', error);
+				return 0;
+			});
+
+		return data?.results[0].count;
+	}
+
+	async findByThreadId(post_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.id = ? OR p.thread_id = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.thread_id = ? ORDER BY p.created_at ASC LIMIT 20'
 			)
-			.bind(post_id, post_id)
+			.bind(post_id)
 			.all()
 			.catch((error) => {
 				console.log('Error fetching posts', error);
 				if (error.message.includes('no such table')) {
 					return this.setupTable().then(() => {
-						return this.getThread(post_id);
+						return this.findByThreadId(post_id);
 					});
 				}
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};
@@ -182,33 +159,40 @@ class PostRepository {
 		);
 	}
 
-	async findById(id) {
-		const {
-			user_id,
-			first_name,
-			last_name,
-			username,
-			profile_image_url,
-			header_image_url,
-			...post
-		} = await this.db
+	async getReposts(post_id) {
+		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE p.id = ?'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.thread_id = ? AND p.reply_id IS NULL ORDER BY p.created_at DESC LIMIT 20'
 			)
-			.bind(id)
-			.first()
+			.bind(post_id)
+			.all()
 			.catch((error) => {
-				console.log('Error fetching post', error);
-				return null;
+				console.log('Error fetching posts', error);
+				return [];
 			});
+
+		return data.results;
+	}
+
+	async findById(id) {
+		const { user_id, display_name, username, profile_image_url, header_image_url, ...post } =
+			await this.db
+				.prepare(
+					'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE p.id = ?'
+				)
+				.bind(id)
+				.first()
+				.catch((error) => {
+					console.log('Error fetching post', error);
+					return null;
+				});
 		return {
 			...post,
 			user: {
 				id: user_id,
 				profile_image_url,
 				header_image_url,
-				first_name,
-				last_name,
+				display_name,
 				username
 			}
 		};
@@ -217,7 +201,7 @@ class PostRepository {
 	async findByUsername(username) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE u.username = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE u.username = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(username)
 			.all()
@@ -229,23 +213,14 @@ class PostRepository {
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};
@@ -256,7 +231,7 @@ class PostRepository {
 	async findByUserId(user_id) {
 		const data = await this.db
 			.prepare(
-				'SELECT p.*, u.id as user_id, u.first_name, u.last_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE u.id = ? ORDER BY p.created_at DESC LIMIT 20'
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users u ON u.id = p.user_id WHERE u.id = ? ORDER BY p.created_at DESC LIMIT 20'
 			)
 			.bind(user_id)
 			.all()
@@ -268,23 +243,14 @@ class PostRepository {
 			});
 
 		return data.results.map(
-			({
-				user_id,
-				first_name,
-				last_name,
-				username,
-				profile_image_url,
-				header_image_url,
-				...post
-			}) => {
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
 				return {
 					...post,
 					user: {
 						id: user_id,
 						profile_image_url,
 						header_image_url,
-						first_name,
-						last_name,
+						display_name,
 						username
 					}
 				};

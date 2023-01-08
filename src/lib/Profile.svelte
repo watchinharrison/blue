@@ -5,10 +5,11 @@
 
 	export let data;
 	export let user;
+	export let showEdit = false;
 </script>
 
 <div class="">
-	<ProfileBanner {data} {user} />
+	<ProfileBanner {showEdit} {data} {user} />
 	<div class="bg-sky-100 p-4 rounded-b-md">
 		<div class="flex flex-col gap-4 inner-shadow">
 			{#each data?.posts || [] as post, i}

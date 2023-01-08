@@ -21,7 +21,7 @@ export async function GET({ request, locals, platform }) {
 	const user = await userRepo.findById(id);
 	const profile = {
 		id: user.id,
-		name: `${user.first_name} ${user.last_name}`,
+		display_name: user.display_name,
 		username: user.username,
 		profile_image_url: user.profile_image_url,
 		header_image_url: user.header_image_url

@@ -4,9 +4,10 @@
 	import { typewriter, whoosh } from '$lib/transitions';
 
 	export let user;
+	export let navCollapsed = false;
+	export let collapseNav;
 
 	let ready = false;
-	let hide = false;
 	let activated = false;
 
 	onMount(() => {
@@ -22,22 +23,21 @@
 			css: (t) => `opacity: ${t * o}`
 		};
 	}
-
-	function hideMenu() {
-		activated = true;
-		hide = !hide;
-	}
 </script>
 
-<div class="lg:col-span-2 {hide ? 'w-fit' : 'w-full'} lg:h-full bg-sky-100">
-	<header class="w-screen lg:w-auto">
-		<div class="w-full flex flex-row justify-end">
-			<button on:click={hideMenu} class="p-4 text-xs text-slate-400"
-				>{hide ? 'Show' : 'Hide'}</button
+<div class="{navCollapsed ? 'w-fit lg:col-span-1' : 'w-full lg:col-span-2'} lg:h-full bg-sky-100">
+	<header class="w-screen h-full lg:w-auto">
+		<div class="sticky top-0 z-10 w-full flex flex-row justify-end">
+			<button
+				on:click={() => {
+					collapseNav();
+					activated = true;
+				}}
+				class="p-4 text-xs text-slate-400">{navCollapsed ? 'Show' : 'Hide'}</button
 			>
 		</div>
-		{#if !hide}
-			<div out:whoosh={{ reverse: true }} class="flex-grow p-4 text-xs font-mono">
+		{#if !navCollapsed}
+			<div out:whoosh={{ reverse: true }} class="sticky top-0 flex-grow p-4 text-xs font-mono">
 				<div class="min-h-[50px]">
 					{#if ready}
 						<h1 in:typewriter>Hello there.</h1>

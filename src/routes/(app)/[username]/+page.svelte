@@ -6,5 +6,5 @@
 </script>
 
 <div class="max-w-[800px] m-auto">
-	<Profile {data} user={data.user} />
+	<Profile {data} showEdit={true} user={data.user} />
 </div>

@@ -21,17 +21,13 @@ class UserRepository {
 	}
 
 	async update(user) {
-		const { id, first_name, last_name, username, profile_image_url, header_image_url } = user;
+		const { id, display_name, username, profile_image_url, header_image_url, bio } = user;
 		const updateQuery = 'UPDATE users SET ';
 		const updateSet = [];
 		const updateValues = [];
-		if (first_name) {
-			updateSet.push(`first_name = ?`);
-			updateValues.push(first_name);
-		}
-		if (last_name) {
-			updateSet.push(`last_name = ?`);
-			updateValues.push(last_name);
+		if (display_name) {
+			updateSet.push(`display_name = ?`);
+			updateValues.push(display_name);
 		}
 		if (username) {
 			updateSet.push(`username = ?`);
@@ -44,6 +40,10 @@ class UserRepository {
 		if (header_image_url) {
 			updateSet.push(`header_image_url = ?`);
 			updateValues.push(header_image_url);
+		}
+		if (bio) {
+			updateSet.push(`bio = ?`);
+			updateValues.push(bio);
 		}
 		updateSet.push(`updated_at = ?`);
 		updateValues.push(new Date().toISOString());
@@ -102,6 +102,8 @@ class UserRepository {
       id INTEGER PRIMARY KEY,
       first_name TEXT NULL,
       last_name TEXT NULL,
+			display_name TEXT NULL,
+			bio TEXT NULL,
       email TEXT UNIQUE,
       username TEXT UNIQUE NULL,
       password TEXT,

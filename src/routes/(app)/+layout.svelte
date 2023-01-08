@@ -58,7 +58,7 @@
 	});
 </script>
 
-<main class="lg:container lg:mx-auto flex flex-col lg:flex-row gap-4">
+<main class="lg:mx-auto flex flex-col lg:flex-row gap-4">
 	<article {inert} class="lg:w-2/3" aria-hidden={$activePost !== null}>
 		<slot />
 	</article>

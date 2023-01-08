@@ -8,7 +8,7 @@ export async function handle({ event, resolve }) {
 
 	async function fetchUserDetails(payload) {
 		const ps = event.platform.env.DB.prepare(
-			'SELECT id, first_name, last_name, username, profile_image_url FROM users WHERE id = ?'
+			'SELECT id, display_name, username, profile_image_url FROM users WHERE id = ?'
 		);
 		return ps
 			.bind(payload.id)

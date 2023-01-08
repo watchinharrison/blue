@@ -1,6 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit';
 import PostRepository from '$lib/repositories/post';
 import LikesRepository from '$lib/repositories/likes';
+import UserRepository from '$lib/repositories/user';
+import FollowersRepository from '$lib/repositories/followers';
 
 export const like = async ({ platform, locals, params, request }) => {
 	if (!platform?.env.DB) {
@@ -27,4 +29,25 @@ export const like = async ({ platform, locals, params, request }) => {
 		return { success: true, isLiked: !isLiked };
 	}
 	return fail(404, { error: 'Post not found' });
+};
+
+export const follow = async ({ platform, locals, request }) => {
+	if (!platform?.env.DB) {
+		return fail(500, { error: 'No database connection' });
+	}
+	const data = await request.formData();
+	const username = data.get('username');
+	const userRepo = new UserRepository({ db: platform.env.DB });
+	const profile = await userRepo.findByUsername(username);
+	const followersRepo = new FollowersRepository({ db: platform.env.DB });
+	const isFollowing = await followersRepo.isFollowing({
+		followerId: locals.user.id,
+		followedId: profile.id
+	});
+	if (isFollowing) {
+		await followersRepo.delete({ followerId: locals.user.id, followedId: profile.id });
+	} else {
+		await followersRepo.create({ followerId: locals.user.id, followedId: profile.id });
+	}
+	return { success: true };
 };

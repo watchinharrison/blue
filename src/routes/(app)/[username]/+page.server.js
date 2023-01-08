@@ -5,29 +5,12 @@ import UserRepository from '$lib/repositories/user';
 import FollowersRepository from '$lib/repositories/followers';
 import LikesRepository from '$lib/repositories/likes';
 import posts from '$lib/posts';
-import { like } from '$lib/actions';
+import { like, follow } from '$lib/actions';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
 	like,
-	follow: async ({ platform, locals, params }) => {
-		if (!platform?.env.DB) {
-			return fail(500, { error: 'No database connection' });
-		}
-		const userRepo = new UserRepository({ db: platform.env.DB });
-		const profile = await userRepo.findByUsername(params.username);
-		const followersRepo = new FollowersRepository({ db: platform.env.DB });
-		const isFollowing = await followersRepo.isFollowing({
-			followerId: locals.user.id,
-			followedId: profile.id
-		});
-		if (isFollowing) {
-			await followersRepo.delete({ followerId: locals.user.id, followedId: profile.id });
-		} else {
-			await followersRepo.create({ followerId: locals.user.id, followedId: profile.id });
-		}
-		return { success: true };
-	}
+	follow
 };
 
 /** @type {import('./$types').PageServerLoad} */
@@ -40,7 +23,6 @@ export async function load({ locals, params, platform }) {
 		const likesRepo = new LikesRepository({ db: platform.env.DB });
 		let posts = await postRepo.findByUsername(params.username);
 		const profile = await userRepo.findByUsername(params.username);
-		profile.name = `${profile.first_name} ${profile.last_name}`;
 		let isFollowing = false;
 		if (locals?.user?.id) {
 			isFollowing = await followersRepo.isFollowing({

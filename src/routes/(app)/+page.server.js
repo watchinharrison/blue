@@ -6,7 +6,7 @@ import UserRepository from '$lib/repositories/user';
 import FollowersRepository from '$lib/repositories/followers';
 import LikesRepository from '$lib/repositories/likes';
 import posts from '$lib/posts';
-import { like } from '$lib/actions';
+import { like, follow } from '$lib/actions';
 import { getRichPreview } from '$lib/server/rich-preview';
 
 function dataURItoBlob(dataurl) {
@@ -92,6 +92,7 @@ export const actions = {
 		return { success: true };
 	},
 	like,
+	follow,
 	post: async ({ request, url, platform, cookies, locals }) => {
 		if (!platform?.env.DB) {
 			return fail(500, { error: 'No database connection' });

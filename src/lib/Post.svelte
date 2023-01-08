@@ -161,8 +161,7 @@
 					</div>
 					<div class="flex-grow">
 						<p class="text-slate-800 text-sm font-semibold">
-							{post.user.first_name}
-							{post.user.last_name}
+							{post.user.display_name}
 						</p>
 						<p class="text-sm text-slate-500">
 							<a
@@ -294,9 +293,7 @@
 								<div
 									aria-label="Post"
 									in:fade={{ duration: 500 }}
-									class="{$activePost?.id === post.thread.id
-										? 'brightness-95'
-										: ''} hover:brightness-90"
+									class={$activePost?.id === post.thread.id ? 'brightness-95' : ''}
 								>
 									<Post hideActions post={post.thread} />
 								</div>

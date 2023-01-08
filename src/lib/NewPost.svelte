@@ -311,11 +311,11 @@
 							/>
 						</div>
 					</div>
-					{#if post?.reply_id}
-						<input type="hidden" name="thread_id" value={post.reply_id} />
-					{/if}
 					{#if post}
 						<input type="hidden" name="post_id" value={post.id} />
+					{/if}
+					{#if post?.thread_id}
+						<input type="hidden" name="thread_id" value={post.thread_id} />
 					{/if}
 				</div>
 				<div class="">

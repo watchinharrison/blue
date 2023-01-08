@@ -27,14 +27,16 @@ class LikesRepository {
 
 	async getLikes({ postId }) {
 		const likes = await this.db
-			.prepare(`SELECT * FROM likes WHERE post_id = ?`)
+			.prepare(
+				`SELECT l.*, u.display_name, u.username, u.profile_image_url, u.id FROM likes l LEFT JOIN users u ON u.id = l.user_id WHERE post_id = ?`
+			)
 			.bind(postId)
 			.all()
 			.catch((error) => {
 				console.log('Error fetching likes', error);
-				return null;
+				return [];
 			});
-		return likes;
+		return likes.results;
 	}
 
 	async getIsPostLiked({ postId, userId }) {
