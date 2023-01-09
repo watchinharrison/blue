@@ -72,7 +72,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
+				class="fixed bg-white lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
 			>
 				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
 					<div
@@ -122,7 +122,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
+				class="fixed bg-white lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
 					? 'lg:top-[100px]'
 					: 'lg:top-4'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
@@ -148,7 +148,7 @@
 					</button>
 				</div>
 				<div
-					class="{$activePost ? 'lg:h-[78vh]' : 'lg:h-[85vh]'} lg:overflow-scroll"
+					class="{$activePost ? 'lg:h-[78vh]' : 'lg:h-[85vh]'} bg-white lg:overflow-scroll"
 					aria-label="Post Detail"
 					in:whoosh={{ delay: 400 }}
 				>

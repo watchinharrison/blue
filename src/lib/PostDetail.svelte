@@ -55,7 +55,7 @@
 				post={post.thread && post.text === '' ? post.thread : post}
 			/>
 		</div>
-		<ul class="flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4" role="tablist">
+		<ul class="flex flex-row flex-wrap list-none border-b-0 pl-0 mb-4" role="tablist">
 			<li class="nav-item flex-auto text-center" role="presentation">
 				<a
 					href="#tabs-replies"

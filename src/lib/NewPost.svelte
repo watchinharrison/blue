@@ -112,8 +112,8 @@
 			files = [];
 			document.querySelector('[name="text"]').value = '';
 			document.querySelector('[name="image"]').value = '';
-			replyPost.set(false);
-			activePost.set(false);
+			replyPost.set(null);
+			activePost.set(null);
 			window.scrollTo(0, 0);
 			await invalidateAll();
 		}
