@@ -185,12 +185,12 @@
 >
 	<div class="relative">
 		<div
-			class="px-4 pt-4 pb-2 mb-4 bg-sky-200 rounded-md shadow-inner"
+			class="pt-4 mb-4 bg-sky-200 rounded-md shadow-inner"
 			on:dragover={allowDrop}
 			on:drop={drop}
 		>
 			<div
-				class="flex flex-row items-start gap-4 bg-slate-100 w-full outline-none p-4 bg-opacity-70 shadow-sm rounded-md"
+				class="flex mx-4 w-fit flex-row items-start gap-4 bg-slate-100 outline-none p-4 bg-opacity-70 shadow-sm rounded-md"
 			>
 				<div class="basis-12">
 					<img
@@ -289,7 +289,7 @@
 					{/if}
 				</div>
 			</div>
-			<div class="flex flex-row justify-between items-end gap-4">
+			<div class="flex mx-4 w-auto flex-row justify-between items-end gap-4">
 				<div class="flex-1">
 					<div class="flex flex-row items-end justify-between">
 						<div class="p-4 text-sky-900 transition-colors relative">
@@ -320,11 +320,6 @@
 								on:change={updateFiles}
 							/>
 						</div>
-						<div class="p-2">
-							<p class="{chars > charLimit ? 'text-red-700' : 'text-sky-700'} text-sm">
-								{chars}/{charLimit}
-							</p>
-						</div>
 					</div>
 					{#if post}
 						<input type="hidden" name="post_id" value={post.id} />
@@ -337,16 +332,25 @@
 					{#if post}
 						<button
 							on:click|preventDefault={close}
-							class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-blue-300 to-sky-500 hover:opacity-85 p-2"
+							class="bg-clip-text text-transparent bg-gradient-to-t from-blue-300 to-sky-500 hover:opacity-85 p-2"
 							>Close</button
 						>
 					{/if}
 					<button
-						disabled={chars > charLimit}
-						class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-sky-700 to-blue-900 hover:opacity-85 p-2"
+						disabled={!chars || chars > charLimit}
+						class="bg-clip-text text-transparent bg-gradient-to-t from-sky-700 to-blue-900 hover:opacity-85 p-2"
 						>{post ? 'Reply' : 'Post'}</button
 					>
 				</div>
+			</div>
+			<div class="w-full h-1 rounded-md pb-2 flex items-start">
+				<div
+					class="{chars > charLimit ? 'bg-rose-400' : 'bg-sky-600'} h-1"
+					style="width: {Math.min(
+						Math.round((chars / charLimit) * 100),
+						100
+					)}%; transition: width 2s;"
+				/>
 			</div>
 		</div>
 	</div>

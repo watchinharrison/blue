@@ -73,10 +73,8 @@
       px-6
       py-3
       my-2
-       hover:text-blue-600
-      {tab === 'replies'
-						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
-						: 'border-b-transparent'}
+       hover:text-sky-600
+      {tab === 'replies' ? 'active border-sky-200 text-sky-400' : 'border-b-transparent'}
     "
 					id="tabs-replies-tab"
 					data-bs-toggle="pill"
@@ -103,10 +101,8 @@
       px-6
       py-3
       my-2
-       hover:text-blue-600
-			{tab === 'likes'
-						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
-						: 'border-b-transparent'}
+       hover:text-sky-600
+			{tab === 'likes' ? 'active border-sky-200 text-sky-400' : 'border-b-transparent'}
     "
 					id="tabs-likes-tab"
 					data-bs-toggle="pill"
@@ -133,10 +129,8 @@
       px-6
       py-3
       my-2
-       hover:text-blue-600
-			{tab === 'reposts'
-						? 'active bg-clip-text text-transparent bg-gradient-to-t border-slate-200 from-sky-300 to-blue-800'
-						: 'border-b-transparent'}
+       hover:text-sky-600
+			{tab === 'reposts' ? 'active border-sky-200 text-sky-400' : 'border-b-transparent'}
     "
 					id="tabs-reposts-tab"
 					data-bs-toggle="pill"
@@ -159,18 +153,14 @@
 					<div class="block pb-10">
 						{#each post.replies as reply, i}
 							<div class="w-full p-4 py-2 pl-12">
-								<div aria-label="Post" in:fade={{ duration: 500 }} class="hover:brightness-90">
+								<div aria-label="Post" in:fade={{ duration: 500 }} class="">
 									<Post post={reply} />
 								</div>
 								{#if reply.thread_count > 0}
 									<div class="">
 										{#if thread.length}
 											{#each thread as threadItem, i}
-												<div
-													aria-label="Post"
-													in:fade={{ duration: 500 }}
-													class="hover:brightness-90 pt-4"
-												>
+												<div aria-label="Post" in:fade={{ duration: 500 }} class=" pt-4">
 													<Post post={threadItem} />
 												</div>
 											{/each}
@@ -209,7 +199,10 @@
 									</a>
 								</div>
 								<div class="ml-4">
-									<div class="text-sm font-medium text-gray-900">
+									<div
+										class="text-sm font-medium
+								text-gray-900"
+									>
 										<a href="/{like.username}" class="hover:underline">{like.display_name}</a>
 									</div>
 									<div class="text-sm text-gray-500">
@@ -242,7 +235,10 @@
 									</a>
 								</div>
 								<div class="ml-4">
-									<div class="text-sm font-medium text-gray-900">
+									<div
+										class="text-sm font-medium
+								text-gray-900"
+									>
 										<a href="/{repost.username}" class="hover:underline">{repost.display_name}</a>
 									</div>
 									<div class="text-sm text-gray-500">

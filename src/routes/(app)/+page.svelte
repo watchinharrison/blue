@@ -20,7 +20,7 @@
 					<div
 						aria-label="Post"
 						in:fade={{ duration: 500 }}
-						class={$activePost?.id === post.id ? 'brightness-95' : ''}
+						class={$activePost?.id === post.id ? '' : ''}
 					>
 						<Post
 							reposter={post.thread && post.text === '' ? post.user : null}

@@ -72,7 +72,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed bg-white lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
+				class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
 			>
 				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
 					<div
@@ -122,7 +122,7 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed bg-white lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
+				class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
 					? 'lg:top-[100px]'
 					: 'lg:top-4'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>

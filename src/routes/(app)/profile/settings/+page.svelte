@@ -133,7 +133,7 @@
 				/>
 			</div>
 			<div
-				class="p-4 w-full absolute bottom-0 bg-opacity-90 bg-slate-200 rounded-t-md flex flex-row justify-between gap-2"
+				class="p-4 w-full absolute bottom-0 bg-opacity-90 bg-black rounded-t-md flex flex-row justify-between gap-2"
 			>
 				<div class="flex flex-col gap-2">
 					<div class="w-20 lg:w-40 lg:h-40 flex-row justify-center items-center">
@@ -220,7 +220,7 @@
 						/>
 					</div>
 					<div class="flex flex-col text-sm gap-2">
-						<div class="text-slate-800 font-semibold">
+						<div class="text-slate-100 font-semibold">
 							<input
 								required
 								class="w-full border border-slate-600 bg-transparent border-dashed border-opacity-60 rounded-md  outline-none p-2 px-4"
@@ -232,7 +232,7 @@
 									: form?.display_name ?? ''}
 							/>
 						</div>
-						<div class="text-slate-600">
+						<div class="text-slate-200">
 							<input
 								class="w-full border border-slate-600 bg-transparent border-dashed border-opacity-60 rounded-md  outline-none p-2 px-4"
 								name="username"
@@ -245,7 +245,7 @@
 				</div>
 				<div class="flex flex-grow items-end">
 					<textarea
-						class="border border-slate-600 bg-transparent border-dashed border-opacity-60 rounded-md  outline-none p-2 px-4 text-slate-900 text-sm w-full"
+						class="border border-slate-600 bg-transparent border-dashed border-opacity-60 rounded-md  outline-none p-2 px-4 text-slate-300 text-sm w-full"
 						name="bio"
 						type="text"
 						placeholder="Bio"
@@ -257,7 +257,7 @@
 						type="submit"
 						class="text-sm bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
-						Save Profile
+						Save
 					</button>
 				</div>
 			</div>

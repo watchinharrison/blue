@@ -124,7 +124,7 @@
 	}
 </script>
 
-<div class="relative overflow-visible bg-slate-100 shadow-md shadow-sky-200/50 rounded-md">
+<div class="relative overflow-hidden shadow-md shadow-sky-200/50 rounded-md">
 	<div class="relative p-4 shadow-sm rounded-md">
 		{#if reposter}
 			<div class="flex flex-row gap-4">
@@ -288,11 +288,11 @@
 					<div class="flex flex-row gap-4 mt-2">
 						<div class="min-w-[3rem]" />
 						<div class="flex-grow overflow-hidden">
-							<div class="border rounded-md border-sky-600 bg-sky-200">
+							<div class="border rounded-md border-sky-600 bg-slate-100">
 								<div
 									aria-label="Post"
 									in:fade={{ duration: 500 }}
-									class={$activePost?.id === post.thread.id ? 'brightness-95' : ''}
+									class={$activePost?.id === post.thread.id ? '' : ''}
 								>
 									<Post hideActions post={post.thread} />
 								</div>
