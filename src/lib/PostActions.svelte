@@ -10,7 +10,7 @@
 	});
 </script>
 
-<div class="w-full flex flex-row justify-between text-sm text-sky-600">
+<div class="w-full flex flex-row justify-between items-center text-sm text-sky-600">
 	<a
 		href="/?post_id={post.id}"
 		class="flex flex-row justify-center items-center hover:text-sky-900  p-2"
@@ -50,7 +50,7 @@
 			{post.reply_count || ''}
 		</div>
 	</a>
-	<div class="text-blue-400">
+	<div class="">
 		<form
 			action="?/like"
 			method="POST"
@@ -68,8 +68,8 @@
 				{#if post.liked}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="12"
-						height="12"
+						width="14"
+						height="14"
 						fill="currentColor"
 						class="bi bi-heart-fill"
 						viewBox="0 0 16 16"
@@ -82,8 +82,8 @@
 				{:else}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="12"
-						height="12"
+						width="14"
+						height="14"
 						fill="currentColor"
 						class="bi bi-heart"
 						viewBox="0 0 16 16"
@@ -125,8 +125,8 @@
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					width="16"
-					height="16"
+					width="14"
+					height="14"
 					fill="currentColor"
 					class="bi bi-repeat mr-2"
 					viewBox="0 0 16 16"

@@ -291,7 +291,7 @@
 					{/if}
 				</div>
 			</div>
-			<div class="flex mx-4 w-auto flex-row justify-between items-end gap-4">
+			<div class="flex mx-4 w-auto flex-row justify-between items-center gap-4">
 				<div class="flex-1">
 					<div class="flex flex-row items-end justify-between">
 						<div class="p-4 text-sky-900 transition-colors relative">
@@ -330,7 +330,7 @@
 						<input type="hidden" name="thread_id" value={post.thread_id} />
 					{/if}
 				</div>
-				<div class="">
+				<div class="h-full flex justify-center items-center mt-2">
 					{#if post}
 						<button
 							on:click|preventDefault={close}
@@ -347,7 +347,9 @@
 			</div>
 			<div class="w-full h-1 rounded-md pb-2 flex items-start">
 				<div
-					class="{chars > charLimit ? 'bg-rose-400' : 'bg-sky-600'} h-1"
+					class="{chars > charLimit
+						? 'via-purple-500 to-pink-500'
+						: 'to-blue-500'} bg-gradient-to-r from-sky-500  h-1"
 					style="width: {Math.min(
 						Math.round((chars / charLimit) * 100),
 						100
@@ -357,3 +359,6 @@
 		</div>
 	</div>
 </form>
+
+<!-- bg-gradient-to-r via-purple-500 to-pink-500 to-blue-500 from-sky-500 -->
+<!-- bg-gradient-to-r via-purple-500 to-blue-500 from-sky-500 -->

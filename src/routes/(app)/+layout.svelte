@@ -166,6 +166,7 @@
 		{#if $activePost}
 			<div
 				transition:fadein
+				on:click={() => ($activePost = null)}
 				aria-modal="true"
 				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
 			/>
@@ -216,6 +217,7 @@
 		{#if $activeUser}
 			<div
 				transition:fadein
+				on:click={() => ($activeUser = null)}
 				aria-modal="true"
 				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
 			/>
