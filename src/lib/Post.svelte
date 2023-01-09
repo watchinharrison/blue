@@ -122,7 +122,6 @@
 		});
 		return text;
 	}
-	const text = parseText(post.text);
 </script>
 
 <div class="relative overflow-visible bg-slate-100 shadow-md shadow-sky-200/50 rounded-md">
@@ -274,9 +273,9 @@
 													</div>
 												{/if}
 											</div>
-											<div class="p-4 bg-black text-slate-200">
+											<div class="p-4 bg-black text-slate-100">
 												<p class="text-lg line-clamp-3">{entity.title}</p>
-												<p class="text-sm line-clamp-2 text-slate-300">{entity.description}</p>
+												<p class="text-sm line-clamp-2 text-slate-200">{entity.description}</p>
 											</div>
 										</a>
 									</div>

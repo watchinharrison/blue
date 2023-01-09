@@ -12,6 +12,9 @@
 	export let user = null;
 	export let post = null;
 
+	let charLimit = 280;
+	let chars = 0;
+
 	let files = [];
 
 	function allowDrop(event) {
@@ -114,6 +117,7 @@
 			document.querySelector('[name="image"]').value = '';
 			replyPost.set(null);
 			activePost.set(null);
+			chars = 0;
 			window.scrollTo(0, 0);
 			await invalidateAll();
 		}
@@ -164,6 +168,12 @@
 
 		input.files = dt.files;
 	}
+
+	function updateChars(event) {
+		let text = event.target.value;
+		text = text.replace(/https?:\/\/\S+/g, 'limit to 30 chars per link ref');
+		chars = text.length;
+	}
 </script>
 
 <form
@@ -191,12 +201,12 @@
 				</div>
 				<div class="flex-1 overflow-hidden">
 					<textarea
-						maxlength="280"
 						cols="3"
 						name="text"
 						class="bg-transparent w-full h-24 outline-none resize-none"
 						placeholder="What's on your mind?"
 						value={form?.text ? form.text : ''}
+						on:keyup={updateChars}
 					/>
 					<div
 						class="grid {files.length > 1 ? 'grid-cols-2' : ''} rounded-md overflow-hidden gap-0.5"
@@ -279,9 +289,9 @@
 					{/if}
 				</div>
 			</div>
-			<div class="flex flex-row justify-between items-end">
+			<div class="flex flex-row justify-between items-end gap-4">
 				<div class="flex-1">
-					<div class="flex flex-row">
+					<div class="flex flex-row items-end justify-between">
 						<div class="p-4 text-sky-900 transition-colors relative">
 							<label for="fileInput" class="cursor-pointer hover:text-sky-700">
 								<svg
@@ -310,6 +320,11 @@
 								on:change={updateFiles}
 							/>
 						</div>
+						<div class="p-2">
+							<p class="{chars > charLimit ? 'text-red-700' : 'text-sky-700'} text-sm">
+								{chars}/{charLimit}
+							</p>
+						</div>
 					</div>
 					{#if post}
 						<input type="hidden" name="post_id" value={post.id} />
@@ -327,6 +342,7 @@
 						>
 					{/if}
 					<button
+						disabled={chars > charLimit}
 						class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-sky-700 to-blue-900 hover:opacity-85 p-2"
 						>{post ? 'Reply' : 'Post'}</button
 					>

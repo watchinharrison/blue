@@ -195,7 +195,7 @@
 				role="tabpanel"
 				aria-labelledby="tabs-likes-tab"
 			>
-				<p class="p-4">
+				<div class="p-4 flex flex-col gap-2">
 					{#if post?.likes?.length}
 						{#each post.likes as like}
 							<div class="flex items-center">
@@ -219,7 +219,7 @@
 							</div>
 						{/each}
 					{/if}
-				</p>
+				</div>
 			</div>
 			<div
 				class="tab-pane {tab === 'reposts' ? 'active' : ''}"
@@ -228,7 +228,7 @@
 				role="tabpanel"
 				aria-labelledby="tabs-likes-tab"
 			>
-				<p class="p-4">
+				<div class="p-4 flex flex-col gap-2">
 					{#if post?.reposts?.length}
 						{#each post.reposts as repost}
 							<div class="flex items-center">
@@ -252,7 +252,7 @@
 							</div>
 						{/each}
 					{/if}
-				</p>
+				</div>
 			</div>
 		</div>
 	</div>

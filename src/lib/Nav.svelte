@@ -57,7 +57,7 @@
 							</h1>
 							<div>
 								<h1
-									class="text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-800 to-blue-300 indent-1.5"
+									class="text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-800 to-blue-700 indent-1.5"
 								>
 									<a href="/post">Post</a>
 								</h1>
