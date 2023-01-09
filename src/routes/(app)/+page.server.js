@@ -8,6 +8,7 @@ import LikesRepository from '$lib/repositories/likes';
 import posts from '$lib/posts';
 import { like, follow } from '$lib/actions';
 import { getRichPreview } from '$lib/server/rich-preview';
+import { getPosts } from '$lib/data/posts';
 
 function dataURItoBlob(dataurl) {
 	var arr = dataurl.split(','),
@@ -35,6 +36,16 @@ export const actions = {
 		event.cookies.delete('Blu_Authorization');
 		event.locals.user = null;
 		return { success: true };
+	},
+	search: async ({ request, locals }) => {
+		// const data = await request.formData();
+		const term = request.query.get('term');
+
+		console.log('term', term);
+
+		locals.term = term;
+
+		return { success: true, term };
 	},
 	repost: async ({ request, url, platform, cookies, locals }) => {
 		if (!platform?.env.DB) {
@@ -229,7 +240,7 @@ export const actions = {
 };
 
 /** @type {import('../$types').PageServerLoad} */
-export async function load({ locals, platform }) {
+export async function load({ locals, platform, request }) {
 	if (platform?.env.DB) {
 		const postRepo = new PostRepository({ db: platform.env.DB });
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
@@ -239,36 +250,8 @@ export async function load({ locals, platform }) {
 		likesRepo.setupTable();
 		postRepo.setupTable();
 		postEntityRepo.setupTable();
-		let posts = [];
-		if (locals.user) {
-			posts = await postRepo.findByFollowers(locals.user.id);
-		} else {
-			posts = await postRepo.findAll();
-		}
-		posts = await Promise.all(
-			posts.map(async (post) => {
-				if (post.thread_id && !post.reply_id) {
-					const parentPost = await postRepo.findById(post.thread_id);
-					parentPost.entities = await postEntityRepo.findByPostId(post.thread_id);
-					if (parentPost) {
-						post.thread = parentPost;
-						post.thread.liked = await likesRepo.getIsPostLiked({
-							postId: post.thread_id,
-							userId: locals.user?.id
-						});
-					}
-				}
-				if (post.reply_id) {
-					const parentPost = await postRepo.findById(post.reply_id);
-					if (parentPost) {
-						post.reply = parentPost;
-					}
-				}
-				post.entities = await postEntityRepo.findByPostId(post.id);
-				post.liked = await likesRepo.getIsPostLiked({ postId: post.id, userId: locals.user?.id });
-				return post;
-			})
-		);
+		console.log('request', request);
+		const posts = await getPosts({ locals, platform });
 		return {
 			user: locals.user,
 			posts

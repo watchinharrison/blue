@@ -208,10 +208,12 @@
 						value={form?.text ? form.text : ''}
 						on:keyup={updateChars}
 					/>
-					<div
-						class="grid {files.length > 1 ? 'grid-cols-2' : ''} rounded-md overflow-hidden gap-0.5"
-					>
-						{#if files.length}
+					{#if files.length}
+						<div
+							class="grid {$replyPost ? 'mb-4' : ''} {files.length > 1
+								? 'grid-cols-2'
+								: ''} rounded-md overflow-hidden gap-0.5"
+						>
 							{#each files as file, i}
 								{@const { width, height } = file.dimensions}
 								{@const aspectRatio = width / height}
@@ -263,10 +265,10 @@
 									</div>
 								</div>
 							{/each}
-						{/if}
-					</div>
+						</div>
+					{/if}
 					{#if $replyPost && !post}
-						<div class="relative">
+						<div class="relative bg-slate-100 rounded-md">
 							<Post post={$replyPost} hideActions />
 							<input type="hidden" name="post_id" value={$replyPost.id} />
 							<div class="absolute top-0 right-0 z-10 flex flex-row justify-end">

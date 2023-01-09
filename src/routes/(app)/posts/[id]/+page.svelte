@@ -6,11 +6,11 @@
 </script>
 
 <div class="max-w-[800px] m-auto flex flex-col p-2 rounded-md">
-	<div class="p-4 bg-sky-100">
+	<div class="p-4">
 		<Post post={data.post} />
 	</div>
 	{#if data.post?.replies && data.post.replies.length > 0}
-		<div class="mt-4 bg-sky-100 p-4 rounded-md">
+		<div class="mt-4 p-4 rounded-md">
 			<div class="flex flex-col gap-4 inner-shadow">
 				{#each data.post.replies as reply, i}
 					<div class="w-full p-4 py-2 pl-12">

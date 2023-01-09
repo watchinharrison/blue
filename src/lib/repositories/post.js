@@ -81,6 +81,33 @@ class PostRepository {
 		);
 	}
 
+	async search(query) {
+		const data = await this.db
+			.prepare(
+				'SELECT p.*, u.id as user_id, u.display_name, u.username, u.profile_image_url, u.header_image_url FROM posts p INNER JOIN users as u ON p.user_id = u.id WHERE p.text LIKE ? ORDER BY p.created_at DESC LIMIT 20'
+			)
+			.bind(`%${query}%`)
+			.all()
+			.catch((error) => {
+				console.log('Error fetching posts', error);
+			});
+
+		return data.results.map(
+			({ user_id, display_name, username, profile_image_url, header_image_url, ...post }) => {
+				return {
+					...post,
+					user: {
+						id: user_id,
+						profile_image_url,
+						header_image_url,
+						display_name,
+						username
+					}
+				};
+			}
+		);
+	}
+
 	async getReplies(post_id) {
 		const data = await this.db
 			.prepare(

@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { onDestroy, onMount } from 'svelte';
 	import Post from './Post.svelte';
-	import { activePost, activeImage } from '$lib/stores';
+	import { activePost, activeImage, activeUser } from '$lib/stores';
 
 	let post = null;
 	let thread = [];
@@ -48,7 +48,7 @@
 </script>
 
 {#if post}
-	<div class="flex flex-col">
+	<div class="flex flex-col mb-60 lg:mb-0">
 		<div class="w-full p-4">
 			<Post
 				reposter={post.thread && post.text === '' ? post.user : null}
@@ -190,7 +190,12 @@
 						{#each post.likes as like}
 							<div class="flex items-center">
 								<div class="flex-shrink-0">
-									<a href="/{like.username}">
+									<a
+										href="/{like.username}"
+										on:click|preventDefault|stopPropagation={() => {
+											activeUser.update(() => ({ id: like.id }));
+										}}
+									>
 										<img
 											class="h-10 w-10 rounded-md"
 											src="/media/{like.profile_image_url}"
@@ -203,10 +208,22 @@
 										class="text-sm font-medium
 								text-gray-900"
 									>
-										<a href="/{like.username}" class="hover:underline">{like.display_name}</a>
+										<a
+											href="/{like.username}"
+											on:click|preventDefault|stopPropagation={() => {
+												activeUser.update(() => ({ id: like.id }));
+											}}
+											class="hover:underline">{like.display_name}</a
+										>
 									</div>
 									<div class="text-sm text-gray-500">
-										<a href="/{like.username}" class="hover:underline">@{like.username}</a>
+										<a
+											href="/{like.username}"
+											on:click|preventDefault|stopPropagation={() => {
+												activeUser.update(() => ({ id: like.id }));
+											}}
+											class="hover:underline">@{like.username}</a
+										>
 									</div>
 								</div>
 							</div>
@@ -226,7 +243,12 @@
 						{#each post.reposts as repost}
 							<div class="flex items-center">
 								<div class="flex-shrink-0">
-									<a href="/{repost.username}">
+									<a
+										href="/{repost.username}"
+										on:click|preventDefault|stopPropagation={() => {
+											activeUser.update(() => ({ id: repost.user_id }));
+										}}
+									>
 										<img
 											class="h-10 w-10 rounded-md"
 											src="/media/{repost.profile_image_url}"
@@ -239,10 +261,22 @@
 										class="text-sm font-medium
 								text-gray-900"
 									>
-										<a href="/{repost.username}" class="hover:underline">{repost.display_name}</a>
+										<a
+											href="/{repost.username}"
+											on:click|preventDefault|stopPropagation={() => {
+												activeUser.update(() => ({ id: repost.user_id }));
+											}}
+											class="hover:underline">{repost.display_name}</a
+										>
 									</div>
 									<div class="text-sm text-gray-500">
-										<a href="/{repost.username}" class="hover:underline">@{repost.username}</a>
+										<a
+											href="/{repost.username}"
+											on:click|preventDefault|stopPropagation={() => {
+												activeUser.update(() => ({ id: repost.user_id }));
+											}}
+											class="hover:underline">@{repost.username}</a
+										>
 									</div>
 								</div>
 							</div>

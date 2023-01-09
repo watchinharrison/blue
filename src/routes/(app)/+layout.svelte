@@ -1,25 +1,49 @@
 <script>
 	import PostDetail from '$lib/PostDetail.svelte';
 	import NewPost from '$lib/NewPost.svelte';
+	import Post from '$lib/Post.svelte';
 	import Profile from '$lib/Profile.svelte';
 	import { activePost, activeUser } from '$lib/stores';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 
+	/** @type {import('./$types').ActionData} */
+	export let form;
+
 	let profile = null;
+	let results = [];
+	let searchTerm = $page.url.searchParams.get('term') || '';
 
 	function fetchProfile(id) {
 		fetch(`/api/user?id=${id}`)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log('data', data);
 				profile = data;
 			});
 	}
 
+	function search(term) {
+		if (term) {
+			fetch(`/api/posts?term=${term}`)
+				.then((res) => res.json())
+				.then((data) => {
+					results = data;
+				});
+		}
+	}
+
 	onMount(() => {
+		page.subscribe((value) => {
+			if (value.url.searchParams.get('term')) {
+				const term = value.url.searchParams.get('term');
+				search(term);
+			} else {
+				results = [];
+			}
+		});
 		activeUser.subscribe((value) => {
 			if (value) {
 				fetchProfile(value.id);
@@ -52,6 +76,14 @@
 		};
 	}
 
+	function onSearch(event) {
+		event.preventDefault();
+		searchTerm = event.target.value;
+		if (!searchTerm) {
+			results = [];
+		}
+	}
+
 	let inert;
 	activePost.subscribe((value) => {
 		inert = value !== null && window.innerWidth < 720 ? true : undefined;
@@ -63,6 +95,74 @@
 		<slot />
 	</article>
 	<aside class="lg:col-span-4 lg:w-1/3 pr-4">
+		{#if searchTerm}
+			<div
+				transition:fadein
+				on:click={() => {
+					results = [];
+					searchTerm = '';
+				}}
+				aria-modal="true"
+				class="fixed lg:hidden top-0 left-0 w-full h-full bg-slate-600 bg-opacity-70"
+			/>
+		{/if}
+		<div
+			in:whoosh
+			out:whoosh
+			style="transition: height 2s;"
+			class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 {searchTerm
+				? 'h-[70vh]'
+				: 'h-min'} mb-10 lg:mb-0 lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
+		>
+			<div class="bg-white sticky top-0 z-10">
+				<form action="/?/search" class="flex flex-row justify-between">
+					<div class="p-4 flex-grow flex justify-center">
+						<input
+							type="text"
+							name="term"
+							enterkeyhint="search"
+							class="w-full outline-none"
+							placeholder="Search"
+							on:keyup={onSearch}
+							value={form?.term ? form.term : searchTerm}
+						/>
+					</div>
+					<button type="submit" class="p-4 text-slate-400">
+						{#if searchTerm}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								fill="currentColor"
+								class="bi bi-search"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+								/>
+							</svg>
+						{/if}
+					</button>
+				</form>
+			</div>
+			{#if !$activePost && !$activeUser}
+				{#if results?.posts?.length}
+					<div
+						class="lg:h-[85vh] lg:overflow-scroll {$activeUser ? 'collapse' : ''}"
+						aria-label="Search"
+						in:whoosh={{ delay: 400 }}
+					>
+						<div class="p-4">
+							{#each results.posts as post}
+								<div class="mb-2">
+									<Post {post} />
+								</div>
+							{/each}
+						</div>
+					</div>
+				{/if}
+			{/if}
+		</div>
 		{#if $activePost}
 			<div
 				transition:fadein
@@ -72,9 +172,9 @@
 			<div
 				in:whoosh
 				out:whoosh
-				class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-4 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
+				class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 lg:top-20 left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto "
 			>
-				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
+				<div class="bg-white sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
 					<div
 						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
@@ -123,10 +223,10 @@
 				in:whoosh
 				out:whoosh
 				class="fixed bg-white shadow-md shadow-sky-200/50 lg:sticky z-0 h-[70vh] lg:h-auto bottom-0 {$activePost
-					? 'lg:top-[100px]'
-					: 'lg:top-4'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
+					? 'lg:top-40'
+					: 'lg:top-20'} left-0 ld:block col-span-4 w-full rounded-t-md lg:rounded-b-md overflow-y-auto"
 			>
-				<div class="sticky top-0 z-10 flex flex-row justify-between min-h-[50px]">
+				<div class="bg-white sticky top-0 z-10 flex flex-row justify-between min-h-[50px]">
 					<div
 						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
