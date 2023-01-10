@@ -15,6 +15,26 @@
 
 	let profile = null;
 	let results = [];
+	let topics = [
+		{
+			name: '#GetStarted'
+		},
+		{
+			name: '#FollowFryday'
+		},
+		{
+			name: '#RevoBlution'
+		},
+		{
+			name: '#ItsMondayAgain #KillMeKnow'
+		},
+		{
+			name: '#Karen #Scene'
+		},
+		{
+			name: '#InsurrectionInYourTown'
+		}
+	];
 	let searchTerm = $page.url.searchParams.get('term') || '';
 
 	function fetchProfile(id) {
@@ -26,8 +46,9 @@
 	}
 
 	function search(term) {
+		console.log('term', term);
 		if (term) {
-			fetch(`/api/posts?term=${term}`)
+			fetch(`/api/posts?term=${encodeURIComponent(term)}`)
 				.then((res) => res.json())
 				.then((data) => {
 					results = data;
@@ -39,6 +60,7 @@
 		page.subscribe((value) => {
 			if (value.url.searchParams.get('term')) {
 				const term = value.url.searchParams.get('term');
+				searchTerm = term;
 				search(term);
 			} else {
 				results = [];
@@ -160,6 +182,16 @@
 								</div>
 							{/each}
 						</div>
+					</div>
+				{:else}
+					<div class="flex flex-col items-start h-full">
+						{#each topics as topic}
+							<div class="p-4">
+								<a href="/?term={encodeURIComponent(topic.name.replace('#', ''))}">
+									<p class="text-sky-700">{topic.name}</p>
+								</a>
+							</div>
+						{/each}
 					</div>
 				{/if}
 			{/if}

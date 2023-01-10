@@ -2,4 +2,4 @@
 ALTER TABLE post_entities
 ADD COLUMN width INTEGER
 ADD COLUMN height INTEGER
-ADD COLUMN thumbnail_url TEXT NULL;
+ADD COLUMN thumbnail_url VARCHAR(255) NULL;

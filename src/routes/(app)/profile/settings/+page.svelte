@@ -192,7 +192,7 @@
 								</div>
 							{:else}
 								<div
-									class="w-full h-full aspect-square border border-slate-500 rounded-md flex justify-center items-center"
+									class="w-full h-full aspect-square border border-slate-500 text-white rounded-md flex justify-center items-center"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"

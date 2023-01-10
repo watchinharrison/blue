@@ -3,7 +3,7 @@
 CREATE TABLE
   posts (
     id INTEGER PRIMARY KEY,
-    text TEXT NULL,
+    text VARCHAR(1024) NULL,
     user_id INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL
@@ -12,11 +12,11 @@ CREATE TABLE
 CREATE TABLE
   post_entities (
     id INTEGER PRIMARY KEY,
-    type TEXT NULL,
+    type VARCHAR(12) NULL,
     post_id INTEGER,
-    indices TEXT NULL,
-    url TEXT NULL,
-    entity_type TEXT NULL,
+    indices VARCHAR(12) NULL,
+    url VARCHAR(255) NULL,
+    entity_type VARCHAR(12) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL
   );

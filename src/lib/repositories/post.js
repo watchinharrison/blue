@@ -334,7 +334,7 @@ class PostRepository {
 			.prepare(
 				`CREATE TABLE IF NOT EXISTS posts (
       id INTEGER PRIMARY KEY,
-      text TEXT NULL,
+      text VARCHAR(1024) NULL,
       user_id INTEGER,
 			reply_count INTEGER DEFAULT 0,
 			likes_count INTEGER DEFAULT 0,

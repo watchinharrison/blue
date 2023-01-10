@@ -113,16 +113,16 @@ class PostEntityRepository {
 			.prepare(
 				`CREATE TABLE IF NOT EXISTS post_entities (
       id INTEGER PRIMARY KEY,
-      type TEXT NULL,
+      type VARCHAR(12) NULL,
       post_id INTEGER,
-      indices TEXT NULL,
-      url TEXT NULL,
-      entity_type TEXT NULL,
+      indices VARCHAR(12) NULL,
+      url VARCHAR(255) NULL,
+      entity_type VARCHAR(12) NULL,
 			width INTEGER,
 			height INTEGER,
-			thumbnail_url TEXT NULL,
-			title TEXT NULL,
-			description TEXT NULL,
+			thumbnail_url VARCHAR(255) NULL,
+			title VARCHAR(255) NULL,
+			description VARCHAR(255) NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NULL
     )`

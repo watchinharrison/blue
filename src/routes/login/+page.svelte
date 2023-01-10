@@ -9,7 +9,7 @@
 	export let form;
 </script>
 
-<div class="lg:container lg:m-auto flex flex-row items-center justify-center mt-32 lg:mt-0 h-full">
+<div class="lg:container lg:m-auto flex flex-row items-center justify-evenly mt-32 lg:mt-0 h-full">
 	<div class="lg:w-2/5 lg:max-w-[300px]">
 		<form method="POST" action="?/login" use:enhance>
 			{#if data.error}
@@ -59,5 +59,15 @@
 				</div>
 			</div>
 		</form>
+	</div>
+	<div class="lg:w-2/5 text-sky-800/80">
+		<h2 class="mb-2">Here are the reasons you should register</h2>
+		<ul class="list-disc list-inside">
+			<li class="text-lg font-semibold">Get access to the best content</li>
+			<li class="text-lg">Get access to the best content</li>
+			<li class="font-semitbold">Get access to the best content</li>
+			<li class="text-sm">Get access to the best content</li>
+			<li class="text-xs">Get access to the best content</li>
+		</ul>
 	</div>
 </div>

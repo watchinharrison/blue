@@ -2,11 +2,11 @@
 CREATE TABLE
   users (
     id INTEGER PRIMARY KEY,
-    first_name TEXT NULL,
-    last_name TEXT NULL,
-    email TEXT UNIQUE,
-    username TEXT UNIQUE NULL,
-    password TEXT,
+    first_name VARCHAR(255) NULL,
+    last_name VARCHAR(255) NULL,
+    email VARCHAR(255) UNIQUE,
+    username VARCHAR(16) UNIQUE NULL,
+    password VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL
   );

@@ -94,7 +94,7 @@
 						hashtag,
 						`
 						<a
-							href="/hashtag/${hashtagValue}"
+							href="/?term=${hashtagValue}"
 							class="text-sky-500 hover:underline"
 						>
 							${hashtag}
