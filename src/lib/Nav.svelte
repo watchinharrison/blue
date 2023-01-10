@@ -37,7 +37,10 @@
 			>
 		</div>
 		{#if !navCollapsed}
-			<div out:whoosh={{ reverse: true }} class="sticky top-0 flex-grow p-4 text-xs font-mono">
+			<div
+				out:whoosh={{ reverse: true }}
+				class="sticky top-0 flex-grow p-4 text-xs font-montserrat"
+			>
 				<div class="min-h-[50px]">
 					{#if ready}
 						<h1 in:typewriter>Hello there.</h1>

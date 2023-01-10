@@ -203,7 +203,7 @@
 					<textarea
 						cols="3"
 						name="text"
-						class="bg-transparent w-full h-24 outline-none resize-none"
+						class="bg-transparent w-full h-24 outline-none resize-none font-opensans"
 						placeholder="What's on your mind?"
 						value={form?.text ? form.text : ''}
 						on:keyup={updateChars}

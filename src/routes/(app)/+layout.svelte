@@ -157,7 +157,7 @@
 							type="text"
 							name="term"
 							enterkeyhint="search"
-							class="w-full outline-none"
+							class="w-full outline-none font-montserrat"
 							placeholder="Search"
 							on:keyup={debounce(onSearch)}
 							value={form?.term ? form.term : searchTerm}
@@ -201,7 +201,7 @@
 						{#each topics as topic}
 							<div class="p-4">
 								<a href="/?term={encodeURIComponent(topic.name.replace(/#/g, ''))}">
-									<p class="text-sky-700">{topic.name}</p>
+									<p class="text-sky-700 font-montserrat">{topic.name}</p>
 								</a>
 							</div>
 						{/each}
@@ -223,7 +223,7 @@
 			>
 				<div class="bg-white sticky top-0 z-10 flex flex-row justify-between min-h-[65px]">
 					<div
-						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
+						class="p-4 font-montserrat text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
 						Post Detail
 					</div>
@@ -276,7 +276,7 @@
 			>
 				<div class="bg-white sticky top-0 z-10 flex flex-row justify-between min-h-[50px]">
 					<div
-						class="p-4 text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
+						class="p-4 font-montserrat text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 					>
 						Profile Detail
 					</div>

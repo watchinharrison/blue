@@ -49,11 +49,11 @@
 				</div>
 				<div class="mt-2 flex flex-row justify-between">
 					<button
-						class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-400 hover:opacity-85  tracking-wide uppercase  subpixel-antialiased font-semibold py-2 px-4 rounded"
+						class="font-montserrat bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-400 hover:opacity-85  tracking-wide uppercase  subpixel-antialiased font-semibold py-2 px-4 rounded"
 						type="submit">Login</button
 					>
 					<button
-						class="font-mono bg-clip-text text-transparent bg-gradient-to-t from-sky-800 to-blue-900 hover:opacity-85 tracking-wide uppercase  subpixel-antialiased font-semibold py-2 px-4 rounded"
+						class="font-montserrat bg-clip-text text-transparent bg-gradient-to-t from-sky-800 to-blue-900 hover:opacity-85 tracking-wide uppercase  subpixel-antialiased font-semibold py-2 px-4 rounded"
 						formaction="?/register">Register</button
 					>
 				</div>

@@ -37,7 +37,7 @@
 	<div class="fixed bottom-0 w-full bg-sky-100 p-1">
 		<footer class="flex flex-row justify-end">
 			<p
-				class="text-xs font-mono p-2 pr-4 bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800 cursor-pointer"
+				class="text-xs font-montserrat p-2 pr-4 bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800 cursor-pointer"
 			>
 				<a href="/">Blu</a>
 			</p>

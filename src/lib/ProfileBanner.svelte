@@ -27,7 +27,7 @@
 					alt={data?.profile.username}
 				/>
 			</div>
-			<div class="flex flex-col text-sm">
+			<div class="flex flex-col text-sm font-mplus1">
 				<p class="text-slate-100 font-semibold">{data?.profile.display_name}</p>
 				<p class="text-slate-200">@{data?.profile?.username}</p>
 			</div>

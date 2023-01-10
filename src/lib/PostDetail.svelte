@@ -66,6 +66,7 @@
       nav-link
       block
       font-medium
+			font-montserrat
       text-xs
       leading-tight
       uppercase
@@ -94,6 +95,7 @@
       nav-link
       block
       font-medium
+			font-montserrat
       text-xs
       leading-tight
       uppercase
@@ -122,6 +124,7 @@
       nav-link
       block
       font-medium
+			font-montserrat
       text-xs
       leading-tight
       uppercase
@@ -206,6 +209,7 @@
 								<div class="ml-4">
 									<div
 										class="text-sm font-medium
+										font-montserrat
 								text-gray-900"
 									>
 										<a
@@ -259,6 +263,7 @@
 								<div class="ml-4">
 									<div
 										class="text-sm font-medium
+										font-montserrat
 								text-gray-900"
 									>
 										<a

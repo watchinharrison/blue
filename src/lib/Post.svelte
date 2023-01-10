@@ -150,7 +150,7 @@
 		{/if}
 		<div class="flex flex-col gap-2">
 			<div class="">
-				<div class="flex flex-row items-center gap-4">
+				<div class="flex flex-row items-center gap-4 font-mplus1">
 					<div class="basis-12">
 						<img
 							class="aspect-square w-fit rounded-md"
@@ -192,7 +192,7 @@
 								</a>
 							</div>
 						{/if}
-						<div class="text-slate-800">{@html parseText(post.text)}</div>
+						<div class="text-slate-800 font-opensans">{@html parseText(post.text)}</div>
 						{#if post?.entities?.length}
 							<div
 								class="grid {post?.entities?.length > 1
@@ -274,8 +274,8 @@
 												{/if}
 											</div>
 											<div class="p-4 bg-slate-200 text-slate-800">
-												<p class="text-xs text-slate-500">{entity.site_name}</p>
-												<p class="text-lg line-clamp-3">{entity.title}</p>
+												<p class="text-xs text-slate-700">{entity.site_name}</p>
+												<p class="line-clamp-3">{entity.title}</p>
 												<p class="text-sm line-clamp-2 text-slate-600">{entity.description}</p>
 											</div>
 										</a>
