@@ -50,8 +50,8 @@
 
 <div class="max-w-[800px] m-auto">
 	<form method="POST" on:submit|preventDefault={handleSubmit}>
-		<div class="relative lg:rounded-t-md overflow-hidden">
-			<div class={!headerImage ? 'min-h-[400px]' : ''}>
+		<div class="relative lg:rounded-md overflow-hidden">
+			<div class={!headerImage ? 'min-h-[350px]' : ''}>
 				<label for="headerFileInput" class="cursor-pointer hover:text-slate-700">
 					{#if headerImage}
 						<div class="relative">
@@ -62,7 +62,7 @@
 								alt="post attachment"
 							/>
 							<div
-								class="absolute w-full h-full top-0 left-0 flex flex-row justify-center items-center"
+								class="absolute mt-10  w-full top-0 left-0 flex flex-row justify-center items-center"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@
 								alt="post attachment"
 							/>
 							<div
-								class="absolute w-full h-full top-0 left-0 flex flex-row justify-center items-center"
+								class="absolute mt-10  w-full top-0 left-0 flex flex-row justify-center items-center"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@
 							</div>
 						</div>
 					{:else}
-						<div class="w-full h-full flex justify-center items-center">
+						<div class="mt-10 w-full h-full flex justify-center items-center">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="32"
@@ -133,7 +133,7 @@
 				/>
 			</div>
 			<div
-				class="p-4 w-full absolute bottom-0 bg-opacity-90 bg-black rounded-t-md flex flex-row justify-between gap-2"
+				class="p-4 w-full absolute bottom-0 bg-opacity-90 bg-black flex flex-row justify-between gap-2"
 			>
 				<div class="flex flex-col gap-2">
 					<div class="w-20 lg:w-40 lg:h-40 flex-row justify-center items-center">

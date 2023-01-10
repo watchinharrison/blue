@@ -15,7 +15,8 @@ class PostEntityRepository {
 			width,
 			thumbnail_url,
 			title,
-			description
+			description,
+			site_name
 		} = postEntity;
 		const insetQuery = 'INSERT INTO post_entities';
 		const insertSet = [];
@@ -59,6 +60,10 @@ class PostEntityRepository {
 		if (description) {
 			insertSet.push('description');
 			insertValues.push(description);
+		}
+		if (site_name) {
+			insertSet.push('site_name');
+			insertValues.push(site_name);
 		}
 		const insertQueryWithValues =
 			insetQuery +
@@ -123,6 +128,7 @@ class PostEntityRepository {
 			thumbnail_url VARCHAR(255) NULL,
 			title VARCHAR(255) NULL,
 			description VARCHAR(255) NULL,
+			site_name VARCHAR(255) NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NULL
     )`

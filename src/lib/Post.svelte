@@ -274,6 +274,7 @@
 												{/if}
 											</div>
 											<div class="p-4 bg-slate-200 text-slate-800">
+												<p class="text-xs text-slate-500">{entity.site_name}</p>
 												<p class="text-lg line-clamp-3">{entity.title}</p>
 												<p class="text-sm line-clamp-2 text-slate-600">{entity.description}</p>
 											</div>

@@ -7,12 +7,14 @@
 </script>
 
 <div class="relative lg:rounded-md overflow-hidden">
-	<div>
-		<img
-			class="aspect-video object-fit w-full"
-			src="/media/{data?.profile.header_image_url}"
-			alt={data?.profile.username}
-		/>
+	<div class="min-h-[300px] bg-slate-600">
+		{#if data?.profile.header_image_url}
+			<img
+				class="aspect-video object-fit w-full"
+				src="/media/{data?.profile.header_image_url}"
+				alt={data?.profile.username}
+			/>
+		{/if}
 	</div>
 	<div
 		class="p-4 w-full absolute bottom-0 bg-opacity-60 bg-black flex flex-row justify-between gap-4"

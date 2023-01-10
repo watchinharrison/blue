@@ -193,8 +193,8 @@ export const actions = {
 				await Promise.all(
 					hrefs.map(async (href) => {
 						const richPreview = await getRichPreview(href);
-						if (richPreview) {
-							const { title, description, image, url } = richPreview;
+						if (richPreview && richPreview.title) {
+							const { title, description, domain, image, url } = richPreview;
 							let thumbnail_url;
 							let startIndex = text.indexOf(href);
 							const indices = JSON.stringify([startIndex, startIndex + href.length]);
@@ -224,6 +224,7 @@ export const actions = {
 								url: url || href,
 								title,
 								description,
+								site_name: domain,
 								thumbnail_url,
 								indices
 							});
