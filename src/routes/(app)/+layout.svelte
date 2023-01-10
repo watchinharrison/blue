@@ -46,7 +46,6 @@
 	}
 
 	function search(term) {
-		console.log('term', term);
 		if (term) {
 			fetch(`/api/posts?term=${encodeURIComponent(term)}`)
 				.then((res) => res.json())
@@ -102,9 +101,23 @@
 		event.preventDefault();
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 		searchTerm = event.target.value;
+
+		if (searchTerm.length > 3) {
+			search(searchTerm);
+		}
 		if (!searchTerm) {
 			results = [];
 		}
+	}
+
+	function debounce(inputFunction, timeToWaitBeforeFiringInMs = 500) {
+		let timer;
+		return (...args) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				inputFunction.apply(this, args);
+			}, timeToWaitBeforeFiringInMs);
+		};
 	}
 
 	let inert;
@@ -146,7 +159,7 @@
 							enterkeyhint="search"
 							class="w-full outline-none"
 							placeholder="Search"
-							on:keyup={onSearch}
+							on:keyup={debounce(onSearch)}
 							value={form?.term ? form.term : searchTerm}
 						/>
 					</div>
@@ -184,10 +197,10 @@
 						</div>
 					</div>
 				{:else}
-					<div class="flex flex-col items-start h-full">
+					<div class="hidden lg:flex flex-col items-start h-full">
 						{#each topics as topic}
 							<div class="p-4">
-								<a href="/?term={encodeURIComponent(topic.name.replace('#', ''))}">
+								<a href="/?term={encodeURIComponent(topic.name.replace(/#/g, ''))}">
 									<p class="text-sky-700">{topic.name}</p>
 								</a>
 							</div>

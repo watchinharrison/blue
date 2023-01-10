@@ -7,12 +7,12 @@ workers_dev = true
 [[ d1_databases ]]
 binding = "DB"
 database_name = "blue"
-database_id = "fcee2e9d-581b-4c54-919c-69f8b63b8783"
+database_id = "8c429ae5-dc4c-4b32-ab19-6767a517551f"
 
 [[ d1_databases ]]
 binding = "DB"
 database_name = "blue_development"
-database_id = "48c85814-7206-4786-bae7-9490d274ba72"
+database_id = "ecdc9bd0-bf68-4921-8e03-8d7a9793593d"
 
 [[r2_buckets]]
 binding = 'FILE_BUCKET' # <~ valid JavaScript variable name

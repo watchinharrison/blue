@@ -1,4 +1,6 @@
 -- Migration number: 0009 	 2023-01-08T19:23:15.969Z
 ALTER TABLE users
-ADD COLUMN display_name VARCHAR(50)
+ADD COLUMN display_name VARCHAR(50);
+
+ALTER TABLE users
 ADD COLUMN bio VARCHAR(1024);
