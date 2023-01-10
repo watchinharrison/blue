@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { typewriter, whoosh } from '$lib/transitions';
+	import { page } from '$app/stores';
 
 	export let user;
 	export let navCollapsed = false;
@@ -22,6 +23,10 @@
 			duration,
 			css: (t) => `opacity: ${t * o}`
 		};
+	}
+
+	$: {
+		console.log('page.route', $page);
 	}
 </script>
 
@@ -56,13 +61,15 @@
 							<h1
 								class="text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
 							>
-								<a href="/">Timeline</a>
+								<a class={$page.url.pathname === '/' ? 'font-medium' : ''} href="/">Timeline</a>
 							</h1>
 							<div>
 								<h1
 									class="text-xl bg-clip-text text-transparent bg-gradient-to-t from-sky-800 to-blue-700 indent-1.5"
 								>
-									<a href="/post">Post</a>
+									<a class={$page.url.pathname === '/post' ? 'font-medium' : ''} href="/post"
+										>Post</a
+									>
 								</h1>
 							</div>
 						</div>
@@ -70,7 +77,10 @@
 							<h1
 								class="text-xl  bg-clip-text text-transparent bg-gradient-to-t from-sky-500 to-blue-600"
 							>
-								<a href="/{user?.username}">Profile</a>
+								<a
+									class={$page.url.pathname === `/${user?.username}` ? 'font-medium' : ''}
+									href="/{user?.username}">Profile</a
+								>
 							</h1>
 							<h1
 								class="text-xl  bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-300 indent-1.5"

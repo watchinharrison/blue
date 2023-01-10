@@ -26,10 +26,10 @@
 			name: '#RevoBlution'
 		},
 		{
-			name: '#ItsMondayAgain #KillMeKnow'
+			name: '#ItsMondayAgain'
 		},
 		{
-			name: '#Karen #Scene'
+			name: '#Karen'
 		},
 		{
 			name: '#InsurrectionInYourTown'
