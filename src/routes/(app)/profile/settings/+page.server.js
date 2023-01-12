@@ -9,6 +9,9 @@ export const actions = {
 		}
 		const formData = await request.formData();
 		const display_name = formData.get('displayName');
+
+		// @TODO: validate username
+
 		const username = formData.get('username');
 		const profile_image = formData.get('profileImage');
 		const header_image = formData.get('headerImage');

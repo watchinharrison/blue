@@ -24,6 +24,8 @@ export const actions = {
 		const email = data.get('email');
 		const password = data.get('password');
 
+		// @TODO: validate email and password;
+
 		if (!email) {
 			return fail(400, { email, missing: true });
 		}
@@ -53,6 +55,8 @@ export const actions = {
 		const data = await request.formData();
 		const email = data.get('email');
 		const password = data.get('password');
+
+		// @TODO: validate email and password;
 
 		const username = email.split('@')[0];
 

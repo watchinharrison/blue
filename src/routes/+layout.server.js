@@ -2,11 +2,15 @@
 import { getPosts } from '$lib/data/posts';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ locals, platform }) {
+export async function load({ locals, platform, request }) {
 	let searchResults = [];
-	console.log('locals', locals);
-	if (locals.term) {
-		searchResults = await getPosts({ locals, platform, term: locals.term });
+	if (request?.url?.match(/term=/)) {
+		const term = request.url.match(/term=(.*?)(?:&|$)/)[1];
+		searchResults = await getPosts({
+			locals,
+			platform,
+			term
+		});
 	}
 
 	return {

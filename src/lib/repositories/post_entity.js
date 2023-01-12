@@ -72,8 +72,6 @@ class PostEntityRepository {
 			') VALUES (' +
 			insertValues.map(() => '?').join(', ') +
 			')';
-		console.log(insertQueryWithValues);
-		console.log(insertValues);
 		return this.db
 			.prepare(insertQueryWithValues)
 			.bind(...insertValues)

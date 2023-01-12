@@ -24,10 +24,6 @@
 			css: (t) => `opacity: ${t * o}`
 		};
 	}
-
-	$: {
-		console.log('page.route', $page);
-	}
 </script>
 
 <div class="{navCollapsed ? 'w-fit lg:col-span-1' : 'w-full lg:col-span-2'} lg:h-full bg-sky-100">

@@ -253,12 +253,7 @@
 					/>
 				</div>
 				<div class="p-1 px-2 h-fit">
-					<button
-						type="submit"
-						class="text-sm bg-clip-text text-transparent bg-gradient-to-t from-sky-300 to-blue-800"
-					>
-						Save
-					</button>
+					<button type="submit" class="text-sm tetx-white"> Save </button>
 				</div>
 			</div>
 		</div>

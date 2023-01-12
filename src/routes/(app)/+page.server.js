@@ -41,6 +41,7 @@ export const actions = {
 		// const data = await request.formData();
 		const term = request.query.get('term');
 
+		// @TODO: validate term
 		console.log('term', term);
 
 		locals.term = term;
@@ -56,6 +57,7 @@ export const actions = {
 		const postRepo = new PostRepository({ db: platform.env.DB });
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		const data = await request.formData();
+		// @TODO: validate text
 		const text = data.get('text') ?? '';
 		const postId = data.get('post_id');
 		const images = data.getAll('image');
@@ -113,6 +115,8 @@ export const actions = {
 		const postRepo = new PostRepository({ db: platform.env.DB });
 		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
 		const data = await request.formData();
+
+		// @TODO: validate text
 		const text = data.get('text');
 		const postId = data.get('post_id');
 		const threadId = data.get('thread_id');
@@ -144,7 +148,6 @@ export const actions = {
 							const thumbnailUri = thumbnails[index];
 							if (thumbnailUri) {
 								const thumbnailBlob = dataURItoBlob(thumbnailUri);
-								console.log('thumbnailBlob', thumbnailBlob);
 								const thumbnailType = thumbnailBlob.type;
 								const thumbnailText = await thumbnailBlob.arrayBuffer();
 
@@ -251,7 +254,6 @@ export async function load({ locals, platform, request }) {
 		likesRepo.setupTable();
 		postRepo.setupTable();
 		postEntityRepo.setupTable();
-		console.log('request', request);
 		const posts = await getPosts({ locals, platform });
 		return {
 			user: locals.user,

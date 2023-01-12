@@ -10,7 +10,12 @@ export const getUser = async (options = {}) => {
 	const followersRepo = new FollowersRepository({ db: options.platform.env.DB });
 	const userRepo = new UserRepository({ db: options.platform.env.DB });
 	const likesRepo = new LikesRepository({ db: options.platform.env.DB });
-	const user = await userRepo.findById(options.id);
+	let user;
+	if (options.id) {
+		user = await userRepo.findById(options.id);
+	} else if (options.username) {
+		user = await userRepo.findByUsername(options.username);
+	}
 	const profile = {
 		id: user.id,
 		display_name: user.display_name,

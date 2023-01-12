@@ -36,6 +36,7 @@ export const follow = async ({ platform, locals, request }) => {
 		return fail(500, { error: 'No database connection' });
 	}
 	const data = await request.formData();
+	// @TODO: validate text
 	const username = data.get('username');
 	const userRepo = new UserRepository({ db: platform.env.DB });
 	const profile = await userRepo.findByUsername(username);
