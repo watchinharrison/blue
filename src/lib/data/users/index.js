@@ -5,11 +5,11 @@ import FollowersRepository from '$lib/repositories/followers';
 import LikesRepository from '$lib/repositories/likes';
 
 export const getUser = async (options = {}) => {
-	const postRepo = new PostRepository({ db: options.platform.env.DB });
-	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.DB });
-	const followersRepo = new FollowersRepository({ db: options.platform.env.DB });
-	const userRepo = new UserRepository({ db: options.platform.env.DB });
-	const likesRepo = new LikesRepository({ db: options.platform.env.DB });
+	const postRepo = new PostRepository({ db: options.platform.env.__D1_BETA__DB });
+	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.__D1_BETA__DB });
+	const followersRepo = new FollowersRepository({ db: options.platform.env.__D1_BETA__DB });
+	const userRepo = new UserRepository({ db: options.platform.env.__D1_BETA__DB });
+	const likesRepo = new LikesRepository({ db: options.platform.env.__D1_BETA__DB });
 	let user;
 	if (options.id) {
 		user = await userRepo.findById(options.id);

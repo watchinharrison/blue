@@ -9,7 +9,7 @@ export const actions = {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ platform, locals, params }) {
-	if (!platform?.env.DB) {
+	if (!platform?.env.__D1_BETA__DB) {
 		return fail(500, { error: 'No database connection' });
 	}
 	const post = getPost({ platform, locals, id: params.id });

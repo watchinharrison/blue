@@ -4,7 +4,7 @@ import { getPost } from '$lib/data/posts';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ request, locals, platform }) {
-	if (!platform?.env.DB) {
+	if (!platform?.env.__D1_BETA__DB) {
 		return fail(500, { error: 'No database connection' });
 	}
 	const url = new URL(request.url);

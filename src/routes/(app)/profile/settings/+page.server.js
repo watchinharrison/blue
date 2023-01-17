@@ -4,7 +4,7 @@ import UserRepository from '$lib/repositories/user';
 /** @type {import('../../../$types').Actions} */
 export const actions = {
 	default: async ({ request, platform, locals }) => {
-		if (!platform?.env.DB) {
+		if (!platform?.env.__D1_BETA__DB) {
 			return fail(500, { error: 'No database connection' });
 		}
 		const formData = await request.formData();
@@ -50,7 +50,7 @@ export const actions = {
 				}
 			}
 		}
-		const userRepo = new UserRepository({ db: platform.env.DB });
+		const userRepo = new UserRepository({ db: platform.env.__D1_BETA__DB });
 		await userRepo.update({
 			id: locals.user.id,
 			display_name,
@@ -69,7 +69,7 @@ export async function load({ platform, locals }) {
 	if (!locals.user?.id) {
 		throw redirect(303, '/login');
 	}
-	const userRepo = new UserRepository({ db: platform.env.DB });
+	const userRepo = new UserRepository({ db: platform.env.__D1_BETA__DB });
 	const user = await userRepo.findById(locals.user.id);
 	const profile = {
 		display_name: user.display_name,

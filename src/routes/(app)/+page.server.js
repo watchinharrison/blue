@@ -49,13 +49,13 @@ export const actions = {
 		return { success: true, term };
 	},
 	repost: async ({ request, url, platform, cookies, locals }) => {
-		if (!platform?.env.DB) {
+		if (!platform?.env.__D1_BETA__DB) {
 			return fail(500, { error: 'No database connection' });
 		}
 		const referer = request.headers.get('referer');
 		const refererUrl = new URL(referer);
-		const postRepo = new PostRepository({ db: platform.env.DB });
-		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
+		const postRepo = new PostRepository({ db: platform.env.__D1_BETA__DB });
+		const postEntityRepo = new PostEntityRepository({ db: platform.env.__D1_BETA__DB });
 		const data = await request.formData();
 		// @TODO: validate text
 		const text = data.get('text') ?? '';
@@ -107,13 +107,13 @@ export const actions = {
 	like,
 	follow,
 	post: async ({ request, url, platform, cookies, locals }) => {
-		if (!platform?.env.DB) {
+		if (!platform?.env.__D1_BETA__DB) {
 			return fail(500, { error: 'No database connection' });
 		}
 		const referer = request.headers.get('referer');
 		const refererUrl = new URL(referer);
-		const postRepo = new PostRepository({ db: platform.env.DB });
-		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
+		const postRepo = new PostRepository({ db: platform.env.__D1_BETA__DB });
+		const postEntityRepo = new PostEntityRepository({ db: platform.env.__D1_BETA__DB });
 		const data = await request.formData();
 
 		// @TODO: validate text
@@ -245,12 +245,12 @@ export const actions = {
 
 /** @type {import('../$types').PageServerLoad} */
 export async function load({ locals, platform, request }) {
-	if (platform?.env.DB) {
-		const postRepo = new PostRepository({ db: platform.env.DB });
-		const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
-		new UserRepository({ db: platform.env.DB }).setupTable();
-		new FollowersRepository({ db: platform.env.DB }).setupTable();
-		const likesRepo = new LikesRepository({ db: platform.env.DB });
+	if (platform?.env.__D1_BETA__DB) {
+		const postRepo = new PostRepository({ db: platform.env.__D1_BETA__DB });
+		const postEntityRepo = new PostEntityRepository({ db: platform.env.__D1_BETA__DB });
+		new UserRepository({ db: platform.env.__D1_BETA__DB }).setupTable();
+		new FollowersRepository({ db: platform.env.__D1_BETA__DB }).setupTable();
+		const likesRepo = new LikesRepository({ db: platform.env.__D1_BETA__DB });
 		likesRepo.setupTable();
 		postRepo.setupTable();
 		postEntityRepo.setupTable();

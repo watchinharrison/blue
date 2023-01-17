@@ -11,11 +11,11 @@ export const actions = {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ platform, locals, params }) {
-	if (!platform?.env.DB) {
+	if (!platform?.env.__D1_BETA__DB) {
 		return fail(500, { error: 'No database connection' });
 	}
-	const postRepo = new PostRepository({ db: platform.env.DB });
-	const postEntityRepo = new PostEntityRepository({ db: platform.env.DB });
+	const postRepo = new PostRepository({ db: platform.env.__D1_BETA__DB });
+	const postEntityRepo = new PostEntityRepository({ db: platform.env.__D1_BETA__DB });
 	const post = await postRepo.findById(params.id);
 	const entity = await postEntityRepo.findById(params.image_id);
 	return {

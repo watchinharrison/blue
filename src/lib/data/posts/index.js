@@ -3,9 +3,9 @@ import PostEntityRepository from '$lib/repositories/post_entity';
 import LikesRepository from '$lib/repositories/likes';
 
 export const getPosts = async (options = {}) => {
-	const postRepo = new PostRepository({ db: options.platform.env.DB });
-	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.DB });
-	const likesRepo = new LikesRepository({ db: options.platform.env.DB });
+	const postRepo = new PostRepository({ db: options.platform.env.__D1_BETA__DB });
+	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.__D1_BETA__DB });
+	const likesRepo = new LikesRepository({ db: options.platform.env.__D1_BETA__DB });
 	let posts = [];
 	if (options.term) {
 		posts = await postRepo.search(options.term);
@@ -55,9 +55,9 @@ export const getPosts = async (options = {}) => {
 };
 
 export const getPost = async (options = {}) => {
-	const postRepo = new PostRepository({ db: options.platform.env.DB });
-	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.DB });
-	const likesRepo = new LikesRepository({ db: options.platform.env.DB });
+	const postRepo = new PostRepository({ db: options.platform.env.__D1_BETA__DB });
+	const postEntityRepo = new PostEntityRepository({ db: options.platform.env.__D1_BETA__DB });
+	const likesRepo = new LikesRepository({ db: options.platform.env.__D1_BETA__DB });
 	const post = await postRepo.findById(options.id);
 	post.entities = await postEntityRepo.findByPostId(post.id);
 	post.replies = await postRepo.getReplies(post.id);

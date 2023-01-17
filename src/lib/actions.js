@@ -5,7 +5,7 @@ import UserRepository from '$lib/repositories/user';
 import FollowersRepository from '$lib/repositories/followers';
 
 export const like = async ({ platform, locals, params, request }) => {
-	if (!platform?.env.DB) {
+	if (!platform?.env.__D1_BETA__DB) {
 		return fail(500, { error: 'No database connection' });
 	}
 	if (!locals?.user?.id) {
@@ -13,8 +13,8 @@ export const like = async ({ platform, locals, params, request }) => {
 	}
 	const data = await request.formData();
 	const postId = data.get('post_id');
-	const postRepo = new PostRepository({ db: platform.env.DB });
-	const likesRepo = new LikesRepository({ db: platform.env.DB });
+	const postRepo = new PostRepository({ db: platform.env.__D1_BETA__DB });
+	const likesRepo = new LikesRepository({ db: platform.env.__D1_BETA__DB });
 	await likesRepo.setupTable();
 	const post = await postRepo.findById(postId);
 	if (post) {
@@ -32,15 +32,15 @@ export const like = async ({ platform, locals, params, request }) => {
 };
 
 export const follow = async ({ platform, locals, request }) => {
-	if (!platform?.env.DB) {
+	if (!platform?.env.__D1_BETA__DB) {
 		return fail(500, { error: 'No database connection' });
 	}
 	const data = await request.formData();
 	// @TODO: validate text
 	const username = data.get('username');
-	const userRepo = new UserRepository({ db: platform.env.DB });
+	const userRepo = new UserRepository({ db: platform.env.__D1_BETA__DB });
 	const profile = await userRepo.findByUsername(username);
-	const followersRepo = new FollowersRepository({ db: platform.env.DB });
+	const followersRepo = new FollowersRepository({ db: platform.env.__D1_BETA__DB });
 	const isFollowing = await followersRepo.isFollowing({
 		followerId: locals.user.id,
 		followedId: profile.id

@@ -10,7 +10,7 @@ export const actions = {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params, platform }) {
-	if (platform?.env.DB) {
+	if (platform?.env.__D1_BETA__DB) {
 		const { profile, following, followers, isFollowing, posts } = await getUser({
 			username: params.username,
 			locals,
